@@ -13,21 +13,52 @@
 @layer base {
   /* Body */
   body {
-    @apply font-sans antialiased m-0 bg-nvidiaDark text-white;
+    @apply font-sans antialiased m-0 text-white;
+    /* Apple body copy: 17px / 1.47059 / -0.022em */
+    font-size: 1.0625rem;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+    background: #050810;
+    position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
   /* Headings */
+  /* Tracking + line-height come from the Apple size ramp in
+     tailwind.config.js, so headings only set family/weight here. */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-display font-bold tracking-tight;
-    letter-spacing: -0.02em;
+    @apply font-display font-bold;
+  }
+
+  /* Copy wrapping
+     Keep wrapped lines even so a sentence never ends with a lone word on its
+     own line (worst on phones, e.g. “…applications.” by itself).
+     `balance` evens short copy everywhere it’s supported; `pretty` takes over
+     for running text where available, since it also covers copy that runs
+     past the line count `balance` handles. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li {
+    text-wrap: balance;
+  }
+
+  @supports (text-wrap: pretty) {
+    p,
+    li {
+      text-wrap: pretty;
+    }
   }
 
   /* Code blocks */
@@ -98,6 +129,99 @@
 }
 
 /* ------------------------------
+   Space background: twinkling
+   starfield + nebula haze
+--------------------------------*/
+.stars {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 130px 80px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 160px 120px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 200px 60px, rgba(59, 130, 246, 0.6), transparent),
+    radial-gradient(1px 1px at 250px 150px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 300px 40px, rgba(239, 68, 68, 0.4), transparent);
+  background-size: 350px 200px;
+  animation: twinkle 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Rising sprinkle field (canvas layer, see src/components/SparkleField.jsx) */
+.sparkles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nebula {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(59, 130, 246, 0.12), transparent 50%),
+    radial-gradient(ellipse 60% 60% at 80% 30%, rgba(139, 92, 246, 0.08), transparent 50%),
+    radial-gradient(ellipse 90% 70% at 50% 90%, rgba(59, 130, 246, 0.06), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ------------------------------
+   Hero brand mark: green bloom
+   that breathes
+--------------------------------*/
+.logo-glow {
+  /* Layered drop-shadows: tight bright core, mid halo, wide ambient bloom.
+     drop-shadow follows the PNG's alpha, so it traces the rings themselves
+     rather than boxing the image. */
+  filter:
+    drop-shadow(0 0 6px rgba(168, 232, 156, 0.55))
+    drop-shadow(0 0 16px rgba(80, 192, 64, 0.4))
+    drop-shadow(0 0 38px rgba(80, 192, 64, 0.22));
+  animation: logo-glow-pulse 3.6s ease-in-out infinite;
+  /* Overrides the blanket `* { animation-duration: .5s !important }` mobile
+     rule below, which would otherwise turn this into a strobe. */
+  animation-duration: 3.6s !important;
+  will-change: filter;
+}
+
+@keyframes logo-glow-pulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 6px rgba(168, 232, 156, 0.5))
+      drop-shadow(0 0 16px rgba(80, 192, 64, 0.36))
+      drop-shadow(0 0 38px rgba(80, 192, 64, 0.2));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 10px rgba(200, 240, 190, 0.8))
+      drop-shadow(0 0 26px rgba(80, 192, 64, 0.6))
+      drop-shadow(0 0 62px rgba(80, 192, 64, 0.34));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-glow {
+    animation: none;
+  }
+}
+
+/* ------------------------------
    LOGO GENSPARK
 --------------------------------*/
 
@@ -153,7 +277,7 @@
 @media (min-width: 641px) and (max-width: 1024px) {
   /* Medium screen adjustments */
   body {
-    font-size: 16px;
+    font-size: 1.0625rem;
   }
 }
 

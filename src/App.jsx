@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import SparkleField from "./components/SparkleField";
+import AutoplayVideo from "./components/AutoplayVideo";
+import VideoModal from "./components/VideoModal";
+import AioLogo from "./components/AioLogo";
 import {
   Shield,
   FileText,
@@ -17,6 +21,7 @@ import {
   Lock,
   ArrowLeft,
   CheckCircle,
+  XCircle,
   Target,
   Sparkles,
   Globe,
@@ -25,14 +30,48 @@ import {
   Eye,
   BookA,
   Map,
-  BookSearch,
   BookOpen,
   Book,
+  ArrowUpRight,
+  Play,
 } from "lucide-react";
+
+// AI chip icon: lucide-style CPU outline with "AI" lettering inside
+const AiChipIcon = ({ className = "" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect x="5" y="5" width="14" height="14" rx="2" />
+    <path d="M9 2v3M12 2v3M15 2v3M9 19v3M12 19v3M15 19v3M2 9h3M2 12h3M2 15h3M19 9h3M19 12h3M19 15h3" />
+    <text
+      x="12"
+      y="12.5"
+      textAnchor="middle"
+      dominantBaseline="middle"
+      fontSize="8"
+      fontWeight="700"
+      fill="currentColor"
+      stroke="none"
+    >
+      AI
+    </text>
+  </svg>
+);
+
+// Shared card surface: transparent glass panel with a green border
+const cardClass =
+  "group p-5 rounded-2xl border border-green-500/40 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-green-500/80 hover:shadow-[0_12px_40px_rgba(80,192,64,0.15)]";
 
 const AIArsenalDashboard = () => {
   const [currentPage, setCurrentPage] = useState("home");
   const [language, setLanguage] = useState("en");
+  const [demoOpen, setDemoOpen] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -44,8 +83,11 @@ const AIArsenalDashboard = () => {
 
   const translations = {
     en: {
-      title: "MyGOV AI",
-      subtitle: "AI Operating System for Malaysian Government",
+      title: "AIO",
+      // subtitle: "Your AI. Your Data. Your Infra.",
+      subtitle: "Work smarter, faster and better.",
+      // subtitle: "Work smarter and faster.",
+      subtitle2: "Truly helpful. Truly yours.",
       statsLine: "✅ 12 AI Agents ✅ RM300K Each ✅ Full Sovereign",
       aiSystems: "AI Agents",
       avgTimeSaved: "Avg Time Saved",
@@ -57,7 +99,7 @@ const AIArsenalDashboard = () => {
       deploymentStrategies: "🚀 DEPLOYMENT STRATEGIES",
       techArchitecture: "⚙️ TECH ARCHITECTURE",
       bottomLine: "🎯 THE BOTTOM LINE",
-      oldWay: "❌ OLD WAY",
+      oldWay: "❌ Old Way",
       zaraWay: "✅ ZARA WAY",
       readyToDeploy: "Ready to deploy, Sir? 🚀",
       futureQuote: '"The future of Malaysian governance is compiling..."',
@@ -119,8 +161,9 @@ const AIArsenalDashboard = () => {
       timeSaved: "Time Saved",
     },
     ms: {
-      title: "🇲🇾 MyAIGOV",
-      subtitle: "Senjata AI Gov-Tech Malaysia",
+      title: "🇲🇾 AIO",
+      subtitle: "Your AI. Your Data. Your Infra.",
+      subtitle2: "Senjata AI Gov-Tech Malaysia",
       statsLine: "12 Sistem AI • RM300K Setiap Satu • Berdaulat & Selamat",
       aiSystems: "Sistem AI",
       avgTimeSaved: "Purata Masa Jimat",
@@ -573,13 +616,112 @@ const AIArsenalDashboard = () => {
     },
   ];
 
+  // Placeholder product sections — replace title/subtitle/name/description,
+  // then add a `video` field to an item once its media is ready.
+  const productSections = [
+    {
+      id: "documents",
+      title: "AI Document Processing.",
+      subtitle: "Streamline your document submissions process.",
+      items: [
+        {
+          id: "product1",
+          name: "AIO Form Filler",
+          video: "aio-form-filler-loop.mp4",
+          description: "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
+        },
+        {
+          id: "product2",
+          name: "AIO Form Checker",
+          video: "aio-form-checker-loop.mp4",
+          description: "Intelligently cross-check submitted forms against supporting documents to verify accuracy and identify missing information. Generate a clear correction report highlighting what needs to be reviewed or corrected before submission.",
+        },
+      ],
+    },
+    {
+      id: "forecast",
+      title: "AI Insight and Forecast.",
+      subtitle: "Turn local data into answers.",
+      items: [
+        {
+          id: "product9",
+          name: "AIO Insight",
+          video: "aio-insight-loop.mp4",
+          description: "Upload a spreadsheet, get instant answers. Just ask questions in natural language and watch the right charts appear — accurate, easy to read, and ready to share.",
+        },
+        {
+          id: "product10",
+          name: "AIO Forecast",
+          video: "aio-insight-loop.mp4",
+          description: "See what's coming next. Upload your data and get a smart, reliable forecast in minutes — no spreadsheets, no guesswork, no data science degree needed.",
+        },
+      ],
+    },
+    // HIDDEN — uncomment to restore the "AI Compliance & Audit." section
+    // {
+    // id: "compliance",
+    // title: "AI Compliance & Audit.",
+    // subtitle: "Catch the issues before they become findings.",
+    // items: [
+    // {
+    // id: "product3",
+    // name: "AIO Policy Checker",
+    // description: "Short description of this product. Replace with your own copy.",
+    // },
+    // {
+    // id: "product4",
+    // name: "AIO Audit Trail",
+    // description: "Short description of this product. Replace with your own copy.",
+    // },
+    // ],
+    // },
+    // HIDDEN — uncomment to restore the "AI Knowledge & Insights." section
+    // {
+    // id: "insights",
+    // title: "AI Knowledge & Insights.",
+    // subtitle: "Turn your archives into answers.",
+    // items: [
+    // {
+    // id: "product5",
+    // name: "AIO Knowledge Base",
+    // description: "Short description of this product. Replace with your own copy.",
+    // },
+    // {
+    // id: "product6",
+    // name: "AIO Report Builder",
+    // description: "Short description of this product. Replace with your own copy.",
+    // },
+    // ],
+    // },
+    {
+      id: "development",
+      title: "AI Local Development. ",
+      subtitle: "Build and learn in house — for education and internal teams.",
+      items: [
+        {
+          id: "product7",
+          name: "AIO Lab",
+          image: "gb10.webp",
+          description: "An on-premise AI workstation pre-installed with AI development software and tools. Designed for AI education, hands-on learning, and AI development.",
+        },
+        {
+          id: "product8",
+          name: "AIO Code",
+          image: "aiocode.jpg",
+          description: "AI-powered coding and software development workspace for faster delivery. Manage the full SDLC, from coding and tickets to testing and progress tracking.",
+        },
+      ],
+    },
+  ];
+
   const combos = [
     {
       id: "combo1",
-      name: "AI Atlas",
+      video: "zara-laptop.mp4",
+      name: "ZARA",
       systems: ["AI Policy Agent", "AI Legal Agent", "AI Document Agent"],
       cost: "RM900K",
-      effect: "Complete intel superiority",
+      effect: "Meet ZARA (ZEN Artificial Reasoning Assistant), your AI assistant for smarter work. Get richer answers, natural conversations, and instant access to your local knowledge base.",
       // icon: FileText,
       // icon: Map,
       icon: Book,
@@ -587,14 +729,15 @@ const AIArsenalDashboard = () => {
     },
     {
       id: "combo2",
-      name: "AI Sentinel",
+      video: "zara-promo.mp4",
+      name: "ZARA + AI Agent",
       systems: [
         "AI Contract Agent",
         "AI FraudGuard Agent",
         "AI Inspector Agent",
       ],
       cost: "RM900K",
-      effect: "Triple-layer defense",
+      effect: "Extend ZARA into an AI Agent that connects with your organization’s local applications. Go beyond conversations and let ZARA assist with tasks, access business systems.",
       icon: Shield,
       color: "from-red-500 to-orange-600",
     },
@@ -845,496 +988,668 @@ const AIArsenalDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
-        <div className="text-center mb-8">
-          <div className="flex flex-col items-center justify-center mt-10 mb-4">
-            <h1 className="relative text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-center">
-              {/* <h1 className="relative text-4xl sm:text-5xl lg:text-6xl font-galaxy font-extrabold tracking-tight text-center"> */}
-              <span className="absolute -top-2 -right-4 w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 animate-pulse">
-                ✨
-              </span>
+    <>
+      <div className="stars"></div>
+      <div className="nebula"></div>
+      <SparkleField />
+      <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20 relative z-10">
+        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+          <div className="text-center mb-8">
+            {/* HERO — locked to one viewport. Height budget (svh) keeps the
+                title, subtitle and video fully visible without scrolling.
+                min-h subtracts the page wrapper's top padding. */}
+            <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-8 landscape:min-h-[calc(100svh-2.5rem)] sm:landscape:min-h-[calc(100svh-3.5rem)] lg:landscape:min-h-[calc(100svh-5rem)]">
+              <h1 className="relative flex items-center justify-center gap-[0.3em] px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
+                {/* Brand mark — sized in em so it tracks the title's clamp. */}
+                <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                {/* <span className="absolute -top-1 -right-[0.55em] text-[0.32em] leading-none text-yellow-400 animate-pulse">
+                  ✨
+                </span> */}
 
-              {/* Main text */}
-              <span className="block">
-                <span className="text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]">
-                  My
-                </span>
-                <span className="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.9)] ml-2">
-                  Gov
-                </span>
-                <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] ml-2">
-                  AI
-                </span>
-              </span>
-            </h1>
-          </div>
-
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center px-4">
-            {getText("subtitle")}
-          </h1>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-4xl mx-auto px-4">
-            A modular AI operating system that powers plug-and-play AI agents to
-            run standalone, as combined suites, or as a fully integrated
-            ecosystem for internal operations and select citizen services.
-          </p>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
-            Enabling ministries to work smarter, respond faster and deliver
-            trusted services fully secure, sustainable and sovereign.
-          </p>
-
-          {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 px-4">{getText('statsLine')}</p> */}
-          {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 px-4 line-clamp-2 sm:line-clamp-none"> */}
-
-          <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 px-4 break-words">
-            {getText("statsLine")}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg p-4 sm:p-6 text-center">
-            <div className="text-3xl sm:text-4xl font-bold">12</div>
-            <div className="text-xs sm:text-sm text-blue-200">
-              {getText("aiSystems")}
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-lg p-4 sm:p-6 text-center">
-            <div className="text-3xl sm:text-4xl font-bold">70%</div>
-            <div className="text-xs sm:text-sm text-green-200">
-              {getText("avgTimeSaved")}
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg p-4 sm:p-6 text-center">
-            <div className="text-3xl sm:text-4xl font-bold">6-12</div>
-            <div className="text-xs sm:text-sm text-purple-200">
-              {getText("monthsROI")}
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-orange-600 to-orange-700 rounded-lg p-4 sm:p-6 text-center">
-            <div className="text-3xl sm:text-4xl font-bold">100%</div>
-            <div className="text-xs sm:text-sm text-orange-200">
-              {getText("dataSovereign")}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center px-4">
-          🤖 12 {getText("aiSystems")}
-        </h2>
-
-        <p className="text-center text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 px-4">
-          Click any system to view full details
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {products.map((product) => {
-            const Icon = product.icon;
-            return (
-              <div
-                key={product.id}
-                onClick={() => setCurrentPage(product.id)}
-                className={`bg-gradient-to-br ${product.color} rounded-lg p-4 sm:p-6 cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl`}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <Icon className="w-8 h-8 sm:w-10 sm:h-10" />
-                  <span className="text-xs bg-white/20 px-2 py-1 rounded">
-                    {product.deployment}
+                {/* Main text */}
+                <span className="block">
+                  <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                    AI Office
                   </span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">
-                  {product.name}
-                </h3>
-                <p className="text-xs sm:text-sm opacity-90 mb-3">
-                  {product.power}
-                </p>
-                <div className="flex justify-between text-xs">
-                  <div>
-                    <div className="font-bold text-base sm:text-lg">
-                      {product.timeReduction}
-                    </div>
-                    <div className="opacity-75 text-xs">Time Saved</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-base sm:text-lg">
-                      {product.savingsPerYear}
-                    </div>
-                    <div className="opacity-75 text-xs">Saved/Year</div>
-                  </div>
-                </div>
-                <div className="mt-3 sm:mt-4 text-center">
-                  <div className="text-blue-200 text-xs sm:text-sm font-semibold hover:text-white transition-colors">
-                    View Details →
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+                </span>
+              </h1>
 
-      <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center px-4">
-          💥 POWER SUITES
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          {combos.map((combo) => {
-            const ComboIcon = combo.icon;
-            return (
-              <div
-                key={combo.id}
-                className={`bg-gradient-to-br ${combo.color} rounded-lg p-4 sm:p-6 transform transition-all hover:scale-105`}
-              >
-                <div className="flex items-center mb-4">
-                  <ComboIcon className="w-10 h-10 sm:w-12 sm:h-12 mr-3 sm:mr-4" />
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-bold">
-                      {combo.name}
-                    </h3>
-                    <p className="text-xs sm:text-sm opacity-90">
-                      {combo.effect}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white/10 rounded p-3 mb-3">
-                  <div className="text-xs sm:text-sm opacity-75 mb-1">
-                    Includes:
-                  </div>
-                  {combo.systems.map((sys, idx) => (
-                    <div key={idx} className="text-xs sm:text-sm font-semibold">
-                      • {sys}
-                    </div>
-                  ))}
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold">
-                    {combo.cost}
-                  </div>
-                  <div className="text-xs sm:text-sm opacity-75">
-                    Total Investment
-                  </div>
-                </div>
+              <div className="max-w-4xl mx-auto text-center">
+                <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  {getText("subtitle")}
+                </h1>
+                <h1 className="font-bold text-gray-400 mt-[1svh] text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  {getText("subtitle2")}
+                </h1>
               </div>
-            );
-          })}
-        </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center px-4">
-          🚀 DEPLOYMENT STRATEGIES
-        </h2>
-        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"> */}
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {deploymentTiers.map((tier, idx) => (
-            <div
-              key={tier.name}
-              // className={`rounded-lg p-4 sm:p-6 border-3 sm:border-4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${
-              // className={`rounded-lg p-4 sm:p-6 border sm:border-4 border-yellow-400 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${
-              className={`rounded-lg p-4 sm:p-6 border-2 sm:border-4 border-yellow-400 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${
-                idx === 0
-                  ? "border-orange-400 bg-orange-900/20 hover:bg-orange-900/30"
-                  : idx === 1
-                    ? "border-gray-400 bg-gray-900/20 hover:bg-gray-900/30"
-                    : idx === 2
-                      ? "border-amber-400 bg-amber-900/20 hover:bg-amber-900/30"
-                      : "border-blue-400 bg-blue-900/20 hover:bg-blue-900/30"
-              }`}
-            >
-              <div className="text-center mb-3 sm:mb-4">
-                <div
-                  className={`text-xl sm:text-2xl font-bold mb-2 ${
-                    idx === 0
-                      ? "text-orange-400"
-                      : idx === 1
-                        ? "text-gray-400"
-                        : idx === 2
-                          ? "text-amber-400"
-                          : "text-blue-400"
-                  }`}
-                >
-                  {tier.name}
-                </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                  {tier.cost}
-                </div>
-              </div>
-              <div className="space-y-2 text-xs sm:text-sm">
-                <div className="flex justify-between">
-                  <span className="opacity-75">Agents:</span>
-                  <span className="font-bold">{tier.systems}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="opacity-75">Timeline:</span>
-                  <span className="font-bold">{tier.timeline}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="opacity-75">ROI:</span>
-                  <span className="font-bold">{tier.roi}</span>
+              {/* Hero video — width derived from a height budget, so it can
+                  never grow taller than the space left in the viewport. */}
+              <div className="w-full flex justify-center px-4">
+                <div className="group relative w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                  <AutoplayVideo
+                    className="w-full aspect-video rounded-xl object-cover bg-black"
+                    src={`${import.meta.env.BASE_URL}hero-loop.mp4`}
+                    poster={`${import.meta.env.BASE_URL}hero-poster.jpg`}
+                    controls={false}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setDemoOpen(true)}
+                    className="absolute bottom-3 sm:bottom-10 left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                  >
+                    Learn more
+                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center px-4">
-          ⚙️ TECH ARCHITECTURE
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-4 sm:p-6">
-            <Brain className="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-purple-400" />
-            <h3 className="font-bold text-base sm:text-lg mb-2">
-              Open-Source LLMs
-            </h3>
-            <p className="text-xs sm:text-sm opacity-75">
-              Full control, secure and customizable AI.
+            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-4xl mx-auto px-4">
+              AI Office Suite is your complete <span className="whitespace-nowrap">AI-Powered Workplace.</span>
             </p>
-          </div>
-          <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-4 sm:p-6">
-            <Database className="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-blue-400" />
-            <h3 className="font-bold text-base sm:text-lg mb-2">
-              RAG knowledge base
-            </h3>
-            <p className="text-xs sm:text-sm opacity-75">
-              Updated, accurate and trusted in-house datasets.
+            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
+              Transform documents, data, knowledge base, and business processes with a unified suite of Artificial Intelligence applications.
             </p>
-          </div>
-          <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-4 sm:p-6">
-            <Server className="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-green-400  " />
-            <h3 className="font-bold text-base sm:text-lg mb-2">
-              NVIDIA DGX Spark
-            </h3>
-            <p className="text-xs sm:text-sm opacity-75">
-              On-premise supercomputer. Malaysian soil only.
+            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
+              Built for organizations. Designed for productivity.{" "}
+              {/* On phones the last sentence gets its own line, unbroken. */}
+              <br className="sm:hidden" />
+              <span className="whitespace-nowrap">Ready for on-premises AI.</span>
             </p>
+
+            {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-4xl mx-auto px-4">
+              A modular AI operating system that powers plug-and-play AI agents to
+              run standalone, as combined suites, or as a fully integrated
+              ecosystem for internal operations and select citizen services.
+            </p>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
+              Enabling ministries to work smarter, respond faster and deliver
+              trusted services fully secure, sustainable and sovereign.
+            </p> */}
+
+            {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 px-4">{getText('statsLine')}</p> */}
+            {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 px-4 line-clamp-2 sm:line-clamp-none"> */}
+
+            {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 px-4 break-words">
+              {getText("statsLine")}
+            </p> */}
           </div>
-          {/* <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-6">
+
+          {/* <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className={`${cardClass} text-center`}>
+              <div className="text-3xl sm:text-4xl font-bold">12</div>
+              <div className="text-xs sm:text-sm text-blue-200">
+                {getText("aiSystems")}
+              </div>
+            </div>
+            <div className={`${cardClass} text-center`}>
+              <div className="text-3xl sm:text-4xl font-bold">70%</div>
+              <div className="text-xs sm:text-sm text-green-200">
+                {getText("avgTimeSaved")}
+              </div>
+            </div>
+            <div className={`${cardClass} text-center`}>
+              <div className="text-3xl sm:text-4xl font-bold">6-12</div>
+              <div className="text-xs sm:text-sm text-purple-200">
+                {getText("monthsROI")}
+              </div>
+            </div>
+            <div className={`${cardClass} text-center`}>
+              <div className="text-3xl sm:text-4xl font-bold">100%</div>
+              <div className="text-xs sm:text-sm text-orange-200">
+                {getText("dataSovereign")}
+              </div>
+            </div>
+          </div> */}
+        </div>
+
+        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+          <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            {/* ⚙️ TECH ARCHITECTURE */}
+            Your AI. Your Data. Your Infra.
+          </h1>
+          <h1 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            Fully secure, sovereign and maximum control.
+          </h1>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
+            <div className="group p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1">
+              <div className="mx-auto mb-3 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                <AiChipIcon className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
+              </div>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+                Local AI
+              </h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400">
+                {/* Full control, secure and customizable AI.Full control, secure and customizable AI.Full control, secure and customizable AI. */}
+                Full control, secure, and customizable AI that runs on your own infrastructure.
+              </p>
+            </div>
+            <div className="group p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1">
+              <div className="mx-auto mb-3 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                <Database className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
+              </div>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+                Local knowledge base
+              </h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400">
+                {/* Updated, accurate and trusted in-house datasets.Full control, secure and customizable AI.Full control, secure and customizable AI. */}
+                AI grounded in your trusted, up-to-date in-house knowledge.
+              </p>
+            </div>
+            <div className="group p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1">
+              <div className="mx-auto mb-3 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                <Server className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
+              </div>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+                <span className="whitespace-nowrap">On-premise</span> deployment
+              </h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400">
+                {/* On-premise supercomputer. Malaysian soil only.Full control, secure and customizable AI.Full control, secure and customizable AI. */}
+                Your AI infrastructure, deployed <span className="whitespace-nowrap">on-premise</span> and kept entirely in Malaysia.
+              </p>
+            </div>
+            {/* <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-6">
             <Lock className="w-12 h-12 mb-3 text-green-400" />
             <h3 className="font-bold text-lg mb-2">100% Sovereign</h3>
             <p className="text-sm opacity-75">Data never leaves Malaysia. MAMPU compliant.</p>
           </div> */}
+          </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg p-4 sm:p-6 lg:p-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center px-4">
-            🎯 THE BOTTOM LINE
+        {/* Statement section */}
+        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              An Office with an Intelligent Workspace.
+            </h2>
+            <h2 className="font-bold text-gray-400 mt-2 sm:mt-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Get more done.{" "}
+              {/* On phones the second sentence gets its own line, unbroken. */}
+              <br className="sm:hidden" />
+              <span className="whitespace-nowrap">Make better decisions.</span>
+            </h2>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+          <h2 className="font-bold mb-3 sm:mb-4 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            Your AI assistant.
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div>
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-red-300">
-                ❌ OLD WAY
+          <h2 className="font-bold text-gray-400 mb-14 sm:mb-20 lg:mb-24 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            More personal. More powerful.
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 sm:gap-10 lg:gap-16">
+            {/* Only the first 2 combos render; AI Flash + AI Oracle remain in `combos`. */}
+            {combos.slice(0, 2).map((combo) => (
+              <div key={combo.id} className="flex flex-col px-2 sm:px-4">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
+                  {combo.name}
+                </h3>
+                <p className="mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                  {combo.effect}
+                </p>
+
+                {/* Green box wraps the video only — matches the hero video card */}
+                <div className="group w-full p-4 sm:p-5 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                  <AutoplayVideo
+                    className="w-full aspect-video rounded-xl object-cover bg-black"
+                    src={`${import.meta.env.BASE_URL}${combo.video}`}
+                    poster={`${import.meta.env.BASE_URL}${combo.video.replace(
+                      /\.mp4$/,
+                      "-poster.jpg"
+                    )}`}
+                    controls={false}
+                    disablePictureInPicture
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  className="mt-8 sm:mt-10 mx-auto inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                >
+                  Learn more
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Placeholder product sections — same layout as “Your AI assistant.” */}
+        {productSections.map((section) => (
+          <div
+            key={section.id}
+            className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36"
+          >
+            <h2 className="font-bold mb-3 sm:mb-4 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              {section.title}
+            </h2>
+            <h2 className="font-bold text-gray-400 mb-14 sm:mb-20 lg:mb-24 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              {section.subtitle}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 sm:gap-10 lg:gap-16">
+              {section.items.map((product) => (
+                <div key={product.id} className="flex flex-col px-2 sm:px-4">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
+                    {product.name}
+                  </h3>
+                  <p className="mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                    {product.description}
+                  </p>
+
+                  <div className="group w-full p-4 sm:p-5 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                    {/* Items without a `video` or `image` fall back to the "coming soon" placeholder */}
+                    {product.video ? (
+                      <AutoplayVideo
+                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        src={`${import.meta.env.BASE_URL}${product.video}`}
+                        // Posters sit beside each clip as <name>-poster.jpg, so
+                        // they follow the `video` field instead of a second one.
+                        poster={`${import.meta.env.BASE_URL}${product.video.replace(
+                          /\.mp4$/,
+                          "-poster.jpg"
+                        )}`}
+                        controls={false}
+                        disablePictureInPicture
+                      />
+                    ) : product.image ? (
+                      <img
+                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        src={`${import.meta.env.BASE_URL}${product.image}`}
+                        alt={`${product.name} preview`}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full aspect-video rounded-xl bg-black/60 border border-white/10 flex flex-col items-center justify-center gap-2 text-gray-500">
+                        <Play className="w-10 h-10 sm:w-12 sm:h-12" />
+                        <span className="text-xs sm:text-sm">Media coming soon</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="mt-8 sm:mt-10 mx-auto inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                  >
+                    Learn more
+                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* HIDDEN — flip `false` to `true` to restore the 12 AI Agents section */}
+        {false && (
+          <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 text-center px-4">
+              12 {getText("aiSystems")}
+            </h2>
+
+            <p className="text-center text-sm sm:text-base text-gray-400 mb-10 sm:mb-12 px-4">
+              Click any system to view full details
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {products.map((product) => {
+                const Icon = product.icon;
+                return (
+                  <div
+                    key={product.id}
+                    onClick={() => setCurrentPage(product.id)}
+                    className={`${cardClass} cursor-pointer`}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
+                      <span className="text-xs bg-white/20 px-2 py-1 rounded">
+                        {product.deployment}
+                      </span>
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold mb-2">
+                      {product.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm opacity-90 mb-3">
+                      {product.power}
+                    </p>
+                    <div className="flex justify-between text-xs">
+                      <div>
+                        <div className="font-bold text-base sm:text-lg">
+                          {product.timeReduction}
+                        </div>
+                        <div className="opacity-75 text-xs">Time Saved</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-base sm:text-lg">
+                          {product.savingsPerYear}
+                        </div>
+                        <div className="opacity-75 text-xs">Saved/Year</div>
+                      </div>
+                    </div>
+                    <div className="mt-3 sm:mt-4 text-center">
+                      <div className="text-red-500 text-xs sm:text-sm font-semibold hover:text-white transition-colors">
+                        View Details →
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+
+        {/* HIDDEN — flip `false` to `true` to restore the Deployment Strategies section */}
+        {false && (
+          <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-8 sm:mb-10 text-center px-4">
+              DEPLOYMENT STRATEGIES
+            </h2>
+            {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"> */}
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {deploymentTiers.map((tier, idx) => (
+                <div
+                  key={tier.name}
+                  // className={`rounded-lg p-4 sm:p-6 border-3 sm:border-4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${
+                  // className={`rounded-lg p-4 sm:p-6 border sm:border-4 border-yellow-400 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${
+                  className={`${cardClass} cursor-pointer`}
+                >
+                  <div className="text-center mb-3 sm:mb-4">
+                    <div
+                      className={`text-xl sm:text-2xl font-bold mb-2 ${idx === 0
+                        ? "text-orange-400"
+                        : idx === 1
+                          ? "text-gray-400"
+                          : idx === 2
+                            ? "text-amber-400"
+                            : "text-blue-400"
+                        }`}
+                    >
+                      {tier.name}
+                    </div>
+                    <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+                      {tier.cost}
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-xs sm:text-sm">
+                    <div className="flex justify-between">
+                      <span className="opacity-75">Agents:</span>
+                      <span className="font-bold">{tier.systems}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="opacity-75">Timeline:</span>
+                      <span className="font-bold">{tier.timeline}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="opacity-75">ROI:</span>
+                      <span className="font-bold">{tier.roi}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+
+
+        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 sm:gap-10 lg:gap-16">
+            <div className="px-2 sm:px-4">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
+                <XCircle className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 shrink-0" />
+                Old Way
               </h3>
-              <ul className="space-y-2 text-xs sm:text-sm">
+              <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                <li>• Expensive cloud subscriptions</li>
                 <li>• Officers buried in paperwork</li>
+                <li>• Policies lost in folders</li>
+                <li>• Data in foreign servers</li>
                 <li>• Citizens waiting weeks</li>
                 <li>• Fraud slipping through</li>
-                <li>• Policies lost in folders</li>
-                <li>• Expensive cloud subscriptions</li>
-                <li>• Data in foreign servers</li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-green-300">
-                ✅ MyGOV AI WAY
+            <div className="px-2 sm:px-4">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
+                {/* Brand mark in place of the check icon, sized in em so it
+                    tracks the heading like the hero lockup does. */}
+                <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                <span className="relative inline-block font-extrabold tracking-[-0.009em]">
+                  {/* <span className="absolute -top-0.5 -right-[0.55em] text-[0.4em] leading-none text-yellow-400 animate-pulse">
+                    ✨
+                  </span> */}
+                  <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                    AI Office
+                  </span>
+                </span>
               </h3>
-              <ul className="space-y-2 text-xs sm:text-sm">
-                <li>• AI handles routine work</li>
+              <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
                 <li>• Citizens served in minutes</li>
                 <li>• Fraud caught automatically</li>
+                <li>• One Intelligent Workspace</li>
+                <li>• AI handles routine work</li>
+                <li>• Data stays in Malaysia</li>
                 <li>• Instant policy recall</li>
-                <li>• One-time investment</li>
-                <li>• Data stays in Malaysia 🇲🇾</li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-blue-300">
-                🎤 FINAL WORD
+            <div className="px-2 sm:px-4">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
+                <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 shrink-0" />
+                Benefit
               </h3>
-              <ul className="space-y-2 text-xs sm:text-sm">
-                <li>• 12 specialized AI agents</li>
-                <li>• Each costs what you'd pay 2 officers for 1 year</li>
+              <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
                 <li>• Each works 24/7/365 without fatigue</li>
-                <li>• Each gets smarter with use</li>
-                <li>• All speak Malay and English</li>
+                <li>• Work Smarter and better decisions</li>
                 <li>• All sovereign. All secure. All yours.</li>
+                <li>• Automate repetitive work faster</li>
+                <li>• All speak Malay and English</li>
+                <li>• Each gets smarter with use</li>
               </ul>
             </div>
-          </div>
-          <div className="text-center mt-6 sm:mt-8">
-            <p className="text-xl sm:text-2xl font-bold px-4">
-              Ready to deploy, Sir? 🚀
-            </p>
-            <p className="text-xs sm:text-sm opacity-75 mt-2 px-4">
-              "The future of Malaysian governance is compiling..."
-            </p>
           </div>
         </div>
-      </div>
 
-      {/* Floating Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white p-3 sm:p-4 rounded-full shadow-lg transition-all hover:scale-110 z-50"
-        aria-label="Scroll to top"
-      >
-        <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
-      </button>
+        {/* Floating Scroll to Top Button */}
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 bg-[#0a0f1a]/80 backdrop-blur-xl border border-green-500/40 hover:border-green-400 hover:bg-[#0a0f1a] text-green-400 p-3 sm:p-4 rounded-full shadow-lg transition-all hover:scale-110 z-50"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
 
-      {/* Footer Section */}
-      <footer className="mt-16 sm:mt-20 bg-gradient-to-br from-gray-800 via-gray-900 to-black border-t border-gray-700 rounded-3xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            {/* About Section */}
-            <div>
-              {/* <h3 className="text-xl font-bold mb-4 text-blue-400">MyGov AI</h3> */}
-              {/* <h3 className="text-xl font-bold mb-4 text-blue-400">
-                MyGov AI<span className="text-current">✨</span>
+        {/* Footer Section */}
+        <footer className="p-5 rounded-2xl bg-[#0a0f1a]/60 backdrop-blur-xl">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+              {/* About Section */}
+              <div>
+                {/* <h3 className="text-xl font-bold mb-4 text-blue-400">AI Office</h3> */}
+                {/* <h3 className="text-xl font-bold mb-4 text-blue-400">
+                AI Office<span className="text-current">✨</span>
               </h3> */}
-              <h3 className="text-xl font-bold mb-4 text-blue-400 flex items-center">
-                MyGov AI
-                <span className="text-current text-lg ml-0 -mt-0.5">✨</span>
-              </h3>
+                <h3 className="text-lg mb-4">
+                  {/* Footer brand: the hero mark with the AIO initials set in
+                      the ring. The mark's hole is 71.7% of its canvas, so the
+                      initials sit at ~0.34em of the container to stay clear of
+                      the strands. */}
+                  <span className="relative inline-block">
+                    <span className="relative inline-flex h-16 w-16 items-center justify-center text-[4rem]">
+                      <AioLogo className="absolute inset-0 h-full w-full" />
+                      <span className="relative font-display font-extrabold text-[0.26em] leading-none tracking-[-0.01em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                        AIO
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-1 top-1.5 text-[0.6rem] font-semibold leading-none text-gray-400"
+                    >
+                      ™
+                    </span>
+                    <span className="sr-only">AI Office</span>
+                  </span>
+                </h3>
 
-              <p className="text-sm text-gray-400 mb-4"> 
-                AI Operating System for Malaysian Government. Empowering
-                ministries with sovereign, secure, and sustainable AI solutions.
-              </p>
-              {/* <div className="flex items-center space-x-2 text-sm">
+                <p className="text-sm text-gray-400 mb-2">
+                  AI Office. The intelligent workspace for organizations with
+                  sovereign, secure, and sustainable AI.
+                </p>
+                <p className="text-sm text-gray-400 mb-4">
+                  Your AI. Your Data. Your Infra.
+                </p>
+                {/* <div className="flex items-center space-x-2 text-sm">
                 <Lock className="w-4 h-4 text-green-400" />
                 <span className="text-gray-400">100% Data Sovereign</span>
               </div> */}
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-bold mb-4 text-blue-400">
-                Quick Links
-              </h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="#systems"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    AI Agents
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#suites"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Power Suites
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#deployment"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Deployment Strategies
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#tech"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Technology
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Solutions */}
-            <div>
-              <h3 className="text-lg font-bold mb-4 text-blue-400">
-                Solutions
-              </h3>
-              <ul className="space-y-2 text-sm">
-                <li className="text-gray-400">Document Processing</li>
-                <li className="text-gray-400">Citizen Services</li>
-                <li className="text-gray-400">Fraud Detection</li>
-                <li className="text-gray-400">Policy Intelligence</li>
-                <li className="text-gray-400">Budget Analytics</li>
-                <li className="text-gray-400">Compliance Monitoring</li>
-              </ul>
-            </div>
-
-            {/* Contact & Support */}
-            <div>
-              <h3 className="text-lg font-bold mb-4 text-blue-400">Features</h3>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start">
-                  <Globe className="w-4 h-4 mr-2 mt-1 text-blue-400 flex-shrink-0" />
-                  <span className="text-gray-400">
-                    For Malaysian Government Agencies
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <Shield className="w-4 h-4 mr-2 mt-1 text-green-400 flex-shrink-0" />
-                  <span className="text-gray-400">MAMPU Compliant</span>
-                </li>
-                <li className="flex items-start">
-                  <Server className="w-4 h-4 mr-2 mt-1 text-purple-400 flex-shrink-0" />
-                  <span className="text-gray-400">On-Premise Deployment</span>
-                </li>
-                <li className="flex items-start">
-                  {/* <Lock className="w-4 h-4 text-green-400" />
-                <span className="text-gray-400">100% Data Sovereign</span> */}
-                  <Lock className="w-4 h-4 mr-2 mt-1 text-green-400 flex-shrink-0" />
-                  <span className="text-gray-400">100% Data Sovereign</span>
-                </li>
-              </ul>
-              <button className="mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105">
-                Request Demo
-              </button>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="border-t border-gray-700 pt-6 sm:pt-8">
-            <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-              <div className="text-sm text-gray-400 text-center sm:text-left">
-                <p>&copy; 2026 MyGov AI. All rights reserved.</p>
-                <p className="mt-1">
-                  Powered by NVIDIA DGX Spark • Open-Source LLMs • RAG
-                  Technology
-                </p>
               </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-400">
-                  🇲🇾 Made in Malaysia
-                </span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-gray-400">System Online</span>
+
+              {/* Quick Links */}
+              <div>
+                <h3 className="text-lg font-bold mb-4 text-white">
+                  Quick Links
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a
+                      href="#systems"
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      AI Agents
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#suites"
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      Power Suites
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#deployment"
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      Deployment Strategies
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#tech"
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      Technology
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Solutions */}
+              <div>
+                <h3 className="text-lg font-bold mb-4 text-white">
+                  Solutions
+                </h3>
+                {/* <ul className="space-y-2 text-sm">
+                  <li className="text-gray-400">Document Processing</li>
+                  <li className="text-gray-400">Citizen Services</li>
+                  <li className="text-gray-400">Fraud Detection</li>
+                  <li className="text-gray-400">Policy Intelligence</li>
+                  <li className="text-gray-400">Budget Analytics</li>
+                  <li className="text-gray-400">Compliance Monitoring</li>
+                </ul> */}
+                <ul className="space-y-2 text-sm">
+                  <li className="text-gray-400">ZARA + AI Agent</li>
+                  <li className="text-gray-400">AIO Form Filler</li>
+                  <li className="text-gray-400">AIO Form Checker</li>
+                  <li className="text-gray-400">AIO Insight</li>
+                  <li className="text-gray-400">AIO Forecast</li>
+                  <li className="text-gray-400">AIO Lab</li>
+                  <li className="text-gray-400">AIO Code</li>
+                </ul>
+              </div>
+
+              {/* Contact & Support */}
+              <div>
+                <h3 className="text-lg font-bold mb-4 text-white">Features</h3>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center">
+                    <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_12px_rgba(80,192,64,0.35)]">
+                      <AiChipIcon className="w-4 h-4 text-green-500" />
+                    </span>
+                    <span className="text-gray-400">Local AI</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_12px_rgba(80,192,64,0.35)]">
+                      <Database className="w-4 h-4 text-green-500" />
+                    </span>
+                    <span className="text-gray-400">Local knowledge base</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_12px_rgba(80,192,64,0.35)]">
+                      <Server className="w-4 h-4 text-green-500" />
+                    </span>
+                    <span className="text-gray-400">On-premise deployment</span>
+                  </li>
+                </ul>
+                <button
+                  type="button"
+                  className="mt-4 inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                >
+                  Request Demo
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Bottom Bar */}
+            <div className="border-t border-gray-700 pt-6 sm:pt-8">
+              <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <div className="text-sm text-gray-400 text-center sm:text-left">
+                  <p>&copy; 2026 AI Office. All rights reserved.</p>
+                  <p className="mt-1">
+                    {/* Powered by NVIDIA DGX Spark • Open-Source LLMs • RAG
+                    Technology */}ZEN Computer Systems
+                  </p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-gray-400">
+                    🇲🇾 Made in Malaysia
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-gray-400">System Online</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Tech Stack Badge */}
-          <div className="mt-6 sm:mt-8 text-center">
-            <div className="inline-flex items-center space-x-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-              <Brain className="w-4 h-4 text-purple-400" />
-              <span className="text-xs text-gray-400">AI-Powered</span>
-              <span className="text-gray-600">•</span>
-              <Database className="w-4 h-4 text-blue-400" />
-              <span className="text-xs text-gray-400">RAG-Enhanced</span>
-              <span className="text-gray-600">•</span>
-              <Lock className="w-4 h-4 text-green-400" />
-              <span className="text-xs text-gray-400">Fully Sovereign</span>
-            </div>
+            {/* Tech Stack Badge */}
+            {/* <div className="mt-6 sm:mt-8 text-center">
+              <div className="inline-flex items-center space-x-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
+                <Brain className="w-4 h-4 text-purple-400" />
+                <span className="text-xs text-gray-400">AI-Powered</span>
+                <span className="text-gray-600">•</span>
+                <Database className="w-4 h-4 text-blue-400" />
+                <span className="text-xs text-gray-400">RAG-Enhanced</span>
+                <span className="text-gray-600">•</span>
+                <Lock className="w-4 h-4 text-green-400" />
+                <span className="text-xs text-gray-400">Fully Sovereign</span>
+              </div>
+            </div> */}
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+
+      {demoOpen && (
+        <VideoModal
+          src={`${import.meta.env.BASE_URL}hero-720.mp4`}
+          poster={`${import.meta.env.BASE_URL}hero-poster.jpg`}
+          label="AI Office Suite demo"
+          onClose={() => setDemoOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
