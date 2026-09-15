@@ -229,6 +229,31 @@
 }
 
 /* ------------------------------
+   Splash: rings pulsing out
+   from the brand mark
+--------------------------------*/
+.splash-ping {
+  animation: splash-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  /* Same override as .logo-glow for the mobile 0.5s rule below. */
+  animation-duration: 2.2s !important;
+}
+
+.splash-ping-late {
+  animation-delay: 1.1s;
+}
+
+@keyframes splash-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------
    LOGO GENSPARK
 --------------------------------*/
 

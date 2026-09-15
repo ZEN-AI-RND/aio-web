@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import SparkleField from "./components/SparkleField";
 import AutoplayVideo from "./components/AutoplayVideo";
 import VideoModal from "./components/VideoModal";
 import AioLogo from "./components/AioLogo";
 import SiteHeader from "./components/SiteHeader";
 import RotatingWord from "./components/RotatingWord";
+import SplashScreen from "./components/SplashScreen";
 import {
   Shield,
   FileText,
@@ -74,6 +75,11 @@ const AIArsenalDashboard = () => {
   const [currentPage, setCurrentPage] = useState("home");
   const [language, setLanguage] = useState("en");
   const [demoOpen, setDemoOpen] = useState(false);
+  // False while the splash covers the page: the page underneath stays
+  // unpainted (and the particle canvas unmounted) so the splash gets the
+  // whole frame budget.
+  const [revealed, setRevealed] = useState(false);
+  const reveal = useCallback(() => setRevealed(true), []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -999,12 +1005,15 @@ const AIArsenalDashboard = () => {
 
   return (
     <>
-      <div className="stars"></div>
-      <div className="nebula"></div>
-      <SparkleField />
-      <SiteHeader />
+      <SplashScreen onReveal={reveal} />
+      <div className={`stars ${revealed ? "" : "invisible"}`}></div>
+      <div className={`nebula ${revealed ? "" : "invisible"}`}></div>
+      {revealed && <SparkleField />}
+      <div className={revealed ? undefined : "invisible"}>
+        <SiteHeader />
+      </div>
       {/* pt-20 clears the 4rem/5rem top menu at every width. */}
-      <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10">
+      <div className={`min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10 ${revealed ? "" : "invisible"}`}>
         <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
           <div className="text-center mb-8">
             {/* HERO — locked to one viewport. Height budget (svh) keeps the
