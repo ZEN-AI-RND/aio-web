@@ -4,6 +4,7 @@ import AutoplayVideo from "./components/AutoplayVideo";
 import VideoModal from "./components/VideoModal";
 import AioLogo from "./components/AioLogo";
 import SiteHeader from "./components/SiteHeader";
+import RotatingWord from "./components/RotatingWord";
 import {
   Shield,
   FileText,
@@ -1027,7 +1028,12 @@ const AIArsenalDashboard = () => {
 
               <div className="max-w-4xl mx-auto text-center">
                 <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                  {getText("subtitle")}
+                  Work{" "}
+                  <RotatingWord
+                    words={["SMARTER", "FASTER", "BETTER"]}
+                    className="text-green-500"
+                  />{" "}
+                  with AI.
                 </h1>
                 <h1 className="font-bold text-gray-400 mt-[1svh] text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                   {getText("subtitle2")}
