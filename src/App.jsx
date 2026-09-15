@@ -3,6 +3,7 @@ import SparkleField from "./components/SparkleField";
 import AutoplayVideo from "./components/AutoplayVideo";
 import VideoModal from "./components/VideoModal";
 import AioLogo from "./components/AioLogo";
+import SiteHeader from "./components/SiteHeader";
 import {
   Shield,
   FileText,
@@ -626,12 +627,14 @@ const AIArsenalDashboard = () => {
       items: [
         {
           id: "product1",
+          anchor: "form-filler", // top menu link target
           name: "AIO Form Filler",
           video: "aio-form-filler-loop.mp4",
           description: "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
         },
         {
           id: "product2",
+          anchor: "form-checker", // top menu link target
           name: "AIO Form Checker",
           video: "aio-form-checker-loop.mp4",
           description: "Intelligently cross-check submitted forms against supporting documents to verify accuracy and identify missing information. Generate a clear correction report highlighting what needs to be reviewed or corrected before submission.",
@@ -645,12 +648,14 @@ const AIArsenalDashboard = () => {
       items: [
         {
           id: "product9",
+          anchor: "insight", // top menu link target
           name: "AIO Insight",
           video: "aio-insight-loop.mp4",
           description: "Upload a spreadsheet, get instant answers. Just ask questions in natural language and watch the right charts appear — accurate, easy to read, and ready to share.",
         },
         {
           id: "product10",
+          anchor: "forecast", // top menu link target
           name: "AIO Forecast",
           video: "aio-insight-loop.mp4",
           description: "See what's coming next. Upload your data and get a smart, reliable forecast in minutes — no spreadsheets, no guesswork, no data science degree needed.",
@@ -700,12 +705,14 @@ const AIArsenalDashboard = () => {
       items: [
         {
           id: "product7",
+          anchor: "lab", // top menu link target
           name: "AIO Lab",
           image: "gb10.webp",
           description: "An on-premise AI workstation pre-installed with AI development software and tools. Designed for AI education, hands-on learning, and AI development.",
         },
         {
           id: "product8",
+          anchor: "code", // top menu link target
           name: "AIO Code",
           image: "aiocode.jpg",
           description: "AI-powered coding and software development workspace for faster delivery. Manage the full SDLC, from coding and tickets to testing and progress tracking.",
@@ -717,6 +724,7 @@ const AIArsenalDashboard = () => {
   const combos = [
     {
       id: "combo1",
+      anchor: "zara", // top menu link target
       video: "zara-laptop.mp4",
       name: "ZARA",
       systems: ["AI Policy Agent", "AI Legal Agent", "AI Document Agent"],
@@ -729,6 +737,7 @@ const AIArsenalDashboard = () => {
     },
     {
       id: "combo2",
+      anchor: "zara-agent", // top menu link target
       video: "zara-promo.mp4",
       name: "ZARA x AI Agent",
       systems: [
@@ -992,13 +1001,15 @@ const AIArsenalDashboard = () => {
       <div className="stars"></div>
       <div className="nebula"></div>
       <SparkleField />
-      <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20 relative z-10">
+      <SiteHeader />
+      {/* pt-20 clears the 4rem/5rem top menu at every width. */}
+      <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10">
         <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
           <div className="text-center mb-8">
             {/* HERO — locked to one viewport. Height budget (svh) keeps the
                 title, subtitle and video fully visible without scrolling.
                 min-h subtracts the page wrapper's top padding. */}
-            <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-8 landscape:min-h-[calc(100svh-2.5rem)] sm:landscape:min-h-[calc(100svh-3.5rem)] lg:landscape:min-h-[calc(100svh-5rem)]">
+            <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-8 landscape:min-h-[calc(100svh-5rem)]">
               <h1 className="relative flex items-center justify-center gap-[0.3em] px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
                 {/* Brand mark — sized in em so it tracks the title's clamp. */}
                 <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
@@ -1104,7 +1115,7 @@ const AIArsenalDashboard = () => {
           </div> */}
         </div>
 
-        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+        <div id="philosophy" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-8 lg:scroll-mt-28">
           <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
             {/* ⚙️ TECH ARCHITECTURE */}
             Your AI. Your Data. Your Infra.
@@ -1182,7 +1193,7 @@ const AIArsenalDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 sm:gap-10 lg:gap-16">
             {/* Only the first 2 combos render; AI Flash + AI Oracle remain in `combos`. */}
             {combos.slice(0, 2).map((combo) => (
-              <div key={combo.id} className="flex flex-col px-2 sm:px-4">
+              <div key={combo.id} id={combo.anchor} className="flex flex-col px-2 sm:px-4 scroll-mt-8 lg:scroll-mt-28">
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                   {combo.name}
                 </h3>
@@ -1230,7 +1241,7 @@ const AIArsenalDashboard = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 sm:gap-10 lg:gap-16">
               {section.items.map((product) => (
-                <div key={product.id} className="flex flex-col px-2 sm:px-4">
+                <div key={product.id} id={product.anchor} className="flex flex-col px-2 sm:px-4 scroll-mt-8 lg:scroll-mt-28">
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                     {product.name}
                   </h3>
@@ -1394,7 +1405,7 @@ const AIArsenalDashboard = () => {
 
 
 
-        <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+        <div id="benefit" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-8 lg:scroll-mt-28">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 sm:gap-10 lg:gap-16">
             <div className="px-2 sm:px-4">
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">

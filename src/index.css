@@ -11,6 +11,13 @@
    Base Layer: Global Styles
 --------------------------------*/
 @layer base {
+  /* Top menu links glide to their section instead of jumping. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   /* Body */
   body {
     @apply font-sans antialiased m-0 text-white;
