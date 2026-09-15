@@ -50,7 +50,7 @@ function DemoButton({ className = "" }) {
       href={DEMO_HREF}
       className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-base font-medium text-black transition-colors duration-300 hover:bg-green-400 ${className}`}
     >
-      Book a Demo
+      Request a Demo
       <ArrowUpRight className="h-5 w-5" />
     </a>
   );

@@ -739,14 +739,14 @@ const AIArsenalDashboard = () => {
       id: "combo2",
       anchor: "zara-agent", // top menu link target
       video: "zara-promo.mp4",
-      name: "ZARA x AI Agent",
+      name: "ZARA x AIO Agent",
       systems: [
         "AI Contract Agent",
         "AI FraudGuard Agent",
         "AI Inspector Agent",
       ],
       cost: "RM900K",
-      effect: "Extend ZARA into an AI Agent that connects with your organization’s local applications. Go beyond conversations and let ZARA assist with tasks, access business systems.",
+      effect: "Extend ZARA into an AIO Agent that connects with your organization’s local applications. Go beyond conversations and let ZARA assist with tasks, access business systems.",
       icon: Shield,
       color: "from-red-500 to-orange-600",
     },
@@ -1520,39 +1520,23 @@ const AIArsenalDashboard = () => {
                 <h3 className="text-lg font-bold mb-4 text-white">
                   Quick Links
                 </h3>
+                {/* Same destinations as the top menu (SiteHeader.jsx). */}
                 <ul className="space-y-2 text-sm">
-                  <li>
-                    <a
-                      href="#systems"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      AI Agents
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#suites"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Power Suites
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#deployment"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Deployment Strategies
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#tech"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Technology
-                    </a>
-                  </li>
+                  {[
+                    { label: "Philosophy", href: "#philosophy" },
+                    { label: "Solutions", href: "#zara" },
+                    { label: "Benefit", href: "#benefit" },
+                    { label: "About", href: "#" },
+                  ].map((link) => (
+                    <li key={link.label}>
+                      <a
+                        href={link.href}
+                        className="text-gray-400 hover:text-white transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
@@ -1570,7 +1554,7 @@ const AIArsenalDashboard = () => {
                   <li className="text-gray-400">Compliance Monitoring</li>
                 </ul> */}
                 <ul className="space-y-2 text-sm">
-                  <li className="text-gray-400">ZARA x AI Agent</li>
+                  <li className="text-gray-400">ZARA x AIO Agent</li>
                   <li className="text-gray-400">AIO Form Filler</li>
                   <li className="text-gray-400">AIO Form Checker</li>
                   <li className="text-gray-400">AIO Insight</li>
@@ -1620,7 +1604,7 @@ const AIArsenalDashboard = () => {
                   <p>&copy; 2026 AI Office. All rights reserved.</p>
                   <p className="mt-1">
                     {/* Powered by NVIDIA DGX Spark • Open-Source LLMs • RAG
-                    Technology */}ZEN Computer Systems
+                    Technology */}Co-created with ZARA
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
