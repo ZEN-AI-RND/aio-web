@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import AioLogo from "./AioLogo";
 
-/* Top menu. Transparent over the hero; on laptop widths (lg+) it is pinned to
-   the top and picks up a light blur once the page scrolls, so the links stay
-   readable over the videos. Below lg it sits at the top of the page and folds
-   into a hamburger panel.
+/* Top menu. Transparent over the hero and pinned to the top at every width;
+   once the page scrolls it picks up a light blur, so the links stay readable
+   over the videos. Below lg the links fold into a hamburger panel.
 
    Anchor targets are the `id`s set on the matching sections in App.jsx. */
 
@@ -95,9 +94,9 @@ export default function SiteHeader() {
 
   return (
     <header
-      className={`absolute inset-x-0 top-0 z-40 transition-colors duration-300 lg:fixed ${
+      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
         scrolled
-          ? "lg:border-b lg:border-white/10 lg:bg-black/40 lg:backdrop-blur-md"
+          ? "border-b border-white/10 bg-black/40 backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -195,7 +194,7 @@ export default function SiteHeader() {
         id="mobile-menu"
         aria-label="Main"
         hidden={!mobileOpen}
-        className="mx-4 rounded-2xl border border-white/10 bg-[#0a0f1a]/95 p-3 backdrop-blur-xl sm:mx-6 lg:hidden"
+        className="mx-4 max-h-[calc(100svh-5rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#0a0f1a]/95 p-3 backdrop-blur-xl sm:mx-6 lg:hidden"
       >
         <ul className="flex flex-col">
           <li>

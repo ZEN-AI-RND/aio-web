@@ -1115,7 +1115,7 @@ const AIArsenalDashboard = () => {
           </div> */}
         </div>
 
-        <div id="philosophy" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-8 lg:scroll-mt-28">
+        <div id="philosophy" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
           <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
             {/* ⚙️ TECH ARCHITECTURE */}
             Your AI. Your Data. Your Infra.
@@ -1193,7 +1193,7 @@ const AIArsenalDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 sm:gap-10 lg:gap-16">
             {/* Only the first 2 combos render; AI Flash + AI Oracle remain in `combos`. */}
             {combos.slice(0, 2).map((combo) => (
-              <div key={combo.id} id={combo.anchor} className="flex flex-col px-2 sm:px-4 scroll-mt-8 lg:scroll-mt-28">
+              <div key={combo.id} id={combo.anchor} className="flex flex-col px-2 sm:px-4 scroll-mt-24 lg:scroll-mt-28">
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                   {combo.name}
                 </h3>
@@ -1241,7 +1241,7 @@ const AIArsenalDashboard = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 sm:gap-10 lg:gap-16">
               {section.items.map((product) => (
-                <div key={product.id} id={product.anchor} className="flex flex-col px-2 sm:px-4 scroll-mt-8 lg:scroll-mt-28">
+                <div key={product.id} id={product.anchor} className="flex flex-col px-2 sm:px-4 scroll-mt-24 lg:scroll-mt-28">
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                     {product.name}
                   </h3>
@@ -1405,7 +1405,7 @@ const AIArsenalDashboard = () => {
 
 
 
-        <div id="benefit" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-8 lg:scroll-mt-28">
+        <div id="benefit" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 sm:gap-10 lg:gap-16">
             <div className="px-2 sm:px-4">
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
