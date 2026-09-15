@@ -1186,7 +1186,7 @@ const AIArsenalDashboard = () => {
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                   {combo.name}
                 </h3>
-                <p className="mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                <p className="grow mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
                   {combo.effect}
                 </p>
 
@@ -1234,7 +1234,7 @@ const AIArsenalDashboard = () => {
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                     {product.name}
                   </h3>
-                  <p className="mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                  <p className="grow mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
                     {product.description}
                   </p>
 
