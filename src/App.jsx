@@ -130,7 +130,7 @@ const AIArsenalDashboard = () => {
       roi: "ROI:",
       oldWayItems: [
         "Officers buried in paperwork",
-        "Citizens waiting weeks",
+        "Clients waiting weeks",
         "Fraud slipping through",
         "Policies lost in folders",
         "Expensive cloud subscriptions",
@@ -138,7 +138,7 @@ const AIArsenalDashboard = () => {
       ],
       zaraWayItems: [
         "AI handles routine work",
-        "Citizens served in minutes",
+        "Clients served in minutes",
         "Fraud caught automatically",
         "Instant policy recall",
         "One-time investment",
@@ -315,7 +315,7 @@ const AIArsenalDashboard = () => {
       color: "from-blue-500 to-blue-600",
       deployment: "Plug & Play",
       problemSolved:
-        "Government agencies handle thousands of documents daily—reports, letters, forms, contracts, and citizen submissions. Manually reading, categorizing, extracting data, and routing these documents is slow, error-prone, and consumes significant staff time.",
+        "Government agencies handle thousands of documents daily—reports, letters, forms, contracts, and client submissions. Manually reading, categorizing, extracting data, and routing these documents is slow, error-prone, and consumes significant staff time.",
       targetUsers: [
         "Ministry administrative units",
         "Agencies processing public submissions",
@@ -339,14 +339,14 @@ const AIArsenalDashboard = () => {
       id: 4,
       name: "AI Assist Agent",
       icon: Users,
-      category: "Citizen Interface",
-      power: "24/7 citizen service",
+      category: "Client Interface",
+      power: "24/7 client service",
       savingsPerYear: "RM400K",
       timeReduction: "50%",
       color: "from-green-500 to-green-600",
       deployment: "Standalone",
       problemSolved:
-        "Citizens calling government hotlines or visiting counters often ask repetitive questions: office hours, required documents, application status, eligibility criteria. This overwhelms frontline staff and leads to long wait times and inconsistent answers.",
+        "Clients calling government hotlines or visiting counters often ask repetitive questions: office hours, required documents, application status, eligibility criteria. This overwhelms frontline staff and leads to long wait times and inconsistent answers.",
       targetUsers: [
         "Public service counters (immigration, registration, licensing)",
         "Call centers and helpdesks",
@@ -354,30 +354,30 @@ const AIArsenalDashboard = () => {
         "Local councils",
       ],
       features: [
-        "24/7 chatbot answering common citizen questions in Malay and English",
-        "Guides citizens step-by-step through application processes",
+        "24/7 chatbot answering common client questions in Malay and English",
+        "Guides clients step-by-step through application processes",
         "Checks application status via backend API integration",
         "Escalates complex cases to human officers with context",
         "Learns from interactions to improve answers over time",
       ],
       aiRole:
-        "The LLM acts as a tireless virtual officer, trained on your agency's FAQs, procedures, and regulations. It understands citizen intent even when questions are phrased informally. RAG ensures answers stay current with the latest policies.",
+        "The LLM acts as a tireless virtual officer, trained on your agency's FAQs, procedures, and regulations. It understands client intent even when questions are phrased informally. RAG ensures answers stay current with the latest policies.",
       benefit:
-        "Reduces call center load by 40-50%. Provides consistent, accurate answers 24/7. Improves citizen satisfaction. Frees human officers to handle complex cases requiring judgment.",
+        "Reduces call center load by 40-50%. Provides consistent, accurate answers 24/7. Improves client satisfaction. Frees human officers to handle complex cases requiring judgment.",
       roi: "7 months",
     },
     {
       id: 5,
       name: "AI Permit Agent",
       icon: FileCheck,
-      category: "Citizen Interface",
+      category: "Client Interface",
       power: "45 days → 7 days",
       savingsPerYear: "RM600K",
       timeReduction: "85%",
       color: "from-teal-500 to-teal-600",
       deployment: "Stackable",
       problemSolved:
-        "Processing applications for business licenses, permits (construction, food handling, environmental), and registrations involves checking eligibility, verifying documents, and ensuring compliance with regulations. This is repetitive, slow, and creates bottlenecks for businesses and citizens.",
+        "Processing applications for business licenses, permits (construction, food handling, environmental), and registrations involves checking eligibility, verifying documents, and ensuring compliance with regulations. This is repetitive, slow, and creates bottlenecks for businesses and clients.",
       targetUsers: [
         "Local councils (PBT) processing business licenses",
         "Construction and development approval units",
@@ -487,7 +487,7 @@ const AIArsenalDashboard = () => {
       aiRole:
         "The LLM analyzes application text for inconsistencies (e.g., income claims vs. stated profession). RAG pulls data from historical cases to identify known fraud patterns. Automation scores each application for fraud risk.",
       benefit:
-        "Prevents leakage of public funds. Ensures assistance reaches truly eligible citizens. Deters fraudsters through improved detection rates. Builds public trust in government programs.",
+        "Prevents leakage of public funds. Ensures assistance reaches truly eligible clients. Deters fraudsters through improved detection rates. Builds public trust in government programs.",
       roi: "3 months",
     },
     {
@@ -611,7 +611,7 @@ const AIArsenalDashboard = () => {
       aiRole:
         "The LLM reads and interprets public posts, news articles, and comments in multiple languages. RAG connects to historical sentiment data to identify unusual patterns. Automation continuously scans sources and alerts officers to significant shifts.",
       benefit:
-        "Enables rapid response to public concerns. Prevents crises through early detection. Informs policy adjustments based on real citizen feedback. Protects government reputation through timely communication.",
+        "Enables rapid response to public concerns. Prevents crises through early detection. Informs policy adjustments based on real client feedback. Protects government reputation through timely communication.",
       roi: "7 months",
     },
   ];
@@ -730,7 +730,7 @@ const AIArsenalDashboard = () => {
     {
       id: "combo2",
       video: "zara-promo.mp4",
-      name: "ZARA + AI Agent",
+      name: "ZARA x AI Agent",
       systems: [
         "AI Contract Agent",
         "AI FraudGuard Agent",
@@ -1061,7 +1061,7 @@ const AIArsenalDashboard = () => {
             {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-4xl mx-auto px-4">
               A modular AI operating system that powers plug-and-play AI agents to
               run standalone, as combined suites, or as a fully integrated
-              ecosystem for internal operations and select citizen services.
+              ecosystem for internal operations and select client services.
             </p>
             <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
               Enabling ministries to work smarter, respond faster and deliver
@@ -1406,7 +1406,7 @@ const AIArsenalDashboard = () => {
                 <li>• Officers buried in paperwork</li>
                 <li>• Policies lost in folders</li>
                 <li>• Data in foreign servers</li>
-                <li>• Citizens waiting weeks</li>
+                <li>• Clients waiting weeks</li>
                 <li>• Fraud slipping through</li>
               </ul>
             </div>
@@ -1425,7 +1425,7 @@ const AIArsenalDashboard = () => {
                 </span>
               </h3>
               <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                <li>• Citizens served in minutes</li>
+                <li>• Clients served in minutes</li>
                 <li>• Fraud caught automatically</li>
                 <li>• One Intelligent Workspace</li>
                 <li>• AI handles routine work</li>
@@ -1552,14 +1552,14 @@ const AIArsenalDashboard = () => {
                 </h3>
                 {/* <ul className="space-y-2 text-sm">
                   <li className="text-gray-400">Document Processing</li>
-                  <li className="text-gray-400">Citizen Services</li>
+                  <li className="text-gray-400">Client Services</li>
                   <li className="text-gray-400">Fraud Detection</li>
                   <li className="text-gray-400">Policy Intelligence</li>
                   <li className="text-gray-400">Budget Analytics</li>
                   <li className="text-gray-400">Compliance Monitoring</li>
                 </ul> */}
                 <ul className="space-y-2 text-sm">
-                  <li className="text-gray-400">ZARA + AI Agent</li>
+                  <li className="text-gray-400">ZARA x AI Agent</li>
                   <li className="text-gray-400">AIO Form Filler</li>
                   <li className="text-gray-400">AIO Form Checker</li>
                   <li className="text-gray-400">AIO Insight</li>
