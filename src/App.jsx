@@ -438,6 +438,11 @@ const AIArsenalDashboard = () => {
       id: 7,
       name: "AI Contract Agent",
       icon: FileSignature,
+      // Same treatment as id 4: the detail page is entered from the
+      // "ZARA x AIO Agent" card, so it leads with that clip and headline.
+      // The body copy below is still the agent's own — to be updated.
+      video: "zara-promo.mp4",
+      heroTitle: "ZARA x AIO Agent",
       category: "Defense Systems",
       power: "Spots bad deals early",
       savingsPerYear: "RM450K",
@@ -745,6 +750,8 @@ const AIArsenalDashboard = () => {
     {
       id: "combo2",
       anchor: "zara-agent", // top menu link target
+      // "Learn more" opens this `products` entry's detail page (AI Contract Agent)
+      detailId: 7,
       video: "zara-promo.mp4",
       name: "ZARA x AIO Agent",
       systems: [
