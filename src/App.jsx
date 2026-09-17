@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import SparkleField from "./components/SparkleField";
 import AutoplayVideo from "./components/AutoplayVideo";
 import VideoModal from "./components/VideoModal";
@@ -6,6 +6,9 @@ import AioLogo from "./components/AioLogo";
 import SiteHeader from "./components/SiteHeader";
 import RotatingWord from "./components/RotatingWord";
 import SplashScreen from "./components/SplashScreen";
+import SiteFooter from "./components/SiteFooter";
+import AiChipIcon from "./components/AiChipIcon";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import {
   Shield,
   FileText,
@@ -22,13 +25,11 @@ import {
   Zap,
   Database,
   Lock,
-  ArrowLeft,
   CheckCircle,
   XCircle,
   Target,
   Sparkles,
   Globe,
-  ArrowUp,
   Server,
   Eye,
   BookA,
@@ -39,33 +40,6 @@ import {
   Play,
 } from "lucide-react";
 
-// AI chip icon: lucide-style CPU outline with "AI" lettering inside
-const AiChipIcon = ({ className = "" }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <rect x="5" y="5" width="14" height="14" rx="2" />
-    <path d="M9 2v3M12 2v3M15 2v3M9 19v3M12 19v3M15 19v3M2 9h3M2 12h3M2 15h3M19 9h3M19 12h3M19 15h3" />
-    <text
-      x="12"
-      y="12.5"
-      textAnchor="middle"
-      dominantBaseline="middle"
-      fontSize="8"
-      fontWeight="700"
-      fill="currentColor"
-      stroke="none"
-    >
-      AI
-    </text>
-  </svg>
-);
 
 // Shared card surface: transparent glass panel with a green border
 const cardClass =
@@ -81,9 +55,28 @@ const AIArsenalDashboard = () => {
   const [revealed, setRevealed] = useState(false);
   const reveal = useCallback(() => setRevealed(true), []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  // Set when a header/footer link on a detail page asks for a landing-page
+  // section: the scroll has to wait until the home tree is back in the DOM.
+  const pendingAnchor = useRef(null);
+
+  const goHome = useCallback((href) => {
+    pendingAnchor.current = href && href !== "#" ? href : null;
+    setCurrentPage("home");
+  }, []);
+
+  // Swapping between the home page and a detail page replaces the whole tree,
+  // so this runs once the new one has mounted: land on the requested section,
+  // or at the top — otherwise the new page opens at whatever offset the reader
+  // had scrolled to.
+  useEffect(() => {
+    const anchor = pendingAnchor.current;
+    pendingAnchor.current = null;
+    if (anchor) {
+      document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [currentPage]);
 
   const getText = (key) => {
     return translations[language][key] || key;
@@ -347,6 +340,11 @@ const AIArsenalDashboard = () => {
       id: 4,
       name: "AI Assist Agent",
       icon: Users,
+      // Detail-page hero clip; the poster sits beside it as <name>-poster.jpg.
+      video: "zara-laptop.mp4",
+      // Hero headline, when the page is entered under a product family name
+      // rather than the agent's own. Falls back to `name`.
+      heroTitle: "ZARA",
       category: "Client Interface",
       power: "24/7 client service",
       savingsPerYear: "RM400K",
@@ -732,6 +730,8 @@ const AIArsenalDashboard = () => {
     {
       id: "combo1",
       anchor: "zara", // top menu link target
+      // "Learn more" opens this `products` entry's detail page (AI Assist Agent)
+      detailId: 4,
       video: "zara-laptop.mp4",
       name: "ZARA",
       systems: ["AI Policy Agent", "AI Legal Agent", "AI Document Agent"],
@@ -810,189 +810,200 @@ const AIArsenalDashboard = () => {
   ];
 
   const DetailPage = ({ product }) => {
-    const Icon = product.icon;
-
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white p-4 sm:p-6 lg:p-8">
-        <div className="max-w-6xl mx-auto">
-          <button
-            onClick={() => setCurrentPage("home")}
-            className="flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors"
-          >
-            <ArrowLeft className="w-6 h-6 mr-2" />
-            Back to Home
-          </button>
+      <>
+        {/* Same space background as the landing page: body paints #050810 and
+            these fixed layers sit at z-0, so the content rides above at z-10. */}
+        <div className="stars"></div>
+        <div className="nebula"></div>
+        <SparkleField />
+        {/* The menu links target landing-page sections, so `goHome` takes the
+            reader back there first and scrolls to the section afterwards. */}
+        <SiteHeader onNavigate={goHome} />
+        {/* pt-20 clears the fixed top menu, matching the landing page. */}
+        <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            {/* Hero — the landing page's headline stack over the video card,
+                all inside one viewport-height budget. */}
+            <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-12 sm:mb-16 landscape:min-h-[calc(100svh-5rem)]">
+              <h1 className="px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
+                <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                  {product.heroTitle || product.name}
+                </span>
+              </h1>
 
-          <div
-            className={`bg-gradient-to-br ${product.color} rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mb-6 sm:mb-8 shadow-2xl`}
-          >
-            <div className="flex flex-col sm:flex-row items-start justify-between">
-              <div className="flex flex-col sm:flex-row items-center mb-6 w-full">
-                <Icon className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mb-4 sm:mb-0 sm:mr-6" />
-                <div className="text-center sm:text-left">
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2">
-                    {product.name}
-                  </h1>
-                  <p className="text-lg sm:text-xl lg:text-2xl opacity-90">
-                    {product.power}
-                  </p>
-                  <div className="flex flex-wrap gap-2 sm:gap-4 mt-4 justify-center sm:justify-start">
-                    <span className="bg-white/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold">
-                      {product.category}
-                    </span>
-                    <span className="bg-white/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold">
-                      {product.deployment}
-                    </span>
+              <div className="max-w-4xl mx-auto text-center">
+                <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Work{" "}
+                  <RotatingWord
+                    words={["SMARTER", "FASTER", "BETTER"]}
+                    className="text-green-500"
+                  />{" "}
+                  with AI.
+                </h1>
+                <h1 className="font-bold text-gray-400 mt-[1svh] text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  {getText("subtitle2")}
+                </h1>
+              </div>
+
+              {/* Hero video — same card and height budget as the landing page
+                  hero, so it can never grow taller than the viewport allows. */}
+              {product.video && (
+                <div className="w-full flex justify-center px-4">
+                  <div className="group w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                    <AutoplayVideo
+                      className="w-full aspect-video rounded-xl object-cover bg-black"
+                      src={`${import.meta.env.BASE_URL}${product.video}`}
+                      poster={`${import.meta.env.BASE_URL}${product.video.replace(
+                        /\.mp4$/,
+                        "-poster.jpg"
+                      )}`}
+                      controls={false}
+                      disablePictureInPicture
+                    />
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mt-6 sm:mt-8">
-              <div className="bg-white/10 rounded-lg p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
-                  RM300K
-                </div>
-                <div className="text-xs sm:text-sm opacity-75">Investment</div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
-                  {product.savingsPerYear}
-                </div>
-                <div className="text-xs sm:text-sm opacity-75">
-                  Saved Per Year
-                </div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
-                  {product.timeReduction}
-                </div>
-                <div className="text-xs sm:text-sm opacity-75">
-                  Time Reduction
-                </div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
-                  {product.roi}
-                </div>
-                <div className="text-xs sm:text-sm opacity-75">
-                  ROI Timeline
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-            <div className="flex items-center mb-4">
-              <Target className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-red-400" />
-              <h2 className="text-2xl sm:text-3xl font-bold">Problem Solved</h2>
-            </div>
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              {product.problemSolved}
-            </p>
-          </div>
-
-          <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-            <div className="flex items-center mb-4">
-              <Users className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-400" />
-              <h2 className="text-2xl sm:text-3xl font-bold">Target Users</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {product.targetUsers.map((user, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center bg-gray-700/50 rounded-lg p-4"
-                >
-                  <CheckCircle className="w-6 h-6 mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-gray-200">{user}</span>
+            {/* Headline numbers — were tiles inside the old gradient panel,
+                now glass cards on the page background like the rest of the site. */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
+              {[
+                { value: "RM300K", label: "Investment" },
+                { value: product.savingsPerYear, label: "Saved Per Year" },
+                { value: product.timeReduction, label: "Time Reduction" },
+                { value: product.roi, label: "ROI Timeline" },
+              ].map((stat) => (
+                <div key={stat.label} className={`${cardClass} text-center`}>
+                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-400">
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
 
-          <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-            <div className="flex items-center mb-4">
-              <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-yellow-400" />
-              <h2 className="text-2xl sm:text-3xl font-bold">Key Features</h2>
+            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
+              <div className="flex items-center mb-4">
+                <Target className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-red-400" />
+                <h2 className="text-2xl sm:text-3xl font-bold">Problem Solved</h2>
+              </div>
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+                {product.problemSolved}
+              </p>
             </div>
-            <div className="space-y-4">
-              {product.features.map((feature, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start bg-gray-700/50 rounded-lg p-3 sm:p-4"
-                >
-                  <div className="bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0 font-bold text-gray-900 text-sm sm:text-base">
-                    {idx + 1}
+
+            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
+              <div className="flex items-center mb-4">
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-400" />
+                <h2 className="text-2xl sm:text-3xl font-bold">Target Users</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                {product.targetUsers.map((user, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center bg-gray-700/50 rounded-lg p-4"
+                  >
+                    <CheckCircle className="w-6 h-6 mr-3 text-green-400 flex-shrink-0" />
+                    <span className="text-gray-200">{user}</span>
                   </div>
-                  <span className="text-gray-200 text-sm sm:text-base lg:text-lg">
-                    {feature}
-                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
+              <div className="flex items-center mb-4">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-yellow-400" />
+                <h2 className="text-2xl sm:text-3xl font-bold">Key Features</h2>
+              </div>
+              <div className="space-y-4">
+                {product.features.map((feature, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start bg-gray-700/50 rounded-lg p-3 sm:p-4"
+                  >
+                    <div className="bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0 font-bold text-gray-900 text-sm sm:text-base">
+                      {idx + 1}
+                    </div>
+                    <span className="text-gray-200 text-sm sm:text-base lg:text-lg">
+                      {feature}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
+              <div className="flex items-center mb-4">
+                <Brain className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-purple-400" />
+                <h2 className="text-2xl sm:text-3xl font-bold">How AI Works</h2>
+              </div>
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+                {product.aiRole}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
+                <div className="bg-purple-900/30 border border-purple-500 rounded-lg p-4 text-center">
+                  <div className="font-bold text-purple-300 mb-2">LLM Engine</div>
+                  <div className="text-sm text-gray-400">
+                    Full control, secure and customizable AI.
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-            <div className="flex items-center mb-4">
-              <Brain className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-purple-400" />
-              <h2 className="text-2xl sm:text-3xl font-bold">How AI Works</h2>
-            </div>
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              {product.aiRole}
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
-              <div className="bg-purple-900/30 border border-purple-500 rounded-lg p-4 text-center">
-                <div className="font-bold text-purple-300 mb-2">LLM Engine</div>
-                <div className="text-sm text-gray-400">
-                  Full control, secure and customizable AI.
+                <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 text-center">
+                  <div className="font-bold text-blue-300 mb-2">RAG System</div>
+                  <div className="text-sm text-gray-400">Your Data + Context</div>
+                </div>
+                <div className="bg-green-900/30 border border-green-500 rounded-lg p-4 text-center">
+                  <div className="font-bold text-green-300 mb-2">Automation</div>
+                  <div className="text-sm text-gray-400">24/7 Processing</div>
                 </div>
               </div>
-              <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 text-center">
-                <div className="font-bold text-blue-300 mb-2">RAG System</div>
-                <div className="text-sm text-gray-400">Your Data + Context</div>
+            </div>
+
+            <div
+              className={`bg-gradient-to-br ${product.color} rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8`}
+            >
+              <div className="flex items-center mb-4">
+                <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3" />
+                <h2 className="text-2xl sm:text-3xl font-bold">
+                  Government Benefit
+                </h2>
               </div>
-              <div className="bg-green-900/30 border border-green-500 rounded-lg p-4 text-center">
-                <div className="font-bold text-green-300 mb-2">Automation</div>
-                <div className="text-sm text-gray-400">24/7 Processing</div>
+              <p className="text-base sm:text-lg leading-relaxed">
+                {product.benefit}
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-4">
+                Ready to Deploy {product.name}?
+              </h3>
+              <p className="text-base sm:text-xl mb-6">
+                One-time investment • Perpetual license • Full sovereignty
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+                <button className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-colors">
+                  Request Demo
+                </button>
+                <button
+                  onClick={() => setCurrentPage("home")}
+                  className="bg-white/20 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-white/30 transition-colors"
+                >
+                  View All Systems
+                </button>
               </div>
             </div>
           </div>
 
-          <div
-            className={`bg-gradient-to-br ${product.color} rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8`}
-          >
-            <div className="flex items-center mb-4">
-              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3" />
-              <h2 className="text-2xl sm:text-3xl font-bold">
-                Government Benefit
-              </h2>
-            </div>
-            <p className="text-base sm:text-lg leading-relaxed">
-              {product.benefit}
-            </p>
-          </div>
+          <ScrollToTopButton />
 
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold mb-4">
-              Ready to Deploy {product.name}?
-            </h3>
-            <p className="text-base sm:text-xl mb-6">
-              One-time investment • Perpetual license • Full sovereignty
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <button className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-colors">
-                Request Demo
-              </button>
-              <button
-                onClick={() => setCurrentPage("home")}
-                className="bg-white/20 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-white/30 transition-colors"
-              >
-                View All Systems
-              </button>
-            </div>
+          <div className="mt-16 sm:mt-20">
+            <SiteFooter onNavigate={goHome} />
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
@@ -1230,8 +1241,13 @@ const AIArsenalDashboard = () => {
                   />
                 </div>
 
+                {/* Combos without a `detailId` have no detail page yet, so their
+                    button stays inert rather than routing to a missing product. */}
                 <button
                   type="button"
+                  onClick={() => {
+                    if (combo.detailId) setCurrentPage(combo.detailId);
+                  }}
                   className="mt-8 sm:mt-10 mx-auto inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
                 >
                   Learn more
@@ -1477,178 +1493,10 @@ const AIArsenalDashboard = () => {
         </div>
 
         {/* Floating Scroll to Top Button */}
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 bg-[#0a0f1a]/80 backdrop-blur-xl border border-green-500/40 hover:border-green-400 hover:bg-[#0a0f1a] text-green-400 p-3 sm:p-4 rounded-full shadow-lg transition-all hover:scale-110 z-50"
-          aria-label="Scroll to top"
-        >
-          <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
+        <ScrollToTopButton />
 
         {/* Footer Section */}
-        <footer className="p-5 rounded-2xl bg-[#0a0f1a]/60 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-              {/* About Section */}
-              <div>
-                {/* <h3 className="text-xl font-bold mb-4 text-blue-400">AI Office</h3> */}
-                {/* <h3 className="text-xl font-bold mb-4 text-blue-400">
-                AI Office<span className="text-current">✨</span>
-              </h3> */}
-                <h3 className="text-lg mb-4">
-                  {/* Footer brand: the hero mark with the AIO initials set in
-                      the ring. The mark's hole is 71.7% of its canvas, so the
-                      initials sit at ~0.34em of the container to stay clear of
-                      the strands. */}
-                  <span className="relative inline-block">
-                    <span className="relative inline-flex h-16 w-16 items-center justify-center text-[4rem]">
-                      <AioLogo className="absolute inset-0 h-full w-full" />
-                      <span className="relative font-display font-extrabold text-[0.26em] leading-none tracking-[-0.01em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
-                        AIO
-                      </span>
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className="absolute right-1 top-1.5 text-[0.6rem] font-semibold leading-none text-gray-400"
-                    >
-                      ™
-                    </span>
-                    <span className="sr-only">AI Office</span>
-                  </span>
-                </h3>
-
-                <p className="text-sm text-gray-400 mb-2">
-                  AI Office. The intelligent workspace for organizations with
-                  sovereign, secure, and sustainable AI.
-                </p>
-                <p className="text-sm text-gray-400 mb-4">
-                  Your AI. Your Data. Your Infra.
-                </p>
-                {/* <div className="flex items-center space-x-2 text-sm">
-                <Lock className="w-4 h-4 text-green-400" />
-                <span className="text-gray-400">100% Data Sovereign</span>
-              </div> */}
-              </div>
-
-              {/* Quick Links */}
-              <div>
-                <h3 className="text-lg font-bold mb-4 text-white">
-                  Quick Links
-                </h3>
-                {/* Same destinations as the top menu (SiteHeader.jsx). */}
-                <ul className="space-y-2 text-sm">
-                  {[
-                    { label: "Philosophy", href: "#philosophy" },
-                    { label: "Solutions", href: "#zara" },
-                    { label: "Benefit", href: "#benefit" },
-                    { label: "About", href: "#" },
-                  ].map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        className="text-gray-400 hover:text-white transition-colors"
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Solutions */}
-              <div>
-                <h3 className="text-lg font-bold mb-4 text-white">
-                  Solutions
-                </h3>
-                {/* <ul className="space-y-2 text-sm">
-                  <li className="text-gray-400">Document Processing</li>
-                  <li className="text-gray-400">Client Services</li>
-                  <li className="text-gray-400">Fraud Detection</li>
-                  <li className="text-gray-400">Policy Intelligence</li>
-                  <li className="text-gray-400">Budget Analytics</li>
-                  <li className="text-gray-400">Compliance Monitoring</li>
-                </ul> */}
-                <ul className="space-y-2 text-sm">
-                  <li className="text-gray-400">ZARA x AIO Agent</li>
-                  <li className="text-gray-400">AIO Form Filler</li>
-                  <li className="text-gray-400">AIO Form Checker</li>
-                  <li className="text-gray-400">AIO Insight</li>
-                  <li className="text-gray-400">AIO Forecast</li>
-                  <li className="text-gray-400">AIO Lab</li>
-                  <li className="text-gray-400">AIO Code</li>
-                </ul>
-              </div>
-
-              {/* Contact & Support */}
-              <div>
-                <h3 className="text-lg font-bold mb-4 text-white">Features</h3>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-center">
-                    <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_12px_rgba(80,192,64,0.35)]">
-                      <AiChipIcon className="w-4 h-4 text-green-500" />
-                    </span>
-                    <span className="text-gray-400">Local AI</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_12px_rgba(80,192,64,0.35)]">
-                      <Database className="w-4 h-4 text-green-500" />
-                    </span>
-                    <span className="text-gray-400">Local knowledge base</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_12px_rgba(80,192,64,0.35)]">
-                      <Server className="w-4 h-4 text-green-500" />
-                    </span>
-                    <span className="text-gray-400">On-premise deployment</span>
-                  </li>
-                </ul>
-                <button
-                  type="button"
-                  className="mt-4 inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm font-medium text-black transition-colors duration-300 hover:bg-green-400"
-                >
-                  Request Demo
-                  <ArrowUpRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Bottom Bar */}
-            <div className="border-t border-gray-700 pt-6 sm:pt-8">
-              <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                <div className="text-sm text-gray-400 text-center sm:text-left">
-                  <p>&copy; 2026 AI Office. All rights reserved.</p>
-                  <p className="mt-1">
-                    {/* Powered by NVIDIA DGX Spark • Open-Source LLMs • RAG
-                    Technology */}Co-created with ZARA
-                  </p>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-400">
-                    🇲🇾 Made in Malaysia
-                  </span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-gray-400">System Online</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Tech Stack Badge */}
-            {/* <div className="mt-6 sm:mt-8 text-center">
-              <div className="inline-flex items-center space-x-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-                <Brain className="w-4 h-4 text-purple-400" />
-                <span className="text-xs text-gray-400">AI-Powered</span>
-                <span className="text-gray-600">•</span>
-                <Database className="w-4 h-4 text-blue-400" />
-                <span className="text-xs text-gray-400">RAG-Enhanced</span>
-                <span className="text-gray-600">•</span>
-                <Lock className="w-4 h-4 text-green-400" />
-                <span className="text-xs text-gray-400">Fully Sovereign</span>
-              </div>
-            </div> */}
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
 
       {demoOpen && (

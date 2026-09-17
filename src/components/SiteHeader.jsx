@@ -24,9 +24,18 @@ const DEMO_HREF = "#";
 const linkClass =
   "text-[1.0625rem] text-white transition-colors duration-200 hover:text-green-400";
 
-function Logo() {
+function Logo({ onNavigate }) {
   return (
-    <a href="#" aria-label="AI Office home" className="relative inline-block">
+    <a
+      href="#"
+      aria-label="AI Office home"
+      onClick={(event) => {
+        if (!onNavigate) return;
+        event.preventDefault();
+        onNavigate("#");
+      }}
+      className="relative inline-block"
+    >
       {/* Same lockup as the footer brand, scaled down. */}
       <span className="relative inline-flex h-14 w-14 items-center justify-center text-[3.5rem] lg:h-16 lg:w-16 lg:text-[4rem]">
         <AioLogo className="absolute inset-0 h-full w-full" />
@@ -56,7 +65,11 @@ function DemoButton({ className = "" }) {
   );
 }
 
-export default function SiteHeader() {
+/* `onNavigate` is for pages that are not the landing page: the links below all
+   point at landing-page sections, which are not mounted there, so the host
+   passes a handler that returns home and scrolls to the section afterwards.
+   On the landing page it is omitted and the plain hash anchors do the work. */
+export default function SiteHeader({ onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -92,6 +105,14 @@ export default function SiteHeader() {
     setMobileSolutionsOpen(false);
   };
 
+  // Runs before each link's own onClick side effects (closing the dropdown or
+  // the mobile panel), which stay wired up independently below.
+  const handleNavigate = (event, href) => {
+    if (!onNavigate) return;
+    event.preventDefault();
+    onNavigate(href);
+  };
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
@@ -102,14 +123,18 @@ export default function SiteHeader() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr] lg:px-8">
         <div className="lg:justify-self-start">
-          <Logo />
+          <Logo onNavigate={onNavigate} />
         </div>
 
         {/* Desktop links */}
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-10">
             <li>
-              <a href="#philosophy" className={linkClass}>
+              <a
+                href="#philosophy"
+                onClick={(event) => handleNavigate(event, "#philosophy")}
+                className={linkClass}
+              >
                 Philosophy
               </a>
             </li>
@@ -151,7 +176,10 @@ export default function SiteHeader() {
                     <li key={item.href}>
                       <a
                         href={item.href}
-                        onClick={() => setSolutionsOpen(false)}
+                        onClick={(event) => {
+                          handleNavigate(event, item.href);
+                          setSolutionsOpen(false);
+                        }}
                         className="block rounded-lg px-4 py-2.5 text-[0.9375rem] text-gray-300 transition-colors hover:bg-white/5 hover:text-green-400"
                       >
                         {item.label}
@@ -162,12 +190,20 @@ export default function SiteHeader() {
               </div>
             </li>
             <li>
-              <a href="#benefit" className={linkClass}>
+              <a
+                href="#benefit"
+                onClick={(event) => handleNavigate(event, "#benefit")}
+                className={linkClass}
+              >
                 Benefit
               </a>
             </li>
             <li>
-              <a href="#" className={linkClass}>
+              <a
+                href="#"
+                onClick={(event) => handleNavigate(event, "#")}
+                className={linkClass}
+              >
                 About
               </a>
             </li>
@@ -198,7 +234,14 @@ export default function SiteHeader() {
       >
         <ul className="flex flex-col">
           <li>
-            <a href="#philosophy" onClick={closeMobile} className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5">
+            <a
+              href="#philosophy"
+              onClick={(event) => {
+                handleNavigate(event, "#philosophy");
+                closeMobile();
+              }}
+              className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5"
+            >
               Philosophy
             </a>
           </li>
@@ -222,7 +265,10 @@ export default function SiteHeader() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    onClick={closeMobile}
+                    onClick={(event) => {
+                      handleNavigate(event, item.href);
+                      closeMobile();
+                    }}
                     className="block rounded-lg px-4 py-2.5 text-base text-gray-300 hover:bg-white/5 hover:text-green-400"
                   >
                     {item.label}
@@ -232,12 +278,26 @@ export default function SiteHeader() {
             </ul>
           </li>
           <li>
-            <a href="#benefit" onClick={closeMobile} className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5">
+            <a
+              href="#benefit"
+              onClick={(event) => {
+                handleNavigate(event, "#benefit");
+                closeMobile();
+              }}
+              className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5"
+            >
               Benefit
             </a>
           </li>
           <li>
-            <a href="#" onClick={closeMobile} className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5">
+            <a
+              href="#"
+              onClick={(event) => {
+                handleNavigate(event, "#");
+                closeMobile();
+              }}
+              className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5"
+            >
               About
             </a>
           </li>

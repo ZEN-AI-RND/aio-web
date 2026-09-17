@@ -127,8 +127,13 @@ function DecodingText({ text, startDelay, charDelay, animate }) {
 // the scroll lock.
 // `onReveal` fires when the fade-out starts, so the page can start painting
 // underneath just in time to be seen.
+// The splash is a first-load event, but the home tree unmounts whenever a
+// detail page opens. This module-level latch keeps it from replaying when the
+// reader comes back.
+let played = false;
+
 export default function SplashScreen({ onReveal }) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(!played);
   return visible ? (
     <SplashOverlay onReveal={onReveal} onDone={() => setVisible(false)} />
   ) : null;
@@ -162,6 +167,7 @@ function SplashOverlay({ onReveal, onDone }) {
 
   useEffect(() => {
     if (phase !== "exit") return;
+    played = true;
     onReveal?.();
     const timer = setTimeout(onDone, EXIT_MS);
     return () => clearTimeout(timer);
