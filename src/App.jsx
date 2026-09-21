@@ -1076,7 +1076,7 @@ const AIArsenalDashboard = () => {
             {/* Same treatment: no panel, landing page type. */}
             <div className="mb-20 sm:mb-28 lg:mb-36">
               <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                For
+                Build For
               </h2>
               {/* A single left-aligned list, like Key Features below. */}
               <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
