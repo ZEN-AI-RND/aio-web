@@ -13,7 +13,7 @@ const SOLUTIONS = [
   // opens that page instead of scrolling to the matching landing section. The
   // host resolves the href to a page, so the ids stay in App.jsx.
   { label: "ZARA", href: "#zara", opensPage: true },
-  { label: "ZARA x AIO Agent", href: "#zara-agent" },
+  { label: "ZARA x AIO Agent", href: "#zara-agent", opensPage: true },
   { label: "AIO Form Filler", href: "#form-filler" },
   { label: "AIO Form Checker", href: "#form-checker" },
   { label: "AIO Insight", href: "#insight" },
