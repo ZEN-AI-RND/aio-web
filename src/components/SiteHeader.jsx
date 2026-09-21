@@ -9,7 +9,10 @@ import AioLogo from "./AioLogo";
    Anchor targets are the `id`s set on the matching sections in App.jsx. */
 
 const SOLUTIONS = [
-  { label: "ZARA", href: "#zara" },
+  // `opensPage` marks an entry that has a detail page of its own: the click
+  // opens that page instead of scrolling to the matching landing section. The
+  // host resolves the href to a page, so the ids stay in App.jsx.
+  { label: "ZARA", href: "#zara", opensPage: true },
   { label: "ZARA x AIO Agent", href: "#zara-agent" },
   { label: "AIO Form Filler", href: "#form-filler" },
   { label: "AIO Form Checker", href: "#form-checker" },
@@ -68,8 +71,11 @@ function DemoButton({ className = "" }) {
 /* `onNavigate` is for pages that are not the landing page: the links below all
    point at landing-page sections, which are not mounted there, so the host
    passes a handler that returns home and scrolls to the section afterwards.
-   On the landing page it is omitted and the plain hash anchors do the work. */
-export default function SiteHeader({ onNavigate }) {
+   On the landing page it is omitted and the plain hash anchors do the work.
+
+   `onOpenPage` opens the detail page behind an `opensPage` entry, and is
+   passed on every page, since that entry never scrolls to a section. */
+export default function SiteHeader({ onNavigate, onOpenPage }) {
   const [scrolled, setScrolled] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -111,6 +117,17 @@ export default function SiteHeader({ onNavigate }) {
     if (!onNavigate) return;
     event.preventDefault();
     onNavigate(href);
+  };
+
+  // A solutions entry with its own page opens it wherever the reader clicks
+  // from, so this runs ahead of the hash anchor on the landing page too.
+  const handleSolutionClick = (event, item) => {
+    if (item.opensPage && onOpenPage) {
+      event.preventDefault();
+      onOpenPage(item.href);
+      return;
+    }
+    handleNavigate(event, item.href);
   };
 
   return (
@@ -177,7 +194,7 @@ export default function SiteHeader({ onNavigate }) {
                       <a
                         href={item.href}
                         onClick={(event) => {
-                          handleNavigate(event, item.href);
+                          handleSolutionClick(event, item);
                           setSolutionsOpen(false);
                         }}
                         className="block rounded-lg px-4 py-2.5 text-[0.9375rem] text-gray-300 transition-colors hover:bg-white/5 hover:text-green-400"
@@ -266,7 +283,7 @@ export default function SiteHeader({ onNavigate }) {
                   <a
                     href={item.href}
                     onClick={(event) => {
-                      handleNavigate(event, item.href);
+                      handleSolutionClick(event, item);
                       closeMobile();
                     }}
                     className="block rounded-lg px-4 py-2.5 text-base text-gray-300 hover:bg-white/5 hover:text-green-400"

@@ -355,9 +355,8 @@ const AIArsenalDashboard = () => {
       icon: Users,
       // Detail-page hero clip; the poster sits beside it as <name>-poster.jpg.
       video: "zara-laptop.mp4",
-      // Full clip the hero's "Learn more" opens in a modal. Placeholder until
-      // the final ZARA hero video arrives.
-      demoVideo: "hero-720.mp4",
+      // Full clip the hero's "Learn more" opens in a modal.
+      demoVideo: "zara-how-to-install.mp4",
       // Hero headline, when the page is entered under a product family name
       // rather than the agent's own. Falls back to `name`.
       heroTitle: "ZARA",
@@ -376,24 +375,63 @@ const AIArsenalDashboard = () => {
       color: "from-green-500 to-green-600",
       deployment: "Standalone",
       problemSolved:
-        "Clients calling government hotlines or visiting counters often ask repetitive questions: office hours, required documents, application status, eligibility criteria. This overwhelms frontline staff and leads to long wait times and inconsistent answers.",
+        "Organizations spend valuable time answering repetitive questions and helping users find information across different documents and systems. ZARA provides a 24/7 AI assistant that delivers quick, consistent answers using the organization’s own knowledge and information, reducing staff workload and improving the user experience while keeping data within the organization’s own environment.",
       targetUsers: [
-        "Public service counters (immigration, registration, licensing)",
-        "Call centers and helpdesks",
-        "Agencies with high public interaction (KWSP, LHDN, JPJ)",
-        "Local councils",
+        "Government agencies and public sector organizations",
+        "Organizations that handle high volumes of enquiries",
+        "Corporate departments such as HR, IT, and Customer Service",
+        "Organizations with internal knowledge management needs",
+        "Customer service centers, helpdesks, and support teams",
+        "Organizations looking to adopt secure, private AI solutions",
       ],
+      // Named features: each one is a short title with its own sentence under
+      // it, which the Key Features list renders as two lines. The other
+      // products still carry plain strings.
       features: [
-        "24/7 chatbot answering common client questions in Malay and English",
-        "Guides clients step-by-step through application processes",
-        "Checks application status via backend API integration",
-        "Escalates complex cases to human officers with context",
-        "Learns from interactions to improve answers over time",
+        {
+          title: "On-Premise AI Assistant",
+          body: "Provides AI assistance within the organization’s own environment, giving greater control over information.",
+        },
+        {
+          title: "Conversational AI Interface",
+          body: "Offers a simple chat experience and can be made available through Microsoft Teams.",
+        },
+        {
+          title: "AI assistant bot",
+          body: "Answers common questions in Malay and English, anytime.",
+        },
+        {
+          title: "Knowledge-Based Answers",
+          body: "Provides answers based on the organization’s own documents, guidelines, and information.",
+        },
+        {
+          title: "Connects to Internal Information",
+          body: "Can access relevant information from the organization’s existing systems and databases.",
+        },
+        {
+          title: "Understands the Conversation",
+          body: "Maintains the context of the conversation to provide more relevant and helpful answers.",
+        },
+        {
+          title: "Improves Over Time",
+          body: "Uses feedback and past interactions to continuously improve the quality of its answers.",
+        },
+        {
+          title: "Secure & Private",
+          body: "Keeps organizational information within the organization’s controlled environment.",
+        },
       ],
+      // Rendered under the "How ZARA Works" heading on the detail page.
       aiRole:
-        "The LLM acts as a tireless virtual officer, trained on your agency's FAQs, procedures, and regulations. It understands client intent even when questions are phrased informally. RAG ensures answers stay current with the latest policies.",
-      benefit:
-        "Reduces call center load by 40-50%. Provides consistent, accurate answers 24/7. Improves client satisfaction. Frees human officers to handle complex cases requiring judgment.",
+        "ZARA is your organization’s on-premise AI assistant, designed to provide fast and reliable answers using your own documents, knowledge, and internal information. It helps users find information, understand procedures, and get assistance through a simple conversational interface. By connecting to your organization’s knowledge base and internal systems, ZARA delivers relevant answers while keeping your data within your own environment.",
+      // A list rather than a paragraph; the Benefit section renders either.
+      benefit: [
+        "Reduce repetitive enquiries and workload.",
+        "Provide fast, consistent answers 24/7.",
+        "Help users find the right information faster.",
+        "Give staff more time to focus on important tasks.",
+        "Keep organizational information secure and under your control.",
+      ],
       roi: "7 months",
     },
     {
@@ -848,6 +886,15 @@ const AIArsenalDashboard = () => {
     },
   ];
 
+  // The top menu's ZARA entry opens the suite's detail page rather than
+  // scrolling to its landing section. The href is the section anchor, so the
+  // suite that owns that anchor is what says which page to open.
+  const openSolutionPage = (href) => {
+    const detailId = combos.find((c) => c.anchor && `#${c.anchor}` === href)
+      ?.detailId;
+    if (detailId) navigate(detailId);
+  };
+
   const DetailPage = ({ product }) => {
     // Suites on the landing page carry an intro paragraph; a product opened
     // from the systems grid has none, and the paragraph is simply left out.
@@ -872,7 +919,7 @@ const AIArsenalDashboard = () => {
         {revealed && <SparkleField />}
         {/* The menu links target landing-page sections, so `goHome` takes the
             reader back there first and scrolls to the section afterwards. */}
-        <SiteHeader onNavigate={goHome} />
+        <SiteHeader onNavigate={goHome} onOpenPage={openSolutionPage} />
         {/* pt-20 clears the fixed top menu, matching the landing page. */}
         <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10">
           <div className="max-w-6xl mx-auto">
@@ -933,27 +980,22 @@ const AIArsenalDashboard = () => {
                 suites shown there. Read from `combos` rather than copied, so the
                 two places can never drift apart. */}
             {comboIntro && (
-              <p className="max-w-4xl mx-auto mb-12 sm:mb-16 px-4 text-center text-sm sm:text-base lg:text-lg text-gray-400">
-                {/* `block` per sentence rather than <br>: each one still wraps
-                    on its own when the column is too narrow to hold it. */}
+              <p className="max-w-4xl mx-auto mb-20 sm:mb-28 lg:mb-36 px-4 text-center text-sm sm:text-base lg:text-lg text-gray-400">
+                {/* One sentence per line from sm up, where the column is wide
+                    enough for a sentence to fill it. On a phone they stay
+                    inline and run together as one paragraph, the way the
+                    landing page sets them: a line per sentence there leaves
+                    every other line half empty. The trailing space is what
+                    separates them while inline, and collapses once the spans
+                    turn into blocks. */}
                 {comboIntro.map((line, idx) => (
-                  <span key={idx} className="block">
+                  <span key={idx} className="sm:block">
                     {line}
+                    {idx < comboIntro.length - 1 ? " " : ""}
                   </span>
                 ))}
               </p>
             )}
-          </div>
-
-          {/* The landing page's three pillars, repeated here so a reader who
-              lands straight on a product still gets the sovereignty claim.
-              It breaks out of the max-w-6xl column into the landing page's
-              max-w-7xl: at the narrower width the headings wrap, and
-              "On-premise deployment" splits across two lines. A negative
-              margin would do the same job but overflows the page padding
-              between lg and 1216px, so the column is closed and reopened. */}
-          <div className="max-w-7xl mx-auto">
-            <AioPillars className="mb-12 sm:mb-16" />
           </div>
 
           <div className="max-w-6xl mx-auto">
@@ -981,8 +1023,21 @@ const AIArsenalDashboard = () => {
             */}
 
             {/* No panel: the heading and copy sit straight on the page, in the
-                landing page's section type. */}
-            <div className="mb-12 sm:mb-16 text-center">
+                landing page's section type — the treatment every section below
+                repeats. */}
+            <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
+              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                {/* Named after the product, so the ZARA page reads "How ZARA
+                    Works" and an agent's own page reads its agent name. */}
+                How {product.heroTitle || product.name} Works
+              </h2>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                {product.aiRole}
+              </p>
+            </div>
+
+            {/* Same treatment: no panel, landing page type. */}
+            <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
               <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 Problem Solved
               </h2>
@@ -991,12 +1046,40 @@ const AIArsenalDashboard = () => {
               </p>
             </div>
 
-            {/* Same treatment as Problem Solved: no panel, landing page type. */}
-            <div className="mb-12 sm:mb-16">
-              <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Target Users
+            {/* Same treatment: no panel, landing page type. */}
+            <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
+              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Benefit
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-4xl mx-auto px-4">
+              {/* A product carries either one paragraph or a list of points.
+                  The list gets the check marks and the left alignment of
+                  Build for, and the extra top margin makes up the difference
+                  between the paragraph heading gap and that section's. */}
+              {Array.isArray(product.benefit) ? (
+                <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4 text-left">
+                  {product.benefit.map((point, idx) => (
+                    <div key={idx} className="flex items-center">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-green-500 flex-shrink-0" />
+                      <span className="text-sm sm:text-base lg:text-lg text-gray-400">
+                        {point}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                  {product.benefit}
+                </p>
+              )}
+            </div>
+
+            {/* Same treatment: no panel, landing page type. */}
+            <div className="mb-20 sm:mb-28 lg:mb-36">
+              <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Build for
+              </h2>
+              {/* A single left-aligned list, like Key Features below. */}
+              <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
                 {product.targetUsers.map((user, idx) => (
                   <div key={idx} className="flex items-center">
                     {/* green-500 is the Learn more / Request a Demo button fill. */}
@@ -1009,8 +1092,8 @@ const AIArsenalDashboard = () => {
               </div>
             </div>
 
-            {/* Same treatment as Problem Solved: no panel, landing page type. */}
-            <div className="mb-12 sm:mb-16">
+            {/* Same treatment: no panel, landing page type. */}
+            <div className="mb-20 sm:mb-28 lg:mb-36">
               <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 Key Features
               </h2>
@@ -1019,56 +1102,54 @@ const AIArsenalDashboard = () => {
                   <div key={idx} className="flex items-start">
                     {/* A green sparkle per feature in place of the number badge. */}
                     <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm sm:text-base lg:text-lg text-gray-400">
-                      {feature}
-                    </span>
+                    {/* A feature is either one line of copy, or a short name
+                        with its own sentence under it. */}
+                    {typeof feature === "string" ? (
+                      <span className="text-sm sm:text-base lg:text-lg text-gray-400">
+                        {feature}
+                      </span>
+                    ) : (
+                      <span>
+                        <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold">
+                          {feature.title}
+                        </span>
+                        <span className="block text-sm sm:text-base lg:text-lg text-gray-400">
+                          {feature.body}
+                        </span>
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Same treatment as Problem Solved: no panel, landing page type.
-                The three parts read like the pillar row above. */}
-            <div className="mb-12 sm:mb-16 text-center">
-              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                How AI Works
-              </h2>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                {product.aiRole}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10 mt-8 sm:mt-10">
-                {[
-                  { title: "LLM Engine", body: "Full control, secure and customizable AI." },
-                  { title: "RAG System", body: "Your Data + Context" },
-                  { title: "Automation", body: "24/7 Processing" },
-                ].map(({ title, body }) => (
-                  <div key={title}>
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
-                      {title}
-                    </h3>
-                    <p className="text-sm sm:text-base lg:text-lg text-gray-400">{body}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* The landing page's philosophy section, headings and all, so a
+              reader who lands straight on a product still gets the sovereignty
+              claim. Mirrors #philosophy in the landing tree below, down to its
+              max-w-7xl: at the section column's narrower width the pillar
+              headings wrap. A negative margin would widen it in place but
+              overflows the page padding between lg and 1216px, so the column
+              is closed and reopened around it instead. The headings are h2
+              here because the hero owns the h1. */}
+          <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+            <h2 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Your AI. Your Data. Your Infra.
+            </h2>
+            <h2 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Fully secure, sovereign and maximum control.
+            </h2>
+            <AioPillars />
+          </div>
 
-            {/* Same treatment as Problem Solved: no panel, landing page type. */}
-            <div className="mb-12 sm:mb-16 text-center">
-              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Government Benefit
-              </h2>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                {product.benefit}
-              </p>
-            </div>
-
+          <div className="max-w-6xl mx-auto">
             {/* Closing call to action, with the site's green button pair. */}
             <div className="text-center">
               <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 Ready to Deploy {product.heroTitle || product.name}?
               </h2>
               <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                One-time investment • Perpetual license • Full sovereignty
+                Truly helpful. Truly yours.
               </p>
               <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                 <button
@@ -1135,7 +1216,7 @@ const AIArsenalDashboard = () => {
       <div className={`nebula ${revealed ? "" : "invisible"}`}></div>
       {revealed && <SparkleField />}
       <div className={revealed ? undefined : "invisible"}>
-        <SiteHeader />
+        <SiteHeader onOpenPage={openSolutionPage} />
       </div>
       {/* pt-20 clears the 4rem/5rem top menu at every width. */}
       <div className={`min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10 ${revealed ? "" : "invisible"}`}>
