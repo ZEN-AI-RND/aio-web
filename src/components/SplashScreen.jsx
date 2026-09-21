@@ -2,17 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import AioLogo from "./AioLogo";
 import { drawRibbons } from "./ribbons";
 
-/* First-load splash. Covers the whole viewport while the page settles:
+/* Page splash. Covers the whole viewport while a page settles:
    - a canvas of hair-thin green lines woven into slowly twisting ribbons,
    - the animated AIO mark in a dark disc with pulse rings,
    - the slogan "decoding" out of random glyphs, over a thin progress line.
-   It fades out on its own after SHOW_MS, or at once on a click, tap or key.
+   It fades out on its own after `showMs`, or at once on a click, tap or key.
    Everything is driven by JS or CSS transitions rather than keyframes where
    possible, because index.css forces every keyframe animation to 0.5s on
    phones. */
 
 const SLOGAN = "Your AI. Your Data. Your Infra.";
-const SHOW_MS = 5000; // time on screen before the exit starts
+// Time on screen before the exit starts. The first load gets the full run;
+// every later page gets a short one, because the same five seconds between
+// two clicks reads as a stall rather than an entrance.
+export const SPLASH_FIRST_MS = 5000;
+export const SPLASH_NAV_MS = 1800;
 const EXIT_MS = 900; // fade-out length; keep in sync with duration-[900ms] below
 // Canvas pixel budget. The ribbons are soft glowing lines, so rendering fewer
 // pixels and letting CSS scale the canvas up is invisible, and it keeps the
@@ -127,32 +131,38 @@ function DecodingText({ text, startDelay, charDelay, animate }) {
 // the scroll lock.
 // `onReveal` fires when the fade-out starts, so the page can start painting
 // underneath just in time to be seen.
-// The splash is a first-load event, but the home tree unmounts whenever a
-// detail page opens. This module-level latch keeps it from replaying when the
-// reader comes back.
-let played = false;
-
-export default function SplashScreen({ onReveal }) {
-  const [visible, setVisible] = useState(!played);
+// One mount is one run. The host remounts it (via a changing `key`) for every
+// page it opens, so each navigation gets its own splash.
+export default function SplashScreen({ onReveal, showMs = SPLASH_FIRST_MS }) {
+  const [visible, setVisible] = useState(true);
   return visible ? (
-    <SplashOverlay onReveal={onReveal} onDone={() => setVisible(false)} />
+    <SplashOverlay
+      onReveal={onReveal}
+      showMs={showMs}
+      onDone={() => setVisible(false)}
+    />
   ) : null;
 }
 
-function SplashOverlay({ onReveal, onDone }) {
+function SplashOverlay({ onReveal, showMs, onDone }) {
   const [phase, setPhase] = useState("enter"); // enter → show → exit
   const canvasRef = useRef(null);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useRibbonCanvas(canvasRef, !reduceMotion);
 
+  // The scroll lock is released at the start of the exit, not on unmount: a
+  // navigation that asks for a section scrolls to it while the splash fades,
+  // and `overflow: hidden` would swallow that scroll.
+  const prevOverflow = useRef("");
+
   useEffect(() => {
-    const { overflow } = document.body.style;
+    prevOverflow.current = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     // Next frame, so the enter transitions have a starting state to run from.
     const raf = requestAnimationFrame(() => setPhase("show"));
-    const exitTimer = setTimeout(() => setPhase("exit"), SHOW_MS);
+    const exitTimer = setTimeout(() => setPhase("exit"), showMs);
 
     const skip = () => setPhase("exit");
     window.addEventListener("keydown", skip);
@@ -161,13 +171,13 @@ function SplashOverlay({ onReveal, onDone }) {
       cancelAnimationFrame(raf);
       clearTimeout(exitTimer);
       window.removeEventListener("keydown", skip);
-      document.body.style.overflow = overflow;
+      document.body.style.overflow = prevOverflow.current;
     };
-  }, []);
+  }, [showMs]);
 
   useEffect(() => {
     if (phase !== "exit") return;
-    played = true;
+    document.body.style.overflow = prevOverflow.current;
     onReveal?.();
     const timer = setTimeout(onDone, EXIT_MS);
     return () => clearTimeout(timer);
@@ -237,10 +247,12 @@ function SplashOverlay({ onReveal, onDone }) {
         </div>
 
         <p className="mt-10 text-xl font-bold tracking-[-0.01em] text-white sm:mt-12 sm:text-3xl">
+          {/* The decode is timed as a fraction of the run, so a short splash
+              still shows the slogan settling instead of cutting it off. */}
           <DecodingText
             text={SLOGAN}
-            startDelay={700}
-            charDelay={55}
+            startDelay={700 * (showMs / SPLASH_FIRST_MS)}
+            charDelay={55 * (showMs / SPLASH_FIRST_MS)}
             animate={!reduceMotion}
           />
         </p>
@@ -251,7 +263,7 @@ function SplashOverlay({ onReveal, onDone }) {
             className="h-full origin-left bg-gradient-to-r from-green-700 via-green-400 to-green-200"
             style={{
               transform: `scaleX(${entered ? 1 : 0})`,
-              transition: `transform ${SHOW_MS}ms linear`,
+              transition: `transform ${showMs}ms linear`,
             }}
           />
         </div>

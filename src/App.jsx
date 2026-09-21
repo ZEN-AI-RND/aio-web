@@ -5,9 +5,12 @@ import VideoModal from "./components/VideoModal";
 import AioLogo from "./components/AioLogo";
 import SiteHeader from "./components/SiteHeader";
 import RotatingWord from "./components/RotatingWord";
-import SplashScreen from "./components/SplashScreen";
+import SplashScreen, {
+  SPLASH_FIRST_MS,
+  SPLASH_NAV_MS,
+} from "./components/SplashScreen";
 import SiteFooter from "./components/SiteFooter";
-import AiChipIcon from "./components/AiChipIcon";
+import AioPillars from "./components/AioPillars";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import {
   Shield,
@@ -23,14 +26,11 @@ import {
   Radio,
   FileSignature,
   Zap,
-  Database,
   Lock,
   CheckCircle,
   XCircle,
-  Target,
   Sparkles,
   Globe,
-  Server,
   Eye,
   BookA,
   Map,
@@ -55,20 +55,33 @@ const AIArsenalDashboard = () => {
   const [revealed, setRevealed] = useState(false);
   const reveal = useCallback(() => setRevealed(true), []);
 
+  // One splash run per page. Bumping the key remounts SplashScreen, which is
+  // what replays it; run 0 is the first load and gets the long version.
+  const [splashRun, setSplashRun] = useState(0);
+  const splashMs = splashRun === 0 ? SPLASH_FIRST_MS : SPLASH_NAV_MS;
+
   // Set when a header/footer link on a detail page asks for a landing-page
   // section: the scroll has to wait until the home tree is back in the DOM.
   const pendingAnchor = useRef(null);
 
-  const goHome = useCallback((href) => {
+  // The single entry point for opening a page. Every link goes through it so
+  // that every page change replays the splash before its content shows.
+  const navigate = useCallback((page, href) => {
     pendingAnchor.current = href && href !== "#" ? href : null;
-    setCurrentPage("home");
+    setCurrentPage(page);
+    setRevealed(false);
+    setSplashRun((run) => run + 1);
   }, []);
+
+  const goHome = useCallback((href) => navigate("home", href), [navigate]);
 
   // Swapping between the home page and a detail page replaces the whole tree,
   // so this runs once the new one has mounted: land on the requested section,
   // or at the top — otherwise the new page opens at whatever offset the reader
-  // had scrolled to.
+  // had scrolled to. It waits for the reveal, because the splash holds the
+  // scroll position while it is up.
   useEffect(() => {
+    if (!revealed) return;
     const anchor = pendingAnchor.current;
     pendingAnchor.current = null;
     if (anchor) {
@@ -76,7 +89,7 @@ const AIArsenalDashboard = () => {
       return;
     }
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, [currentPage]);
+  }, [currentPage, revealed]);
 
   const getText = (key) => {
     return translations[language][key] || key;
@@ -342,9 +355,20 @@ const AIArsenalDashboard = () => {
       icon: Users,
       // Detail-page hero clip; the poster sits beside it as <name>-poster.jpg.
       video: "zara-laptop.mp4",
+      // Full clip the hero's "Learn more" opens in a modal. Placeholder until
+      // the final ZARA hero video arrives.
+      demoVideo: "hero-720.mp4",
       // Hero headline, when the page is entered under a product family name
       // rather than the agent's own. Falls back to `name`.
       heroTitle: "ZARA",
+      // This page's own headline stack, in place of the shared
+      // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
+      hero: {
+        lead: "More",
+        words: ["Personal", "Trusted", "Relevant"],
+        tail: ".",
+        subtitle: "Your AI assistant.",
+      },
       category: "Client Interface",
       power: "24/7 client service",
       savingsPerYear: "RM400K",
@@ -741,7 +765,12 @@ const AIArsenalDashboard = () => {
       name: "ZARA",
       systems: ["AI Policy Agent", "AI Legal Agent", "AI Document Agent"],
       cost: "RM900K",
-      effect: "Meet ZARA (ZEN Artificial Reasoning Assistant), your AI assistant for smarter work. Get richer answers, natural conversations, and instant access to your local knowledge base.",
+      // One sentence per line. The landing page runs them together and lets
+      // them wrap; the detail page gives each its own line.
+      effect: [
+        "Meet ZARA (ZEN Artificial Reasoning Assistant), your AI assistant for smarter work.",
+        "Get richer answers, natural conversations, and instant access to your local knowledge base.",
+      ],
       // icon: FileText,
       // icon: Map,
       icon: Book,
@@ -760,7 +789,10 @@ const AIArsenalDashboard = () => {
         "AI Inspector Agent",
       ],
       cost: "RM900K",
-      effect: "Extend ZARA into an AIO Agent that connects with your organization’s local applications. Go beyond conversations and let ZARA assist with tasks, access business systems.",
+      effect: [
+        "Extend ZARA into an AIO Agent that connects with your organization’s local applications.",
+        "Go beyond conversations and let ZARA assist with tasks, access business systems.",
+      ],
       icon: Shield,
       color: "from-red-500 to-orange-600",
     },
@@ -769,7 +801,7 @@ const AIArsenalDashboard = () => {
       name: "AI Flash",
       systems: ["AI Assist Agent", "AI Permit Agent", "AI Write Agent"],
       cost: "RM900K",
-      effect: "Hours not weeks",
+      effect: ["Hours not weeks"],
       icon: Zap,
       color: "from-green-500 to-teal-600",
     },
@@ -778,7 +810,7 @@ const AIArsenalDashboard = () => {
       name: "AI Oracle",
       systems: ["AI Budget Agent", "AI Forecast Agent", "AI Insight Agent"],
       cost: "RM900K",
-      effect: "See the future",
+      effect: ["See the future"],
       // icon: Brain,
       icon: Eye,
       color: "from-indigo-500 to-purple-600",
@@ -817,13 +849,27 @@ const AIArsenalDashboard = () => {
   ];
 
   const DetailPage = ({ product }) => {
+    // Suites on the landing page carry an intro paragraph; a product opened
+    // from the systems grid has none, and the paragraph is simply left out.
+    const comboIntro = combos.find((c) => c.detailId === product.id)?.effect;
+
+    // The headline stack: the rotating green word with the words around it,
+    // over a grey subtitle. A product can carry its own; the rest share the
+    // landing page's.
+    const hero = product.hero || {
+      lead: "Work",
+      words: ["SMARTER", "FASTER", "BETTER"],
+      tail: " with AI.",
+      subtitle: getText("subtitle2"),
+    };
+
     return (
       <>
         {/* Same space background as the landing page: body paints #050810 and
             these fixed layers sit at z-0, so the content rides above at z-10. */}
         <div className="stars"></div>
         <div className="nebula"></div>
-        <SparkleField />
+        {revealed && <SparkleField />}
         {/* The menu links target landing-page sections, so `goHome` takes the
             reader back there first and scrolls to the section afterwards. */}
         <SiteHeader onNavigate={goHome} />
@@ -833,23 +879,22 @@ const AIArsenalDashboard = () => {
             {/* Hero — the landing page's headline stack over the video card,
                 all inside one viewport-height budget. */}
             <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-12 sm:mb-16 landscape:min-h-[calc(100svh-5rem)]">
-              <h1 className="px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
+              <h1 className="relative flex items-center justify-center gap-[0.3em] px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
+                {/* Brand mark — same lockup as the landing hero, sized in em
+                    so it tracks the title's clamp at every width. */}
+                <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
                 <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
                   {product.heroTitle || product.name}
-                </span>
-              </h1>
+                </span>              </h1>
 
               <div className="max-w-4xl mx-auto text-center">
                 <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                  Work{" "}
-                  <RotatingWord
-                    words={["SMARTER", "FASTER", "BETTER"]}
-                    className="text-green-500"
-                  />{" "}
-                  with AI.
+                  {hero.lead}{" "}
+                  <RotatingWord words={hero.words} className="text-green-500" />
+                  {hero.tail}
                 </h1>
                 <h1 className="font-bold text-gray-400 mt-[1svh] text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                  {getText("subtitle2")}
+                  {hero.subtitle}
                 </h1>
               </div>
 
@@ -857,7 +902,7 @@ const AIArsenalDashboard = () => {
                   hero, so it can never grow taller than the viewport allows. */}
               {product.video && (
                 <div className="w-full flex justify-center px-4">
-                  <div className="group w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                  <div className="group relative w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
                     <AutoplayVideo
                       className="w-full aspect-video rounded-xl object-cover bg-black"
                       src={`${import.meta.env.BASE_URL}${product.video}`}
@@ -868,13 +913,54 @@ const AIArsenalDashboard = () => {
                       controls={false}
                       disablePictureInPicture
                     />
+                    {/* Same button as the landing page hero; opens `demoVideo`. */}
+                    {product.demoVideo && (
+                      <button
+                        type="button"
+                        onClick={() => setDemoOpen(true)}
+                        className="absolute bottom-3 sm:bottom-10 left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                      >
+                        Learn more
+                        <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Headline numbers — were tiles inside the old gradient panel,
-                now glass cards on the page background like the rest of the site. */}
+            {/* The landing page's blurb for this product, when it is one of the
+                suites shown there. Read from `combos` rather than copied, so the
+                two places can never drift apart. */}
+            {comboIntro && (
+              <p className="max-w-4xl mx-auto mb-12 sm:mb-16 px-4 text-center text-sm sm:text-base lg:text-lg text-gray-400">
+                {/* `block` per sentence rather than <br>: each one still wraps
+                    on its own when the column is too narrow to hold it. */}
+                {comboIntro.map((line, idx) => (
+                  <span key={idx} className="block">
+                    {line}
+                  </span>
+                ))}
+              </p>
+            )}
+          </div>
+
+          {/* The landing page's three pillars, repeated here so a reader who
+              lands straight on a product still gets the sovereignty claim.
+              It breaks out of the max-w-6xl column into the landing page's
+              max-w-7xl: at the narrower width the headings wrap, and
+              "On-premise deployment" splits across two lines. A negative
+              margin would do the same job but overflows the page padding
+              between lg and 1216px, so the column is closed and reopened. */}
+          <div className="max-w-7xl mx-auto">
+            <AioPillars className="mb-12 sm:mb-16" />
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+
+            {/* Headline numbers — investment, savings, time saved and ROI.
+                Hidden for now: the figures are per-deal and not ready to be
+                published on the product pages.
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
               {[
                 { value: "RM300K", label: "Investment" },
@@ -892,50 +978,48 @@ const AIArsenalDashboard = () => {
                 </div>
               ))}
             </div>
+            */}
 
-            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-              <div className="flex items-center mb-4">
-                <Target className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-red-400" />
-                <h2 className="text-2xl sm:text-3xl font-bold">Problem Solved</h2>
-              </div>
-              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+            {/* No panel: the heading and copy sit straight on the page, in the
+                landing page's section type. */}
+            <div className="mb-12 sm:mb-16 text-center">
+              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Problem Solved
+              </h2>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
                 {product.problemSolved}
               </p>
             </div>
 
-            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-              <div className="flex items-center mb-4">
-                <Users className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-400" />
-                <h2 className="text-2xl sm:text-3xl font-bold">Target Users</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            {/* Same treatment as Problem Solved: no panel, landing page type. */}
+            <div className="mb-12 sm:mb-16">
+              <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Target Users
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-4xl mx-auto px-4">
                 {product.targetUsers.map((user, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center bg-gray-700/50 rounded-lg p-4"
-                  >
-                    <CheckCircle className="w-6 h-6 mr-3 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-200">{user}</span>
+                  <div key={idx} className="flex items-center">
+                    {/* green-500 is the Learn more / Request a Demo button fill. */}
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-green-500 flex-shrink-0" />
+                    <span className="text-sm sm:text-base lg:text-lg text-gray-400">
+                      {user}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-              <div className="flex items-center mb-4">
-                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-yellow-400" />
-                <h2 className="text-2xl sm:text-3xl font-bold">Key Features</h2>
-              </div>
-              <div className="space-y-4">
+            {/* Same treatment as Problem Solved: no panel, landing page type. */}
+            <div className="mb-12 sm:mb-16">
+              <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Key Features
+              </h2>
+              <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
                 {product.features.map((feature, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-start bg-gray-700/50 rounded-lg p-3 sm:p-4"
-                  >
-                    <div className="bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0 font-bold text-gray-900 text-sm sm:text-base">
-                      {idx + 1}
-                    </div>
-                    <span className="text-gray-200 text-sm sm:text-base lg:text-lg">
+                  <div key={idx} className="flex items-start">
+                    {/* A green sparkle per feature in place of the number badge. */}
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm sm:text-base lg:text-lg text-gray-400">
                       {feature}
                     </span>
                   </div>
@@ -943,60 +1027,61 @@ const AIArsenalDashboard = () => {
               </div>
             </div>
 
-            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
-              <div className="flex items-center mb-4">
-                <Brain className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-purple-400" />
-                <h2 className="text-2xl sm:text-3xl font-bold">How AI Works</h2>
-              </div>
-              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+            {/* Same treatment as Problem Solved: no panel, landing page type.
+                The three parts read like the pillar row above. */}
+            <div className="mb-12 sm:mb-16 text-center">
+              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                How AI Works
+              </h2>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
                 {product.aiRole}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
-                <div className="bg-purple-900/30 border border-purple-500 rounded-lg p-4 text-center">
-                  <div className="font-bold text-purple-300 mb-2">LLM Engine</div>
-                  <div className="text-sm text-gray-400">
-                    Full control, secure and customizable AI.
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10 mt-8 sm:mt-10">
+                {[
+                  { title: "LLM Engine", body: "Full control, secure and customizable AI." },
+                  { title: "RAG System", body: "Your Data + Context" },
+                  { title: "Automation", body: "24/7 Processing" },
+                ].map(({ title, body }) => (
+                  <div key={title}>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+                      {title}
+                    </h3>
+                    <p className="text-sm sm:text-base lg:text-lg text-gray-400">{body}</p>
                   </div>
-                </div>
-                <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 text-center">
-                  <div className="font-bold text-blue-300 mb-2">RAG System</div>
-                  <div className="text-sm text-gray-400">Your Data + Context</div>
-                </div>
-                <div className="bg-green-900/30 border border-green-500 rounded-lg p-4 text-center">
-                  <div className="font-bold text-green-300 mb-2">Automation</div>
-                  <div className="text-sm text-gray-400">24/7 Processing</div>
-                </div>
+                ))}
               </div>
             </div>
 
-            <div
-              className={`bg-gradient-to-br ${product.color} rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8`}
-            >
-              <div className="flex items-center mb-4">
-                <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3" />
-                <h2 className="text-2xl sm:text-3xl font-bold">
-                  Government Benefit
-                </h2>
-              </div>
-              <p className="text-base sm:text-lg leading-relaxed">
+            {/* Same treatment as Problem Solved: no panel, landing page type. */}
+            <div className="mb-12 sm:mb-16 text-center">
+              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Government Benefit
+              </h2>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
                 {product.benefit}
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center">
-              <h3 className="text-2xl sm:text-3xl font-bold mb-4">
-                Ready to Deploy {product.name}?
-              </h3>
-              <p className="text-base sm:text-xl mb-6">
+            {/* Closing call to action, with the site's green button pair. */}
+            <div className="text-center">
+              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Ready to Deploy {product.heroTitle || product.name}?
+              </h2>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
                 One-time investment • Perpetual license • Full sovereignty
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-                <button className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-colors">
-                  Request Demo
+              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                >
+                  Request a Demo
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
                 <button
-                  onClick={() => setCurrentPage("home")}
-                  className="bg-white/20 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-white/30 transition-colors"
+                  type="button"
+                  onClick={() => goHome()}
+                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
                 >
                   View All Systems
                 </button>
@@ -1014,16 +1099,38 @@ const AIArsenalDashboard = () => {
     );
   };
 
-  if (currentPage !== "home") {
-    const product = products.find((p) => p.id === currentPage);
-    if (product) {
-      return <DetailPage product={product} />;
-    }
+  const detailProduct =
+    currentPage === "home"
+      ? null
+      : products.find((p) => p.id === currentPage) || null;
+
+  if (detailProduct) {
+    return (
+      <>
+        <SplashScreen key={splashRun} showMs={splashMs} onReveal={reveal} />
+        {/* Mounted but hidden behind the splash, so the page is already laid
+            out and its media already loading when the splash fades. */}
+        <div className={revealed ? undefined : "invisible"}>
+          <DetailPage product={detailProduct} />
+        </div>
+        {demoOpen && detailProduct.demoVideo && (
+          <VideoModal
+            src={`${import.meta.env.BASE_URL}${detailProduct.demoVideo}`}
+            poster={`${import.meta.env.BASE_URL}${detailProduct.video.replace(
+              /\.mp4$/,
+              "-poster.jpg"
+            )}`}
+            label={`${detailProduct.heroTitle || detailProduct.name} demo`}
+            onClose={() => setDemoOpen(false)}
+          />
+        )}
+      </>
+    );
   }
 
   return (
     <>
-      <SplashScreen onReveal={reveal} />
+      <SplashScreen key={splashRun} showMs={splashMs} onReveal={reveal} />
       <div className={`stars ${revealed ? "" : "invisible"}`}></div>
       <div className={`nebula ${revealed ? "" : "invisible"}`}></div>
       {revealed && <SparkleField />}
@@ -1156,49 +1263,7 @@ const AIArsenalDashboard = () => {
           <h1 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
             Fully secure, sovereign and maximum control.
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
-            <div className="group p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1">
-              <div className="mx-auto mb-3 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_20px_rgba(80,192,64,0.35)]">
-                <AiChipIcon className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
-              </div>
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
-                Local AI
-              </h3>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400">
-                {/* Full control, secure and customizable AI.Full control, secure and customizable AI.Full control, secure and customizable AI. */}
-                Full control, secure, and customizable AI that runs on your own infrastructure.
-              </p>
-            </div>
-            <div className="group p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1">
-              <div className="mx-auto mb-3 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_20px_rgba(80,192,64,0.35)]">
-                <Database className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
-              </div>
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
-                Local knowledge base
-              </h3>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400">
-                {/* Updated, accurate and trusted in-house datasets.Full control, secure and customizable AI.Full control, secure and customizable AI. */}
-                AI grounded in your trusted, up-to-date in-house knowledge.
-              </p>
-            </div>
-            <div className="group p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1">
-              <div className="mx-auto mb-3 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-green-500 bg-transparent shadow-[0_0_20px_rgba(80,192,64,0.35)]">
-                <Server className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
-              </div>
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
-                <span className="whitespace-nowrap">On-premise</span> deployment
-              </h3>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400">
-                {/* On-premise supercomputer. Malaysian soil only.Full control, secure and customizable AI.Full control, secure and customizable AI. */}
-                Your AI infrastructure, deployed <span className="whitespace-nowrap">on-premise</span> and kept entirely in Malaysia.
-              </p>
-            </div>
-            {/* <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-6">
-            <Lock className="w-12 h-12 mb-3 text-green-400" />
-            <h3 className="font-bold text-lg mb-2">100% Sovereign</h3>
-            <p className="text-sm opacity-75">Data never leaves Malaysia. MAMPU compliant.</p>
-          </div> */}
-          </div>
+          <AioPillars />
         </div>
 
         {/* Statement section */}
@@ -1231,7 +1296,7 @@ const AIArsenalDashboard = () => {
                   {combo.name}
                 </h3>
                 <p className="grow mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                  {combo.effect}
+                  {combo.effect.join(" ")}
                 </p>
 
                 {/* Green box wraps the video only — matches the hero video card */}
@@ -1253,7 +1318,7 @@ const AIArsenalDashboard = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    if (combo.detailId) setCurrentPage(combo.detailId);
+                    if (combo.detailId) navigate(combo.detailId);
                   }}
                   className="mt-8 sm:mt-10 mx-auto inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
                 >
@@ -1346,7 +1411,7 @@ const AIArsenalDashboard = () => {
                 return (
                   <div
                     key={product.id}
-                    onClick={() => setCurrentPage(product.id)}
+                    onClick={() => navigate(product.id)}
                     className={`${cardClass} cursor-pointer`}
                   >
                     <div className="flex items-start justify-between mb-3">
