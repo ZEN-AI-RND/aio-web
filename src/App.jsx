@@ -804,7 +804,7 @@ const AIArsenalDashboard = () => {
       // Placeholder copy below — every section the ZARA page (id 4) has, so
       // this page shows the full template. Replace with real copy per field.
       aiRole:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Turn application documents into a simpler, faster process. AIO Form Filler recognizes the application category from the uploaded documents and directs you to the appropriate form. It then identifies the required information from your documents, images, and handwriting, and automatically fills in the relevant form fields. Reduce manual data entry, minimize errors, and get applications ready faster.",
       problemSolved:
         "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       targetUsers: [
