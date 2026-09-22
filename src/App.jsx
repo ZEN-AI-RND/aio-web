@@ -801,6 +801,46 @@ const AIArsenalDashboard = () => {
       // intro (see `comboIntro` in DetailPage).
       heroDescription:
         "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
+      // Placeholder copy below — every section the ZARA page (id 4) has, so
+      // this page shows the full template. Replace with real copy per field.
+      aiRole:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      problemSolved:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      targetUsers: [
+        "Lorem ipsum dolor sit amet consectetur",
+        "Adipiscing elit sed do eiusmod tempor",
+        "Incididunt ut labore et dolore magna aliqua",
+        "Ut enim ad minim veniam quis nostrud",
+      ],
+      features: [
+        {
+          title: "Lorem Ipsum Dolor",
+          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.",
+        },
+        {
+          title: "Consectetur Adipiscing",
+          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+        },
+        {
+          title: "Sed Do Eiusmod",
+          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.",
+        },
+        {
+          title: "Tempor Incididunt",
+          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+        },
+        {
+          title: "Ut Labore Dolore",
+          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        },
+        {
+          title: "Magna Aliqua Enim",
+          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+        },
+      ],
+      benefit:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
     },
   ];
 
@@ -1003,11 +1043,16 @@ const AIArsenalDashboard = () => {
     },
   ];
 
-  // The top menu's ZARA entry opens the suite's detail page rather than
-  // scrolling to its landing section. The href is the section anchor, so the
-  // suite that owns that anchor is what says which page to open.
+  // The top menu's ZARA entry (and any other product with its own detail
+  // page) opens that page rather than scrolling to its landing section. The
+  // href is the section anchor, so whichever combo or product owns that
+  // anchor is what says which page to open.
   const openSolutionPage = (href) => {
-    const detailId = combos.find((c) => c.anchor && `#${c.anchor}` === href)
+    const anchored = [
+      ...combos,
+      ...productSections.flatMap((section) => section.items),
+    ];
+    const detailId = anchored.find((c) => c.anchor && `#${c.anchor}` === href)
       ?.detailId;
     if (detailId) navigate(detailId);
   };
@@ -1030,6 +1075,26 @@ const AIArsenalDashboard = () => {
       subtitle: getText("subtitle2"),
     };
 
+    // The plain (non-heroTitleLines) hero title is one flex row — logo then
+    // name — so a long name has to fit on one line or the row's cross-axis
+    // centering leaves the logo floating between the wrapped lines instead
+    // of beside the text. Shrink the font for longer names below `lg` so it
+    // still fits at phone/tablet widths instead of wrapping; `lg` and up
+    // always uses the same size as the landing page hero.
+    // Each branch below is written out as one complete class string (not
+    // assembled with `lg:${...}`) because Tailwind's build-time scanner only
+    // picks up literal class text — a class name pieced together at runtime
+    // never gets its CSS generated, so the `lg:` override would silently
+    // no-op.
+    const heroTitleText = product.heroTitle || product.name;
+    const heroTitleSizeClass = product.heroTitleLines
+      ? "text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))]"
+      : heroTitleText.length >= 17
+        ? "text-[min(6vw,clamp(1.1rem,3.8svh_+_0.3vw,2.75rem))] lg:text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))]"
+        : heroTitleText.length >= 13
+          ? "text-[min(7.2vw,clamp(1.3rem,4.4svh_+_0.35vw,3.1rem))] lg:text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))]"
+          : "text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))]";
+
     return (
       <>
         {/* Same space background as the landing page: body paints #050810 and
@@ -1051,7 +1116,7 @@ const AIArsenalDashboard = () => {
             {/* Hero — the landing page's headline stack over the video card,
                 all inside one viewport-height budget. */}
             <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-12 sm:mb-16 landscape:min-h-[calc(100svh-5rem)]">
-              <h1 className="relative flex items-center justify-center px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
+              <h1 className={`relative flex items-center justify-center px-4 font-extrabold text-center leading-[1.0625] tracking-[-0.009em] ${heroTitleSizeClass}`}>
                 {/* Brand mark — same lockup as the landing hero, sized in em
                     so it tracks the title's clamp at every width. */}
                 {product.heroTitleLines ? (
@@ -1081,10 +1146,10 @@ const AIArsenalDashboard = () => {
                     </span>
                   </>
                 ) : (
-                  <span className="flex items-center justify-center gap-[0.3em]">
+                  <span className="flex items-center justify-center gap-[0.3em] whitespace-nowrap">
                     <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
                     <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                      {product.heroTitle || product.name}
+                      {heroTitleText}
                     </span>
                   </span>
                 )}
@@ -1346,7 +1411,7 @@ const AIArsenalDashboard = () => {
           <ScrollToTopButton />
 
           <div className="mt-16 sm:mt-20">
-            <SiteFooter onNavigate={goHome} />
+            <SiteFooter onNavigate={goHome} onOpenPage={openSolutionPage} />
           </div>
         </div>
       </>
@@ -1831,7 +1896,7 @@ const AIArsenalDashboard = () => {
         <ScrollToTopButton />
 
         {/* Footer Section */}
-        <SiteFooter />
+        <SiteFooter onOpenPage={openSolutionPage} />
       </div>
 
       {demoOpen && (

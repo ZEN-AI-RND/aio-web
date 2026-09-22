@@ -18,9 +18,11 @@ const QUICK_LINKS = [
   { label: "About", href: "#" },
 ];
 
+// A plain string has no detail page yet, so it stays inert text; an entry
+// with an `href` opens that product's detail page, same as the top menu.
 const SOLUTIONS = [
   "ZARA x AIO Agent",
-  "AIO Form Filler",
+  { label: "AIO Form Filler", href: "#form-filler", opensPage: true },
   "AIO Form Checker",
   "AIO Insight",
   "AIO Forecast",
@@ -34,11 +36,20 @@ const FEATURES = [
   { label: "On-premise deployment", icon: Server },
 ];
 
-export default function SiteFooter({ onNavigate }) {
+export default function SiteFooter({ onNavigate, onOpenPage }) {
   const handleClick = (event, href) => {
     if (!onNavigate) return;
     event.preventDefault();
     onNavigate(href);
+  };
+
+  const handleSolutionClick = (event, item) => {
+    if (item.opensPage && onOpenPage) {
+      event.preventDefault();
+      onOpenPage(item.href);
+      return;
+    }
+    handleClick(event, item.href);
   };
 
   return (
@@ -100,11 +111,24 @@ export default function SiteFooter({ onNavigate }) {
           <div>
             <h3 className="text-lg font-bold mb-4 text-white">Solutions</h3>
             <ul className="space-y-2 text-sm">
-              {SOLUTIONS.map((name) => (
-                <li key={name} className="text-gray-400">
-                  {name}
-                </li>
-              ))}
+              {SOLUTIONS.map((item) => {
+                const label = typeof item === "string" ? item : item.label;
+                return (
+                  <li key={label} className="text-gray-400">
+                    {typeof item === "string" ? (
+                      label
+                    ) : (
+                      <a
+                        href={item.href}
+                        onClick={(event) => handleSolutionClick(event, item)}
+                        className="hover:text-white transition-colors"
+                      >
+                        {label}
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

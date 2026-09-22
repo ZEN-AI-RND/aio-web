@@ -14,7 +14,7 @@ const SOLUTIONS = [
   // host resolves the href to a page, so the ids stay in App.jsx.
   { label: "ZARA", href: "#zara", opensPage: true },
   { label: "ZARA x AIO Agent", href: "#zara-agent", opensPage: true },
-  { label: "AIO Form Filler", href: "#form-filler" },
+  { label: "AIO Form Filler", href: "#form-filler", opensPage: true },
   { label: "AIO Form Checker", href: "#form-checker" },
   { label: "AIO Insight", href: "#insight" },
   { label: "AIO Forecast", href: "#forecast" },
