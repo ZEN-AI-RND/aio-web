@@ -47,8 +47,8 @@ const cardClass =
 
 // Vanity URL slugs for each detail page's `products` id, e.g. aioffice.com.my/zara.
 // 4 matches the "zara" top-menu anchor (see `combos` below); keep the two in
-// sync if it ever changes. 7's URL slug intentionally differs from its
-// "zara-agent" top-menu anchor.
+// sync if it ever changes. 7 and 13 intentionally differ from their
+// "zara-agent" and "form-filler" top-menu anchors.
 const PRODUCT_SLUGS = {
   1: "ai-policy-agent",
   2: "ai-legal-agent",
@@ -56,13 +56,13 @@ const PRODUCT_SLUGS = {
   4: "zara",
   5: "ai-permit-agent",
   6: "ai-write-agent",
-  7: "zaraxaioagent",
+  7: "aio-agent",
   8: "ai-fraudguard-agent",
   9: "ai-inspector-agent",
   10: "ai-budget-agent",
   11: "ai-forecast-agent",
   12: "ai-insight-agent",
-  13: "aio-form-filler",
+  13: "aio-form",
 };
 const SLUG_TO_PRODUCT_ID = Object.fromEntries(
   Object.entries(PRODUCT_SLUGS).map(([id, slug]) => [slug, Number(id)])
@@ -823,13 +823,9 @@ const AIArsenalDashboard = () => {
       // Landing-page product, not one of the 12 AI Agents — its "Learn more"
       // button (see `productSections` below) opens this page.
       id: 13,
-      name: "AIO Form Filler",
+      name: "AIO Form",
       video: "aio-form-filler-loop.mp4",
       demoVideo: "aio-form-filler.mp4",
-      // Hero headline. Short enough that the title keeps the landing hero's
-      // full size below `lg` instead of the shrunk one the full product name
-      // would fall back to (see `heroTitleSizeClass`).
-      heroTitle: "AIO Form",
       // Overrides the closing "Ready to Deploy AIO Form?" line below.
       ctaTagline: "Classify. Extract. Fill.",
       // Overrides the "How AIO Form Works" default heading below.
@@ -849,9 +845,9 @@ const AIArsenalDashboard = () => {
       // Placeholder copy below — every section the ZARA page (id 4) has, so
       // this page shows the full template. Replace with real copy per field.
       aiRole:
-        "Turn application documents into a simpler, faster process. AIO Form Filler recognizes the application category from the uploaded documents and directs you to the appropriate form. It then identifies the required information from your documents, images, and handwriting, and automatically fills in the relevant form fields.",
+        "Turn application documents into a simpler, faster process. AIO Form recognizes the application category from the uploaded documents and directs you to the appropriate form. It then identifies the required information from your documents, images, and handwriting, and automatically fills in the relevant form fields.",
       problemSolved:
-        "Application processing can be time-consuming when users need to identify the right form, read through documents, and manually enter information field by field. AIO Form Filler simplifies the process by automatically recognizing the application type, selecting the appropriate form, and transferring the required information from submitted documents into the correct fields. This reduces manual work, saves time, and makes application processing easier and more efficient.",
+        "Application processing can be time-consuming when users need to identify the right form, read through documents, and manually enter information field by field. AIO Form simplifies the process by automatically recognizing the application type, selecting the appropriate form, and transferring the required information from submitted documents into the correct fields. This reduces manual work, saves time, and makes application processing easier and more efficient.",
       targetUsers: [
         "Government Agencies",
         "Corporate Organizations",
@@ -902,7 +898,7 @@ const AIArsenalDashboard = () => {
           <strong className="text-white">
             Less typing. Less hassle. More done.
           </strong>{" "}
-          AIO Form Filler makes application processing faster and easier by
+          AIO Form makes application processing faster and easier by
           handling the repetitive work for you. It helps reduce manual data
           entry, minimize mistakes, and get applications ready sooner—so staff
           can spend more time on work that matters.
@@ -922,7 +918,7 @@ const AIArsenalDashboard = () => {
         {
           id: "product1",
           anchor: "form-filler", // top menu link target
-          name: "AIO Form Filler",
+          name: "AIO Form",
           video: "aio-form-filler-loop.mp4",
           description: "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
           // "Learn more" opens this `products` entry's detail page.

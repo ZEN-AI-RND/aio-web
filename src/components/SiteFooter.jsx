@@ -25,7 +25,7 @@ const QUICK_LINKS = [
 const SOLUTIONS = [
   { label: "ZARA", href: "#zara", opensPage: true },
   { label: "ZARA x AIO Agent", href: "#zara-agent", opensPage: true },
-  { label: "AIO Form Filler", href: "#form-filler", opensPage: true },
+  { label: "AIO Form", href: "#form-filler", opensPage: true },
   "AIO Form Checker",
   "AIO Insight",
   "AIO Forecast",
