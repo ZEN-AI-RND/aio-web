@@ -45,8 +45,38 @@ import {
 const cardClass =
   "group p-5 rounded-2xl border border-green-500/40 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-green-500/80 hover:shadow-[0_12px_40px_rgba(80,192,64,0.15)]";
 
+// Vanity URL slugs for each detail page's `products` id, e.g. aioffice.com.my/zara.
+// 4 matches the "zara" top-menu anchor (see `combos` below); keep the two in
+// sync if it ever changes. 7's URL slug intentionally differs from its
+// "zara-agent" top-menu anchor.
+const PRODUCT_SLUGS = {
+  1: "ai-policy-agent",
+  2: "ai-legal-agent",
+  3: "ai-document-agent",
+  4: "zara",
+  5: "ai-permit-agent",
+  6: "ai-write-agent",
+  7: "zara-aioagent",
+  8: "ai-fraudguard-agent",
+  9: "ai-inspector-agent",
+  10: "ai-budget-agent",
+  11: "ai-forecast-agent",
+  12: "ai-insight-agent",
+};
+const SLUG_TO_PRODUCT_ID = Object.fromEntries(
+  Object.entries(PRODUCT_SLUGS).map(([id, slug]) => [slug, Number(id)])
+);
+
+// Reads the current URL path into a `currentPage` value ("home" or a
+// products id), for the initial page load and for browser back/forward.
+const pageFromLocation = () => {
+  const slug = window.location.pathname.replace(/^\/+|\/+$/g, "");
+  if (!slug) return "home";
+  return SLUG_TO_PRODUCT_ID[slug] ?? "home";
+};
+
 const AIArsenalDashboard = () => {
-  const [currentPage, setCurrentPage] = useState("home");
+  const [currentPage, setCurrentPage] = useState(pageFromLocation);
   const [language, setLanguage] = useState("en");
   const [demoOpen, setDemoOpen] = useState(false);
   // False while the splash covers the page: the page underneath stays
@@ -71,9 +101,28 @@ const AIArsenalDashboard = () => {
     setCurrentPage(page);
     setRevealed(false);
     setSplashRun((run) => run + 1);
+
+    // Reflect the page in the address bar, e.g. aioffice.com.my/zara.
+    const path = page === "home" ? "/" : `/${PRODUCT_SLUGS[page] || page}`;
+    if (window.location.pathname !== path) {
+      window.history.pushState({ page }, "", path);
+    }
   }, []);
 
   const goHome = useCallback((href) => navigate("home", href), [navigate]);
+
+  // Browser back/forward: the URL already changed, so just sync the page —
+  // no pushState here, that would fight the history the browser just moved.
+  useEffect(() => {
+    const onPopState = () => {
+      pendingAnchor.current = null;
+      setCurrentPage(pageFromLocation());
+      setRevealed(false);
+      setSplashRun((run) => run + 1);
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   // Swapping between the home page and a detail page replaces the whole tree,
   // so this runs once the new one has mounted: land on the requested section,

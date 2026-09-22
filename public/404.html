@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Office</title>
+  <script>
+    // Single Page Apps for GitHub Pages: GH Pages has no server-side rewrites,
+    // so a direct hit on e.g. /zara lands here. Re-encode the path as a query
+    // string and redirect to the real index.html, which decodes it back
+    // before React mounts (see the matching script in index.html).
+    // https://github.com/rafgraph/spa-github-pages
+    var l = window.location;
+    l.replace(
+      l.protocol + "//" + l.hostname + (l.port ? ":" + l.port : "") +
+      "/?/" +
+      l.pathname.slice(1).replace(/&/g, "~and~") +
+      (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+      l.hash
+    );
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>
