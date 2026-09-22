@@ -62,6 +62,7 @@ const PRODUCT_SLUGS = {
   10: "ai-budget-agent",
   11: "ai-forecast-agent",
   12: "ai-insight-agent",
+  13: "aio-form-filler",
 };
 const SLUG_TO_PRODUCT_ID = Object.fromEntries(
   Object.entries(PRODUCT_SLUGS).map(([id, slug]) => [slug, Number(id)])
@@ -79,6 +80,20 @@ const AIArsenalDashboard = () => {
   const [currentPage, setCurrentPage] = useState(pageFromLocation);
   const [language, setLanguage] = useState("en");
   const [demoOpen, setDemoOpen] = useState(false);
+  // Default is the site's original dark theme; the header toggle switches to
+  // a light theme, driven entirely by the `data-theme` attribute on <html>
+  // (see index.css) so plain CSS overrides handle every component.
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("aio-theme") || "dark"
+  );
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("aio-theme", theme);
+  }, [theme]);
+  const toggleTheme = useCallback(
+    () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+    []
+  );
   // False while the splash covers the page: the page underneath stays
   // unpainted (and the particle canvas unmounted) so the splash gets the
   // whole frame budget.
@@ -775,6 +790,18 @@ const AIArsenalDashboard = () => {
         "Enables rapid response to public concerns. Prevents crises through early detection. Informs policy adjustments based on real client feedback. Protects government reputation through timely communication.",
       roi: "7 months",
     },
+    {
+      // Landing-page product, not one of the 12 AI Agents — its "Learn more"
+      // button (see `productSections` below) opens this page.
+      id: 13,
+      name: "AIO Form Filler",
+      video: "aio-form-filler-loop.mp4",
+      demoVideo: "aio-form-filler.mp4",
+      // Shown as the paragraph under the hero video, same slot as a combo's
+      // intro (see `comboIntro` in DetailPage).
+      heroDescription:
+        "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
+    },
   ];
 
   // Placeholder product sections — replace title/subtitle/name/description,
@@ -791,6 +818,8 @@ const AIArsenalDashboard = () => {
           name: "AIO Form Filler",
           video: "aio-form-filler-loop.mp4",
           description: "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
+          // "Learn more" opens this `products` entry's detail page.
+          detailId: 13,
         },
         {
           id: "product2",
@@ -984,9 +1013,12 @@ const AIArsenalDashboard = () => {
   };
 
   const DetailPage = ({ product }) => {
-    // Suites on the landing page carry an intro paragraph; a product opened
-    // from the systems grid has none, and the paragraph is simply left out.
-    const comboIntro = combos.find((c) => c.detailId === product.id)?.effect;
+    // Suites on the landing page carry an intro paragraph; a standalone
+    // product can set its own `heroDescription` instead; a product opened
+    // from the systems grid has neither, and the paragraph is left out.
+    const comboIntro =
+      combos.find((c) => c.detailId === product.id)?.effect ||
+      (product.heroDescription ? [product.heroDescription] : null);
 
     // The headline stack: the rotating green word with the words around it,
     // over a grey subtitle. A product can carry its own; the rest share the
@@ -1007,7 +1039,12 @@ const AIArsenalDashboard = () => {
         {revealed && <SparkleField />}
         {/* The menu links target landing-page sections, so `goHome` takes the
             reader back there first and scrolls to the section afterwards. */}
-        <SiteHeader onNavigate={goHome} onOpenPage={openSolutionPage} />
+        <SiteHeader
+          onNavigate={goHome}
+          onOpenPage={openSolutionPage}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
         {/* pt-20 clears the fixed top menu, matching the landing page. */}
         <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10">
           <div className="max-w-6xl mx-auto">
@@ -1142,89 +1179,98 @@ const AIArsenalDashboard = () => {
 
             {/* No panel: the heading and copy sit straight on the page, in the
                 landing page's section type — the treatment every section below
-                repeats. */}
-            <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
-              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                {/* Named after the product, so the ZARA page reads "How ZARA
-                    Works" and an agent's own page reads its agent name. A
-                    product can override this with its own heading. */}
-                {product.howItWorksTitle ||
-                  `How ${product.heroTitle || product.name} Works`}
-              </h2>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                {product.aiRole}
-              </p>
-            </div>
+                repeats. A thin product (no `aiRole` yet) just skips it. */}
+            {product.aiRole && (
+              <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
+                <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  {/* Named after the product, so the ZARA page reads "How ZARA
+                      Works" and an agent's own page reads its agent name. A
+                      product can override this with its own heading. */}
+                  {product.howItWorksTitle ||
+                    `How ${product.heroTitle || product.name} Works`}
+                </h2>
+                <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                  {product.aiRole}
+                </p>
+              </div>
+            )}
 
             {/* Same treatment: no panel, landing page type. */}
-            <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
-              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Problem Solved
-              </h2>
-              <div className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                {Array.isArray(product.problemSolved) ? (
-                  product.problemSolved.map((paragraph, i) => (
-                    <p key={i}>{paragraph}</p>
-                  ))
+            {product.problemSolved && (
+              <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
+                <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Problem Solved
+                </h2>
+                <div className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                  {Array.isArray(product.problemSolved) ? (
+                    product.problemSolved.map((paragraph, i) => (
+                      <p key={i}>{paragraph}</p>
+                    ))
+                  ) : (
+                    <p>{product.problemSolved}</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Same treatment: no panel, landing page type. */}
+            {product.benefit && (
+              <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
+                <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Benefit
+                </h2>
+                {/* A product carries either one paragraph or a list of points.
+                    The list gets the check marks and the left alignment of
+                    Build for, and the extra top margin makes up the difference
+                    between the paragraph heading gap and that section's. */}
+                {Array.isArray(product.benefit) ? (
+                  <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4 text-left">
+                    {product.benefit.map((point, idx) => (
+                      <div key={idx} className="flex items-start">
+                        <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
+                        <span className="text-sm sm:text-base lg:text-lg text-gray-400">
+                          {point}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <p>{product.problemSolved}</p>
+                  <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                    {product.benefit}
+                  </p>
                 )}
               </div>
-            </div>
+            )}
 
             {/* Same treatment: no panel, landing page type. */}
-            <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
-              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Benefit
-              </h2>
-              {/* A product carries either one paragraph or a list of points.
-                  The list gets the check marks and the left alignment of
-                  Build for, and the extra top margin makes up the difference
-                  between the paragraph heading gap and that section's. */}
-              {Array.isArray(product.benefit) ? (
-                <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4 text-left">
-                  {product.benefit.map((point, idx) => (
+            {product.targetUsers?.length > 0 && (
+              <div className="mb-20 sm:mb-28 lg:mb-36">
+                <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Build For
+                </h2>
+                {/* A single left-aligned list, like Key Features below. */}
+                <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
+                  {product.targetUsers.map((user, idx) => (
                     <div key={idx} className="flex items-start">
+                      {/* green-500 is the Learn more / Request a Demo button fill. */}
                       <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
                       <span className="text-sm sm:text-base lg:text-lg text-gray-400">
-                        {point}
+                        {user}
                       </span>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                  {product.benefit}
-                </p>
-              )}
-            </div>
-
-            {/* Same treatment: no panel, landing page type. */}
-            <div className="mb-20 sm:mb-28 lg:mb-36">
-              <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Build For
-              </h2>
-              {/* A single left-aligned list, like Key Features below. */}
-              <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
-                {product.targetUsers.map((user, idx) => (
-                  <div key={idx} className="flex items-start">
-                    {/* green-500 is the Learn more / Request a Demo button fill. */}
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm sm:text-base lg:text-lg text-gray-400">
-                      {user}
-                    </span>
-                  </div>
-                ))}
               </div>
-            </div>
+            )}
 
             {/* Same treatment: no panel, landing page type. */}
-            <div className="mb-20 sm:mb-28 lg:mb-36">
-              <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Key Features
-              </h2>
-              <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
-                {product.features.map((feature, idx) => (
+            {product.features?.length > 0 && (
+              <div className="mb-20 sm:mb-28 lg:mb-36">
+                <h2 className="font-bold mb-6 sm:mb-8 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Key Features
+                </h2>
+                <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
+                  {product.features.map((feature, idx) => (
                   <div key={idx} className="flex items-start">
                     {/* A green sparkle per feature in place of the number badge. */}
                     <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
@@ -1246,8 +1292,9 @@ const AIArsenalDashboard = () => {
                     )}
                   </div>
                 ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* The landing page's philosophy section, headings and all, so a
@@ -1342,7 +1389,11 @@ const AIArsenalDashboard = () => {
       <div className={`nebula ${revealed ? "" : "invisible"}`}></div>
       {revealed && <SparkleField />}
       <div className={revealed ? undefined : "invisible"}>
-        <SiteHeader onOpenPage={openSolutionPage} />
+        <SiteHeader
+          onOpenPage={openSolutionPage}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
       </div>
       {/* pt-20 clears the 4rem/5rem top menu at every width. */}
       <div className={`min-h-screen text-white px-4 sm:px-6 lg:px-8 pt-20 pb-10 sm:pb-14 lg:pb-20 relative z-10 ${revealed ? "" : "invisible"}`}>
@@ -1589,8 +1640,13 @@ const AIArsenalDashboard = () => {
                     )}
                   </div>
 
+                  {/* Items without a `detailId` have no detail page yet, so
+                      their button stays inert rather than routing nowhere. */}
                   <button
                     type="button"
+                    onClick={() => {
+                      if (product.detailId) navigate(product.detailId);
+                    }}
                     className="mt-8 sm:mt-10 mx-auto inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
                   >
                     Learn more

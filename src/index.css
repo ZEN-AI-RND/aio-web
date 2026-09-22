@@ -136,6 +136,116 @@
 }
 
 /* ------------------------------
+   Light / dark theme
+   Default is the original dark "space" theme (no attribute needed).
+   The header toggle sets data-theme="light" on <html> and persists the
+   choice to localStorage (see src/App.jsx). Everything below overrides the
+   handful of Tailwind utility classes that carry the dark theme's colors.
+   Utility classes shared with permanently-dark chrome (video players, the
+   splash screen) are deliberately left alone or exempted with `!text-white`
+   in their component, so this file only overlaps them where left untouched.
+--------------------------------*/
+[data-theme="light"] body {
+  background: #f4f6f8;
+  color: #10151f;
+}
+
+/* Space decorations only suit the dark theme. */
+[data-theme="light"] .stars,
+[data-theme="light"] .nebula,
+[data-theme="light"] .sparkles {
+  display: none;
+}
+
+/* Primary text */
+[data-theme="light"] .text-white {
+  color: #10151f;
+}
+[data-theme="light"] .hover\:text-white:hover {
+  color: #10151f;
+}
+
+/* Muted / secondary text */
+[data-theme="light"] .text-gray-400 {
+  color: #475569;
+}
+.text-muted-ink {
+  color: #d1d5db;
+}
+[data-theme="light"] .text-muted-ink {
+  color: #334155;
+}
+
+/* Stat-card accent labels (light pastel shades that vanish on a white card) */
+[data-theme="light"] .text-blue-200 {
+  color: #1d4ed8;
+}
+[data-theme="light"] .text-green-200 {
+  color: #328128;
+}
+[data-theme="light"] .text-purple-200 {
+  color: #7e22ce;
+}
+[data-theme="light"] .text-orange-200 {
+  color: #c2410c;
+}
+
+/* Glass panels: cards, nav dropdown/mobile menu, scroll-to-top button */
+[data-theme="light"] .bg-\[\#0a0f1a\]\/60 {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+[data-theme="light"] .bg-\[\#0a0f1a\]\/80 {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+[data-theme="light"] .bg-\[\#0a0f1a\]\/90 {
+  background-color: rgba(255, 255, 255, 0.94);
+}
+[data-theme="light"] .bg-\[\#0a0f1a\]\/95 {
+  background-color: rgba(255, 255, 255, 0.97);
+}
+[data-theme="light"] .hover\:bg-\[\#0a0f1a\]:hover {
+  background-color: #ffffff;
+}
+
+/* Hairline borders / dividers (not border-white/20, which is the video
+   modal's close button and should stay put in both themes) */
+[data-theme="light"] .border-white\/10 {
+  border-color: rgba(16, 21, 31, 0.12);
+}
+[data-theme="light"] .border-gray-700 {
+  border-color: rgba(16, 21, 31, 0.12);
+}
+
+/* Deployment badge on the product cards */
+[data-theme="light"] .bg-white\/20 {
+  background-color: rgba(16, 21, 31, 0.08);
+}
+
+/* Nav dropdown / mobile menu item hover */
+[data-theme="light"] .hover\:bg-white\/5:hover {
+  background-color: rgba(16, 21, 31, 0.06);
+}
+
+/* Header icon buttons (theme toggle + mobile hamburger) — a dedicated class
+   because they'd otherwise share `hover:bg-white/10` with the video modal's
+   close button, which must stay white-on-black in both themes. */
+.nav-icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .nav-icon-btn:hover {
+  background-color: rgba(16, 21, 31, 0.08);
+}
+
+/* Header background once scrolled — a dedicated class for the same reason
+   (shares `bg-black/40` with the autoplay video's tap-to-play overlay). */
+.header-scrolled-bg {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+[data-theme="light"] .header-scrolled-bg {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+/* ------------------------------
    Space background: twinkling
    starfield + nebula haze
 --------------------------------*/

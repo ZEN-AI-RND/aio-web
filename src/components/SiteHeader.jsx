@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import AioLogo from "./AioLogo";
 
 /* Top menu. Transparent over the hero and pinned to the top at every width;
@@ -75,7 +75,7 @@ function DemoButton({ className = "" }) {
 
    `onOpenPage` opens the detail page behind an `opensPage` entry, and is
    passed on every page, since that entry never scrolls to a section. */
-export default function SiteHeader({ onNavigate, onOpenPage }) {
+export default function SiteHeader({ onNavigate, onOpenPage, theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -134,7 +134,7 @@ export default function SiteHeader({ onNavigate, onOpenPage }) {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
         scrolled
-          ? "border-b border-white/10 bg-black/40 backdrop-blur-md"
+          ? "border-b border-white/10 header-scrolled-bg backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -197,7 +197,7 @@ export default function SiteHeader({ onNavigate, onOpenPage }) {
                           handleSolutionClick(event, item);
                           setSolutionsOpen(false);
                         }}
-                        className="block rounded-lg px-4 py-2.5 text-[0.9375rem] text-gray-300 transition-colors hover:bg-white/5 hover:text-green-400"
+                        className="block rounded-lg px-4 py-2.5 text-[0.9375rem] text-muted-ink transition-colors hover:bg-white/5 hover:text-green-400"
                       >
                         {item.label}
                       </a>
@@ -228,6 +228,16 @@ export default function SiteHeader({ onNavigate, onOpenPage }) {
         </nav>
 
         <div className="flex items-center gap-2 lg:justify-self-end">
+          <button
+            type="button"
+            aria-label={
+              theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+            }
+            onClick={onToggleTheme}
+            className="nav-icon-btn flex h-11 w-11 items-center justify-center rounded-md text-green-500 transition-colors hover:text-green-400"
+          >
+            {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+          </button>
           <DemoButton className="hidden lg:inline-flex" />
           <button
             type="button"
@@ -235,7 +245,7 @@ export default function SiteHeader({ onNavigate, onOpenPage }) {
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
             onClick={() => setMobileOpen((open) => !open)}
-            className="flex h-11 w-11 items-center justify-center rounded-md text-green-500 transition-colors hover:bg-white/10 hover:text-green-400 lg:hidden"
+            className="nav-icon-btn flex h-11 w-11 items-center justify-center rounded-md text-green-500 transition-colors hover:text-green-400 lg:hidden"
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -286,7 +296,7 @@ export default function SiteHeader({ onNavigate, onOpenPage }) {
                       handleSolutionClick(event, item);
                       closeMobile();
                     }}
-                    className="block rounded-lg px-4 py-2.5 text-base text-gray-300 hover:bg-white/5 hover:text-green-400"
+                    className="block rounded-lg px-4 py-2.5 text-base text-muted-ink hover:bg-white/5 hover:text-green-400"
                   >
                     {item.label}
                   </a>

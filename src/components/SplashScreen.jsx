@@ -234,7 +234,7 @@ function SplashOverlay({ onReveal, showMs, onDone }) {
           <div aria-hidden="true" className="absolute inset-10 rounded-full bg-[radial-gradient(circle,rgba(80,192,64,0.35)_0%,rgba(80,192,64,0.12)_45%,rgba(80,192,64,0)_70%)]" />
           <span className="relative inline-flex h-[1em] w-[1em] items-center justify-center text-[8.5rem] sm:text-[11rem]">
             <AioLogo className="absolute inset-0 h-full w-full" />
-            <span className="relative font-display font-extrabold text-[0.21em] leading-none tracking-[-0.01em] text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.55)]">
+            <span className="relative font-display font-extrabold text-[0.21em] leading-none tracking-[-0.01em] !text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.55)]">
               AIO
             </span>
           </span>
@@ -246,7 +246,7 @@ function SplashOverlay({ onReveal, showMs, onDone }) {
           </span>
         </div>
 
-        <p className="mt-10 text-xl font-bold tracking-[-0.01em] text-white sm:mt-12 sm:text-3xl">
+        <p className="mt-10 text-xl font-bold tracking-[-0.01em] !text-white sm:mt-12 sm:text-3xl">
           {/* The decode is timed as a fraction of the run, so a short splash
               still shows the slogan settling instead of cutting it off. */}
           <DecodingText
