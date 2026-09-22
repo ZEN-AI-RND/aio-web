@@ -181,7 +181,7 @@ const AIArsenalDashboard = () => {
       // subtitle: "Your AI. Your Data. Your Infra.",
       subtitle: "Work smarter, faster and better.",
       // subtitle: "Work smarter and faster.",
-      subtitle2: "Truly helpful. Truly yours.",
+      subtitle2: "Smart. Helpful. Yours.",
       statsLine: "✅ 12 AI Agents ✅ RM300K Each ✅ Full Sovereign",
       aiSystems: "AI Agents",
       avgTimeSaved: "Avg Time Saved",
@@ -440,19 +440,25 @@ const AIArsenalDashboard = () => {
       // Hero headline, when the page is entered under a product family name
       // rather than the agent's own. Falls back to `name`.
       heroTitle: "ZARA",
+      // Overrides the closing "Ready to Deploy ZARA?" line below.
+      ctaTagline: "Chat. Know. Done.",
+      // Overrides the "How ZARA Works" default heading below. "Assistant" is
+      // struck through in green, so this is JSX rather than a plain string:
+      // `decoration-` colours and thickens the line without tinting the word.
+      howItWorksTitle: (
+        <>
+          Your AI{" "}
+          <s className="decoration-green-500 decoration-[0.14em]">Assistant</s>{" "}
+          Buddy
+        </>
+      ),
       // This page's own headline stack, in place of the shared
-      // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
+      // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
       hero: {
         lead: "More",
         words: ["PERSONAL", "TRUSTED", "RELEVANT"],
         tail: " with AI.",
-        // "Assistant" is struck through, so this line is JSX rather than a
-        // plain string; it renders in the same subtitle slot.
-        subtitle: (
-          <>
-            Your AI <s>Assistant</s> Buddy.
-          </>
-        ),
+        subtitle: "Chat. Know. Done.",
       },
       category: "Client Interface",
       power: "24/7 client service",
@@ -601,14 +607,14 @@ const AIArsenalDashboard = () => {
       // room; the logo then sits beside "ZARA" only, not the whole title.
       heroTitleLines: ["ZARA", "x", "AIO Agent"],
       // Overrides the "How ZARA x AIO Agent Works" default heading below.
-      howItWorksTitle: "Chat. Act. Done.",
+      howItWorksTitle: "Beyond Chat. Into Action",
       // This page's own headline stack, in place of the shared
-      // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
+      // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
       hero: {
         lead: "More",
         words: ["HELPFUL", "POWERFUL", "EASY"],
         tail: " with AI.",
-        subtitle: "Beyond Chat. Into Action.",
+        subtitle: "Chat. Act. Done.",
       },
       category: "Defense Systems",
       power: "Spots bad deals early",
@@ -820,13 +826,21 @@ const AIArsenalDashboard = () => {
       name: "AIO Form Filler",
       video: "aio-form-filler-loop.mp4",
       demoVideo: "aio-form-filler.mp4",
+      // Hero headline. Short enough that the title keeps the landing hero's
+      // full size below `lg` instead of the shrunk one the full product name
+      // would fall back to (see `heroTitleSizeClass`).
+      heroTitle: "AIO Form",
+      // Overrides the closing "Ready to Deploy AIO Form?" line below.
+      ctaTagline: "Classify. Extract. Fill.",
+      // Overrides the "How AIO Form Works" default heading below.
+      howItWorksTitle: "Process Applications Faster",
       // This page's own headline stack, in place of the shared
-      // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
+      // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
       hero: {
         lead: "Less",
         words: ["TYPING", "HASSLE", "MISTAKES"],
         tail: " with AI.",
-        subtitle: "Process Applications Faster.",
+        subtitle: "Classify. Extract. Fill.",
       },
       // Shown as the paragraph under the hero video, same slot as a combo's
       // intro (see `comboIntro` in DetailPage).
@@ -1439,8 +1453,10 @@ const AIArsenalDashboard = () => {
               <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 Ready to Deploy {product.heroTitle || product.name}?
               </h2>
+              {/* A product can carry its own closing line; the rest share
+                  the agent pitch. */}
               <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                Truly helpful. Truly yours.
+                {product.ctaTagline || "Chat. Act. Done."}
               </p>
               <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                 <button
