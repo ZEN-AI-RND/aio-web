@@ -1184,8 +1184,8 @@ const AIArsenalDashboard = () => {
               {Array.isArray(product.benefit) ? (
                 <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4 text-left">
                   {product.benefit.map((point, idx) => (
-                    <div key={idx} className="flex items-center">
-                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-green-500 flex-shrink-0" />
+                    <div key={idx} className="flex items-start">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
                       <span className="text-sm sm:text-base lg:text-lg text-gray-400">
                         {point}
                       </span>
@@ -1207,9 +1207,9 @@ const AIArsenalDashboard = () => {
               {/* A single left-aligned list, like Key Features below. */}
               <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
                 {product.targetUsers.map((user, idx) => (
-                  <div key={idx} className="flex items-center">
+                  <div key={idx} className="flex items-start">
                     {/* green-500 is the Learn more / Request a Demo button fill. */}
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-green-500 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
                     <span className="text-sm sm:text-base lg:text-lg text-gray-400">
                       {user}
                     </span>
