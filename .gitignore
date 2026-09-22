@@ -25,3 +25,6 @@ dist-ssr
 
 # Windows download metadata
 *:Zone.Identifier
+
+# Claude Code scratch (worktrees, local settings)
+.claude/
