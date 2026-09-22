@@ -26,10 +26,10 @@ const SOLUTIONS = [
   { label: "ZARA", href: "#zara", opensPage: true },
   { label: "ZARA x AIO Agent", href: "#zara-agent", opensPage: true },
   { label: "AIO Form", href: "#form-filler", opensPage: true },
-  "AIO Form Checker",
-  "AIO Insight",
-  "AIO Forecast",
-  "AIO Lab",
+  { label: "AIO Verify", href: "#form-checker", opensPage: true },
+  { label: "AIO Insight", href: "#insight", opensPage: true },
+  { label: "AIO Forecast", href: "#forecast", opensPage: true },
+  { label: "AIO Lab", href: "#lab", opensPage: true },
   "AIO Code",
 ];
 

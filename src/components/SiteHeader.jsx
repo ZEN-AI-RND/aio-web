@@ -15,10 +15,10 @@ const SOLUTIONS = [
   { label: "ZARA", href: "#zara", opensPage: true },
   { label: "ZARA x AIO Agent", href: "#zara-agent", opensPage: true },
   { label: "AIO Form", href: "#form-filler", opensPage: true },
-  { label: "AIO Form Checker", href: "#form-checker" },
-  { label: "AIO Insight", href: "#insight" },
-  { label: "AIO Forecast", href: "#forecast" },
-  { label: "AIO Lab", href: "#lab" },
+  { label: "AIO Verify", href: "#form-checker", opensPage: true },
+  { label: "AIO Insight", href: "#insight", opensPage: true },
+  { label: "AIO Forecast", href: "#forecast", opensPage: true },
+  { label: "AIO Lab", href: "#lab", opensPage: true },
   { label: "AIO Code", href: "#code" },
 ];
 

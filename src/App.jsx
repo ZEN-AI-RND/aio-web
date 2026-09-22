@@ -63,6 +63,10 @@ const PRODUCT_SLUGS = {
   11: "ai-forecast-agent",
   12: "ai-insight-agent",
   13: "aio-form",
+  14: "aio-verify",
+  15: "aio-insight",
+  16: "aio-forecast",
+  17: "aio-lab",
 };
 const SLUG_TO_PRODUCT_ID = Object.fromEntries(
   Object.entries(PRODUCT_SLUGS).map(([id, slug]) => [slug, Number(id)])
@@ -905,6 +909,264 @@ const AIArsenalDashboard = () => {
         </>
       ),
     },
+    {
+      // Landing-page product, not one of the 12 AI Agents — its "Learn more"
+      // button (see `productSections` below) opens this page.
+      id: 14,
+      name: "AIO Verify",
+      // The clips the landing card already uses, standing in until this
+      // product has media of its own.
+      video: "aio-form-checker-loop.mp4",
+      demoVideo: "aio-form-checker.mp4",
+      // Placeholder copy below — every section the AIO Form page (id 13) has,
+      // so this page shows the full template. Only the hero title (`name`) is
+      // real; replace the rest with copy per field.
+      ctaTagline: "Match. Verified. Confirm.",
+      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      hero: {
+        lead: "Less",
+        words: ["CHECKING", "HASSLE", "MISTAKES"],
+        tail: " with AI.",
+        subtitle: "Match. Verified. Confirm.",
+      },
+      // Shown as the paragraph under the hero video; same copy as the
+      // landing card, the way the AIO Form page reads.
+      heroDescription:
+        "Intelligently cross-check submitted forms against supporting documents to verify accuracy and identify missing information. Generate a clear correction report highlighting what needs to be reviewed or corrected before submission.",
+      aiRole:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
+      problemSolved:
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      targetUsers: [
+        "Lorem ipsum dolor sit amet",
+        "Consectetur adipiscing elit",
+        "Sed do eiusmod tempor incididunt",
+        "Ut labore et dolore magna aliqua",
+        "Quis nostrud exercitation ullamco",
+        "Duis aute irure dolor in reprehenderit",
+      ],
+      features: [
+        {
+          title: "Lorem Ipsum Dolor",
+          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+        },
+        {
+          title: "Consectetur Adipiscing",
+          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+        },
+        {
+          title: "Sed Do Eiusmod",
+          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        },
+        {
+          title: "Tempor Incididunt",
+          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+        },
+        {
+          title: "Ut Labore Dolore",
+          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        },
+        {
+          title: "Magna Aliqua Enim",
+          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+        },
+      ],
+      benefit:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    },
+    {
+      // Landing-page product, not one of the 12 AI Agents — its "Learn more"
+      // button (see `productSections` below) opens this page.
+      id: 15,
+      name: "AIO Insight",
+      // The clip the landing card already uses, standing in until this
+      // product has media of its own.
+      video: "aio-insight-loop.mp4",
+      demoVideo: "aio-insight.mp4",
+      // Placeholder copy below — every section the AIO Form page (id 13) has,
+      // so this page shows the full template. Only the hero title (`name`) is
+      // real; replace the rest with copy per field.
+      ctaTagline: "Analyze. Visualize. Decide.",
+      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      hero: {
+        lead: "Gain",
+        words: ["CLARITY", "PERSPECTIVE", "KNOWLEDGE"],
+        tail: " with AI.",
+        subtitle: "Analyze. Visualize. Decide.",
+      },
+      // Shown as the paragraph under the hero video; same copy as the
+      // landing card, the way the AIO Form page reads.
+      heroDescription:
+        "Upload a spreadsheet, get instant answers. Just ask questions in natural language and watch the right charts appear — accurate, easy to read, and ready to share.",
+      aiRole:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
+      problemSolved:
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      targetUsers: [
+        "Lorem ipsum dolor sit amet",
+        "Consectetur adipiscing elit",
+        "Sed do eiusmod tempor incididunt",
+        "Ut labore et dolore magna aliqua",
+        "Quis nostrud exercitation ullamco",
+        "Duis aute irure dolor in reprehenderit",
+      ],
+      features: [
+        {
+          title: "Lorem Ipsum Dolor",
+          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+        },
+        {
+          title: "Consectetur Adipiscing",
+          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+        },
+        {
+          title: "Sed Do Eiusmod",
+          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        },
+        {
+          title: "Tempor Incididunt",
+          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+        },
+        {
+          title: "Ut Labore Dolore",
+          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        },
+        {
+          title: "Magna Aliqua Enim",
+          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+        },
+      ],
+      benefit:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    },
+    {
+      // Landing-page product, not one of the 12 AI Agents — its "Learn more"
+      // button (see `productSections` below) opens this page.
+      id: 16,
+      name: "AIO Forecast",
+      // Shares AIO Insight's clip, same as the landing card does, until this
+      // product has media of its own.
+      video: "aio-insight-loop.mp4",
+      demoVideo: "aio-insight.mp4",
+      // Placeholder copy below — every section the AIO Form page (id 13) has,
+      // so this page shows the full template. Only the hero title (`name`) is
+      // real; replace the rest with copy per field.
+      ctaTagline: "Predict. Plan. Prepare.",
+      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      hero: {
+        lead: "Gain",
+        words: ["FORESIGHT", "CLARITY", "DIRECTION"],
+        tail: " with AI.",
+        subtitle: "Predict. Plan. Prepare.",
+      },
+      // Shown as the paragraph under the hero video; same copy as the
+      // landing card, the way the AIO Form page reads.
+      heroDescription:
+        "See what's coming next. Upload your data and get a smart, reliable forecast in minutes — no spreadsheets, no guesswork, no data science degree needed.",
+      aiRole:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
+      problemSolved:
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      targetUsers: [
+        "Lorem ipsum dolor sit amet",
+        "Consectetur adipiscing elit",
+        "Sed do eiusmod tempor incididunt",
+        "Ut labore et dolore magna aliqua",
+        "Quis nostrud exercitation ullamco",
+        "Duis aute irure dolor in reprehenderit",
+      ],
+      features: [
+        {
+          title: "Lorem Ipsum Dolor",
+          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+        },
+        {
+          title: "Consectetur Adipiscing",
+          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+        },
+        {
+          title: "Sed Do Eiusmod",
+          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        },
+        {
+          title: "Tempor Incididunt",
+          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+        },
+        {
+          title: "Ut Labore Dolore",
+          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        },
+        {
+          title: "Magna Aliqua Enim",
+          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+        },
+      ],
+      benefit:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    },
+    {
+      // Landing-page product, not one of the 12 AI Agents — its "Learn more"
+      // button (see `productSections` below) opens this page.
+      id: 17,
+      name: "AIO Lab",
+      // A still rather than a clip, same as the landing card.
+      image: "gb10.webp",
+      // Placeholder copy below — every section the AIO Form page (id 13) has,
+      // so this page shows the full template. Only the hero title (`name`) is
+      // real; replace the rest with copy per field.
+      ctaTagline: "Learn. Build. Innovate.",
+      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      hero: {
+        lead: "Build",
+        words: ["SKILLS", "KNOWLEDGE", "SOLUTIONS"],
+        tail: " with AI.",
+        subtitle: "Learn. Build. Innovate.",
+      },
+      // Shown as the paragraph under the hero video; same copy as the
+      // landing card, the way the AIO Form page reads.
+      heroDescription:
+        "An on-premise AI workstation pre-installed with AI development software and tools. Designed for AI education, hands-on learning, and AI development.",
+      aiRole:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
+      problemSolved:
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      targetUsers: [
+        "Lorem ipsum dolor sit amet",
+        "Consectetur adipiscing elit",
+        "Sed do eiusmod tempor incididunt",
+        "Ut labore et dolore magna aliqua",
+        "Quis nostrud exercitation ullamco",
+        "Duis aute irure dolor in reprehenderit",
+      ],
+      features: [
+        {
+          title: "Lorem Ipsum Dolor",
+          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+        },
+        {
+          title: "Consectetur Adipiscing",
+          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+        },
+        {
+          title: "Sed Do Eiusmod",
+          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        },
+        {
+          title: "Tempor Incididunt",
+          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+        },
+        {
+          title: "Ut Labore Dolore",
+          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        },
+        {
+          title: "Magna Aliqua Enim",
+          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+        },
+      ],
+      benefit:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    },
   ];
 
   // Placeholder product sections — replace title/subtitle/name/description,
@@ -912,8 +1174,8 @@ const AIArsenalDashboard = () => {
   const productSections = [
     {
       id: "documents",
-      title: "AI Document Processing.",
-      subtitle: "Streamline your document submissions process.",
+      title: "AI Application Processing.",
+      subtitle: "Streamline your application submissions process.",
       items: [
         {
           id: "product1",
@@ -927,20 +1189,24 @@ const AIArsenalDashboard = () => {
         {
           id: "product2",
           anchor: "form-checker", // top menu link target
-          name: "AIO Form Checker",
+          name: "AIO Verify",
           video: "aio-form-checker-loop.mp4",
+          // "Learn more" opens this `products` entry's detail page.
+          detailId: 14,
           description: "Intelligently cross-check submitted forms against supporting documents to verify accuracy and identify missing information. Generate a clear correction report highlighting what needs to be reviewed or corrected before submission.",
         },
       ],
     },
     {
       id: "forecast",
-      title: "AI Insight and Forecast.",
+      title: "AI Data Intelligence.",
       subtitle: "Turn local data into answers.",
       items: [
         {
           id: "product9",
           anchor: "insight", // top menu link target
+          // "Learn more" opens this `products` entry’s detail page.
+          detailId: 15,
           name: "AIO Insight",
           video: "aio-insight-loop.mp4",
           description: "Upload a spreadsheet, get instant answers. Just ask questions in natural language and watch the right charts appear — accurate, easy to read, and ready to share.",
@@ -948,6 +1214,8 @@ const AIArsenalDashboard = () => {
         {
           id: "product10",
           anchor: "forecast", // top menu link target
+          // "Learn more" opens this `products` entry’s detail page.
+          detailId: 16,
           name: "AIO Forecast",
           video: "aio-insight-loop.mp4",
           description: "See what's coming next. Upload your data and get a smart, reliable forecast in minutes — no spreadsheets, no guesswork, no data science degree needed.",
@@ -992,12 +1260,14 @@ const AIArsenalDashboard = () => {
     // },
     {
       id: "development",
-      title: "AI Local Development. ",
+      title: "AI Local Development.",
       subtitle: "Build and learn in house — for education and internal teams.",
       items: [
         {
           id: "product7",
           anchor: "lab", // top menu link target
+          // "Learn more" opens this `products` entry’s detail page.
+          detailId: 17,
           name: "AIO Lab",
           image: "gb10.webp",
           description: "An on-premise AI workstation pre-installed with AI development software and tools. Designed for AI education, hands-on learning, and AI development.",
@@ -1229,20 +1499,30 @@ const AIArsenalDashboard = () => {
                 </h1>
               </div>
 
-              {/* Hero video — same card and height budget as the landing page
-                  hero, so it can never grow taller than the viewport allows. */}
-              {product.video && (
+              {/* Hero media — same card and height budget as the landing page
+                  hero, so it can never grow taller than the viewport allows.
+                  A product carries a clip or, like AIO Lab, a still; the card
+                  is the same either way. */}
+              {(product.video || product.image) && (
                 <div className="w-full flex justify-center px-4">
                   <div className="group relative w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
-                    <AutoplayVideo
-                      className="w-full aspect-video rounded-xl object-cover bg-black"
-                      src={`${import.meta.env.BASE_URL}${product.video}`}
-                      poster={`${import.meta.env.BASE_URL}${product.video.replace(
-                        /\.mp4$/,
-                        "-poster.jpg"
-                      )}`}
-                      controls={false}
-                    />
+                    {product.video ? (
+                      <AutoplayVideo
+                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        src={`${import.meta.env.BASE_URL}${product.video}`}
+                        poster={`${import.meta.env.BASE_URL}${product.video.replace(
+                          /\.mp4$/,
+                          "-poster.jpg"
+                        )}`}
+                        controls={false}
+                      />
+                    ) : (
+                      <img
+                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        src={`${import.meta.env.BASE_URL}${product.image}`}
+                        alt={`${product.heroTitle || product.name} preview`}
+                      />
+                    )}
                     {/* Same button as the landing page hero; opens `demoVideo`. */}
                     {product.demoVideo && (
                       <button
@@ -1772,7 +2052,9 @@ const AIArsenalDashboard = () => {
                   </div>
 
                   {/* Items without a `detailId` have no detail page yet, so
-                      their button stays inert rather than routing nowhere. */}
+                      the button says so and stays inert rather than routing
+                      nowhere; the arrow goes with the link it would have
+                      opened. */}
                   <button
                     type="button"
                     onClick={() => {
@@ -1780,8 +2062,14 @@ const AIArsenalDashboard = () => {
                     }}
                     className="mt-8 sm:mt-10 mx-auto inline-flex items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
                   >
-                    Learn more
-                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    {product.detailId ? (
+                      <>
+                        Learn more
+                        <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </>
+                    ) : (
+                      "Coming Soon"
+                    )}
                   </button>
                 </div>
               ))}
