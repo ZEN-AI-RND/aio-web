@@ -68,10 +68,10 @@ function DemoButton({ className = "" }) {
   );
 }
 
-/* `onNavigate` is for pages that are not the landing page: the links below all
-   point at landing-page sections, which are not mounted there, so the host
-   passes a handler that returns home and scrolls to the section afterwards.
-   On the landing page it is omitted and the plain hash anchors do the work.
+/* `onNavigate` takes a link's href and puts the reader in front of that
+   landing-page section. The landing page passes a handler that scrolls to it;
+   a detail page, where those sections are not mounted, passes one that returns
+   home first and scrolls once the landing tree is back.
 
    `onOpenPage` opens the detail page behind an `opensPage` entry, and is
    passed on every page, since that entry never scrolls to a section. */
@@ -148,11 +148,11 @@ export default function SiteHeader({ onNavigate, onOpenPage, theme, onToggleThem
           <ul className="flex items-center gap-10">
             <li>
               <a
-                href="#philosophy"
-                onClick={(event) => handleNavigate(event, "#philosophy")}
+                href="#architecture"
+                onClick={(event) => handleNavigate(event, "#architecture")}
                 className={linkClass}
               >
-                Philosophy
+                Architecture
               </a>
             </li>
             <li
@@ -262,14 +262,14 @@ export default function SiteHeader({ onNavigate, onOpenPage, theme, onToggleThem
         <ul className="flex flex-col">
           <li>
             <a
-              href="#philosophy"
+              href="#architecture"
               onClick={(event) => {
-                handleNavigate(event, "#philosophy");
+                handleNavigate(event, "#architecture");
                 closeMobile();
               }}
               className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5"
             >
-              Philosophy
+              Architecture
             </a>
           </li>
           <li>

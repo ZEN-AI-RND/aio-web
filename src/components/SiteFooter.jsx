@@ -5,23 +5,26 @@ import AiChipIcon from "./AiChipIcon";
 
 /* Site footer, shared by the landing page and the product detail pages.
 
-   Quick Links point at landing-page sections. On a detail page those sections
-   are not mounted, so `onNavigate` is passed in to return home first and scroll
-   there afterwards; on the landing page it is omitted and the plain hash
-   anchors do the work. */
+   The quick links point at landing-page sections, and `onNavigate` is what takes
+   the reader there: on the landing page it scrolls to the section, and on a
+   detail page, where those sections are not mounted, it returns home first and
+   scrolls afterwards. */
 
-// Same destinations as the top menu (SiteHeader.jsx).
+// Same destinations as the top menu (SiteHeader.jsx). The column they sit in
+// is headed "Why AIO".
 const QUICK_LINKS = [
-  { label: "Philosophy", href: "#philosophy" },
+  { label: "Architecture", href: "#architecture" },
   { label: "Solutions", href: "#zara" },
   { label: "Benefit", href: "#benefit" },
   { label: "About", href: "#" },
 ];
 
-// A plain string has no detail page yet, so it stays inert text; an entry
-// with an `href` opens that product's detail page, same as the top menu.
+// Same list as the top menu's Solutions dropdown. A plain string has no detail
+// page yet, so it stays inert text; an entry with an `href` opens that
+// product's detail page, same as the top menu.
 const SOLUTIONS = [
-  "ZARA x AIO Agent",
+  { label: "ZARA", href: "#zara", opensPage: true },
+  { label: "ZARA x AIO Agent", href: "#zara-agent", opensPage: true },
   { label: "AIO Form Filler", href: "#form-filler", opensPage: true },
   "AIO Form Checker",
   "AIO Insight",
@@ -30,7 +33,7 @@ const SOLUTIONS = [
   "AIO Code",
 ];
 
-const FEATURES = [
+const ARCHITECTURE = [
   { label: "Local AI", icon: AiChipIcon },
   { label: "Local knowledge base", icon: Database },
   { label: "On-premise deployment", icon: Server },
@@ -89,9 +92,9 @@ export default function SiteFooter({ onNavigate, onOpenPage }) {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Why AIO — the quick links */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-white">Quick Links</h3>
+            <h3 className="text-lg font-bold mb-4 text-white">Why AIO</h3>
             <ul className="space-y-2 text-sm">
               {QUICK_LINKS.map((link) => (
                 <li key={link.label}>
@@ -132,11 +135,11 @@ export default function SiteFooter({ onNavigate, onOpenPage }) {
             </ul>
           </div>
 
-          {/* Features */}
+          {/* Architecture */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-white">Features</h3>
+            <h3 className="text-lg font-bold mb-4 text-white">Architecture</h3>
             <ul className="space-y-3 text-sm">
-              {FEATURES.map((feature) => {
+              {ARCHITECTURE.map((feature) => {
                 const Icon = feature.icon;
                 return (
                   <li key={feature.label} className="flex items-center">

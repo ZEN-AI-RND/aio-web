@@ -3,7 +3,7 @@ import { Database, Server } from "lucide-react";
 import AiChipIcon from "./AiChipIcon";
 
 /* The three-pillar row: what "Your AI. Your Data. Your Infra." means, one
-   ringed icon each. Shared by the landing page's `#philosophy` section and by
+   ringed icon each. Shared by the landing page's `#architecture` section and by
    every product detail page, so the claim reads the same wherever it appears.
    The headings above it belong to the host, since only the landing page
    carries them. */

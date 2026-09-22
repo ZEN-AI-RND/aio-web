@@ -126,6 +126,22 @@ const AIArsenalDashboard = () => {
 
   const goHome = useCallback((href) => navigate("home", href), [navigate]);
 
+  // The landing page's own menu links: every one of them targets a section of
+  // the page already on screen, so the scroll is done here instead of being
+  // left to the browser's hash jump. That keeps the address bar on the clean
+  // pathname the router reads, and lands the same way as the detail pages do.
+  const scrollToSection = useCallback((href) => {
+    if (!href || href === "#") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    // The mobile panel closes in the same click, so the scroll waits a frame
+    // for that layout to settle before it measures the section.
+    requestAnimationFrame(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    });
+  }, []);
+
   // Browser back/forward: the URL already changed, so just sync the page —
   // no pushState here, that would fight the history the browser just moved.
   useEffect(() => {
@@ -428,9 +444,15 @@ const AIArsenalDashboard = () => {
       // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
       hero: {
         lead: "More",
-        words: ["Personal", "Trusted", "Relevant"],
-        tail: ".",
-        subtitle: "Your AI assistant.",
+        words: ["PERSONAL", "TRUSTED", "RELEVANT"],
+        tail: " with AI.",
+        // "Assistant" is struck through, so this line is JSX rather than a
+        // plain string; it renders in the same subtitle slot.
+        subtitle: (
+          <>
+            Your AI <s>Assistant</s> Buddy.
+          </>
+        ),
       },
       category: "Client Interface",
       power: "24/7 client service",
@@ -439,7 +461,7 @@ const AIArsenalDashboard = () => {
       color: "from-green-500 to-green-600",
       deployment: "Standalone",
       problemSolved:
-        "Organizations spend valuable time answering repetitive questions and helping users find information across different documents and systems. ZARA provides a 24/7 AI assistant that delivers quick, consistent answers using the organization’s own knowledge and information, reducing staff workload and improving the user experience while keeping data within the organization’s own environment.",
+        "Organizations spend valuable time answering repetitive questions and helping users find information across different documents and systems. ZARA provides a 24/7 AI buddy that delivers quick, consistent answers using the organization’s own knowledge and information, reducing staff workload and improving the user experience while keeping data within the organization’s own environment.",
       targetUsers: [
         "Government agencies and public sector organizations",
         "Organizations that handle high volumes of enquiries",
@@ -453,7 +475,7 @@ const AIArsenalDashboard = () => {
       // products still carry plain strings.
       features: [
         {
-          title: "On-Premise AI Assistant",
+          title: "On-Premise AI Buddy",
           body: "Provides AI assistance within the organization’s own environment, giving greater control over information.",
         },
         {
@@ -461,7 +483,7 @@ const AIArsenalDashboard = () => {
           body: "Offers a simple chat experience and can be made available through Microsoft Teams.",
         },
         {
-          title: "AI assistant bot",
+          title: "AI buddy bot",
           body: "Answers common questions in Malay and English, anytime.",
         },
         {
@@ -487,7 +509,7 @@ const AIArsenalDashboard = () => {
       ],
       // Rendered under the "How ZARA Works" heading on the detail page.
       aiRole:
-        "ZARA is your organization’s on-premise AI assistant, designed to provide fast and reliable answers using your own documents, knowledge, and internal information. It helps users find information, understand procedures, and get assistance through a simple conversational interface. By connecting to your organization’s knowledge base and internal systems, ZARA delivers relevant answers while keeping your data within your own environment.",
+        "ZARA is your organization’s on-premise AI buddy, designed to provide fast and reliable answers using your own documents, knowledge, and internal information. It helps users find information, understand procedures, and get assistance through a simple conversational interface. By connecting to your organization’s knowledge base and internal systems, ZARA delivers relevant answers while keeping your data within your own environment.",
       // A list rather than a paragraph; the Benefit section renders either.
       benefit: [
         "Reduce repetitive enquiries and workload.",
@@ -568,10 +590,11 @@ const AIArsenalDashboard = () => {
       // "ZARA x AIO Agent" card, so it leads with that clip and headline.
       // The body copy below is still the agent's own — to be updated.
       video: "zara-promo.mp4",
-      // No dedicated demo clip for this page yet, so "Learn more" reopens the
-      // same promo clip full-size — matching id 4's button, whose modal plays
-      // a separate, longer install video instead.
-      demoVideo: "zara-promo.mp4",
+      // No dedicated demo clip for this page yet, so "Learn more" opens the
+      // landing page's own full hero video (with sound) instead of the
+      // silent zara-promo loop — swap for a real ZARA x AIO Agent demo once
+      // one exists.
+      demoVideo: "hero-720.mp4",
       heroTitle: "ZARA x AIO Agent",
       // Stacks the hero's brand heading onto its own line per word instead of
       // letting the browser wrap "ZARA x AIO Agent" wherever it runs out of
@@ -583,9 +606,9 @@ const AIArsenalDashboard = () => {
       // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
       hero: {
         lead: "More",
-        words: ["Helpful", "Powerful", "Easy"],
-        tail: "",
-        subtitle: "Beyond Chat. Into Action",
+        words: ["HELPFUL", "POWERFUL", "EASY"],
+        tail: " with AI.",
+        subtitle: "Beyond Chat. Into Action.",
       },
       category: "Defense Systems",
       power: "Spots bad deals early",
@@ -797,6 +820,14 @@ const AIArsenalDashboard = () => {
       name: "AIO Form Filler",
       video: "aio-form-filler-loop.mp4",
       demoVideo: "aio-form-filler.mp4",
+      // This page's own headline stack, in place of the shared
+      // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
+      hero: {
+        lead: "Less",
+        words: ["TYPING", "HASSLE", "MISTAKES"],
+        tail: " with AI.",
+        subtitle: "Process Applications Faster.",
+      },
       // Shown as the paragraph under the hero video, same slot as a combo's
       // intro (see `comboIntro` in DetailPage).
       heroDescription:
@@ -804,43 +835,65 @@ const AIArsenalDashboard = () => {
       // Placeholder copy below — every section the ZARA page (id 4) has, so
       // this page shows the full template. Replace with real copy per field.
       aiRole:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Turn application documents into a simpler, faster process. AIO Form Filler recognizes the application category from the uploaded documents and directs you to the appropriate form. It then identifies the required information from your documents, images, and handwriting, and automatically fills in the relevant form fields.",
       problemSolved:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "Application processing can be time-consuming when users need to identify the right form, read through documents, and manually enter information field by field. AIO Form Filler simplifies the process by automatically recognizing the application type, selecting the appropriate form, and transferring the required information from submitted documents into the correct fields. This reduces manual work, saves time, and makes application processing easier and more efficient.",
       targetUsers: [
-        "Lorem ipsum dolor sit amet consectetur",
-        "Adipiscing elit sed do eiusmod tempor",
-        "Incididunt ut labore et dolore magna aliqua",
-        "Ut enim ad minim veniam quis nostrud",
+        "Government Agencies",
+        "Corporate Organizations",
+        "Customer Service Teams",
+        "HR & Administration",
+        "Application Processing Centers",
+        "Public Service Departments",
+        "Businesses Handling High-Volume Applications",
       ],
       features: [
         {
-          title: "Lorem Ipsum Dolor",
-          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.",
+          title: "Smart Application Recognition",
+          body: "Automatically identifies the type of application.",
         },
         {
-          title: "Consectetur Adipiscing",
-          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+          title: "Right Form, Every Time",
+          body: "Selects the appropriate form based on the application.",
         },
         {
-          title: "Sed Do Eiusmod",
-          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.",
+          title: "Instant Information Capture",
+          body: "Extracts information from documents and images.",
         },
         {
-          title: "Tempor Incididunt",
-          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+          title: "Reads Handwriting",
+          body: "Recognizes handwritten information with AI.",
         },
         {
-          title: "Ut Labore Dolore",
-          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          title: "Automatic Form Filling",
+          body: "Fills the required fields automatically.",
         },
         {
-          title: "Magna Aliqua Enim",
-          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+          title: "Faster Processing",
+          body: "Speeds up the application process from start to finish.",
+        },
+        {
+          title: "Less Manual Work",
+          body: "Reduces repetitive typing and data entry.",
+        },
+        {
+          title: "Fewer Errors",
+          body: "Helps improve accuracy and consistency.",
         },
       ],
-      benefit:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      // The lead line is bold, so this one is JSX rather than a plain string;
+      // it renders through the same single-paragraph branch.
+      benefit: (
+        <>
+          <strong className="text-white">
+            Less typing. Less hassle. More done.
+          </strong>{" "}
+          AIO Form Filler makes application processing faster and easier by
+          handling the repetitive work for you. It helps reduce manual data
+          entry, minimize mistakes, and get applications ready sooner—so staff
+          can spend more time on work that matters.
+        </>
+      ),
     },
   ];
 
@@ -963,7 +1016,7 @@ const AIArsenalDashboard = () => {
       // One sentence per line. The landing page runs them together and lets
       // them wrap; the detail page gives each its own line.
       effect: [
-        "Meet ZARA (ZEN Artificial Reasoning Assistant), your AI assistant for smarter work.",
+        "Meet ZARA (ZEN Artificial Reasoning Assistant), your AI buddy for smarter work.",
         "Get richer answers, natural conversations, and instant access to your local knowledge base.",
       ],
       // icon: FileText,
@@ -985,7 +1038,7 @@ const AIArsenalDashboard = () => {
       ],
       cost: "RM900K",
       effect: [
-        "Extend ZARA into an AIO Agent that connects with your organization’s local applications.",
+        "Extend ZARA with AIO Agent and connect with your organization’s local applications.",
         "Go beyond conversations and let ZARA assist with tasks, access business systems.",
       ],
       icon: Shield,
@@ -1362,9 +1415,9 @@ const AIArsenalDashboard = () => {
             )}
           </div>
 
-          {/* The landing page's philosophy section, headings and all, so a
+          {/* The landing page's architecture section, headings and all, so a
               reader who lands straight on a product still gets the sovereignty
-              claim. Mirrors #philosophy in the landing tree below, down to its
+              claim. Mirrors #architecture in the landing tree below, down to its
               max-w-7xl: at the section column's narrower width the pillar
               headings wrap. A negative margin would widen it in place but
               overflows the page padding between lg and 1216px, so the column
@@ -1455,6 +1508,7 @@ const AIArsenalDashboard = () => {
       {revealed && <SparkleField />}
       <div className={revealed ? undefined : "invisible"}>
         <SiteHeader
+          onNavigate={scrollToSection}
           onOpenPage={openSolutionPage}
           theme={theme}
           onToggleTheme={toggleTheme}
@@ -1578,7 +1632,7 @@ const AIArsenalDashboard = () => {
           </div> */}
         </div>
 
-        <div id="philosophy" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
+        <div id="architecture" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
           <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
             {/* ⚙️ TECH ARCHITECTURE */}
             Your AI. Your Data. Your Infra.
@@ -1606,7 +1660,7 @@ const AIArsenalDashboard = () => {
 
         <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
           <h2 className="font-bold mb-3 sm:mb-4 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-            Your AI assistant.
+            Your AI Buddy.
           </h2>
           <h2 className="font-bold text-gray-400 mb-14 sm:mb-20 lg:mb-24 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
             More personal. More powerful.
@@ -1653,7 +1707,7 @@ const AIArsenalDashboard = () => {
           </div>
         </div>
 
-        {/* Placeholder product sections — same layout as “Your AI assistant.” */}
+        {/* Placeholder product sections — same layout as “Your AI Buddy.” */}
         {productSections.map((section) => (
           <div
             key={section.id}
@@ -1896,7 +1950,7 @@ const AIArsenalDashboard = () => {
         <ScrollToTopButton />
 
         {/* Footer Section */}
-        <SiteFooter onOpenPage={openSolutionPage} />
+        <SiteFooter onNavigate={scrollToSection} onOpenPage={openSolutionPage} />
       </div>
 
       {demoOpen && (
