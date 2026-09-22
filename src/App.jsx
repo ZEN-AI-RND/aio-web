@@ -56,7 +56,7 @@ const PRODUCT_SLUGS = {
   4: "zara",
   5: "ai-permit-agent",
   6: "ai-write-agent",
-  7: "zara-aioagent",
+  7: "zaraxaioagent",
   8: "ai-fraudguard-agent",
   9: "ai-inspector-agent",
   10: "ai-budget-agent",
@@ -553,32 +553,71 @@ const AIArsenalDashboard = () => {
       // "ZARA x AIO Agent" card, so it leads with that clip and headline.
       // The body copy below is still the agent's own — to be updated.
       video: "zara-promo.mp4",
+      // No dedicated demo clip for this page yet, so "Learn more" reopens the
+      // same promo clip full-size — matching id 4's button, whose modal plays
+      // a separate, longer install video instead.
+      demoVideo: "zara-promo.mp4",
       heroTitle: "ZARA x AIO Agent",
+      // Stacks the hero's brand heading onto its own line per word instead of
+      // letting the browser wrap "ZARA x AIO Agent" wherever it runs out of
+      // room; the logo then sits beside "ZARA" only, not the whole title.
+      heroTitleLines: ["ZARA", "x", "AIO Agent"],
+      // Overrides the "How ZARA x AIO Agent Works" default heading below.
+      howItWorksTitle: "Chat. Act. Done.",
+      // This page's own headline stack, in place of the shared
+      // "Work SMARTER with AI." / "Truly helpful. Truly yours." pair.
+      hero: {
+        lead: "More",
+        words: ["Helpful", "Powerful", "Easy"],
+        tail: "",
+        subtitle: "Beyond Chat. Into Action",
+      },
       category: "Defense Systems",
       power: "Spots bad deals early",
       savingsPerYear: "RM450K",
       timeReduction: "80%",
       color: "from-violet-500 to-violet-600",
       deployment: "Stackable",
-      problemSolved:
-        "Government procurement involves complex contracts with suppliers. Reviewing contracts for compliance with Treasury circulars, identifying unfavorable terms, and tracking obligations manually is slow and risky. Non-compliance or poor contract terms lead to cost overruns and disputes.",
+      problemSolved: [
+        "Too many forms. Too many systems. Too many steps.",
+        "ZARA x AIO Agent simplifies everyday tasks by letting users complete them directly through chat, while working with the organization’s existing local systems.",
+      ],
       targetUsers: [
-        "Procurement units in all ministries",
-        "Contract management offices",
-        "Internal audit teams reviewing procurement",
-        "Legal units vetting supplier agreements",
+        "Employees — Complete everyday tasks faster, simply by chatting with ZARA.",
+        "Managers — Reduce repetitive work and spend more time on important tasks.",
+        "HR & Admin Teams — Simplify routine processes without managing endless forms.",
+        "Organizations — Make existing systems easier to use with AI.",
       ],
       features: [
-        "Automated review of supplier contracts against procurement regulations",
-        "Flags non-standard clauses or unfavorable terms",
-        "Extracts key obligations, deadlines, and payment terms",
-        "Compares pricing and terms with previous contracts",
-        "Tracks contract performance and renewal dates",
+        {
+          title: "Chat to Get Things Done",
+          body: "Simply tell ZARA what you need and let it handle the task through conversation.",
+        },
+        {
+          title: "No More Forms",
+          body: "Complete everyday tasks without filling out lengthy forms.",
+        },
+        {
+          title: "Works with Your Existing Systems",
+          body: "ZARA works with your organization’s existing local systems to get things done.",
+        },
+        {
+          title: "Simple & Easy to Use",
+          body: "No technical knowledge needed. Just chat naturally with ZARA.",
+        },
+        {
+          title: "Secure On-Premise AI",
+          body: "Keep your organization’s information within your own environment.",
+        },
+        {
+          title: "Available 24/7",
+          body: "Get assistance and complete tasks anytime, wherever you are.",
+        },
       ],
       aiRole:
-        "The LLM reads contract documents and identifies deviations from standard templates or regulations via RAG. It highlights risks like missing penalty clauses or excessive liability. Automation tracks deadlines and triggers renewal reviews.",
+        "ZARA x AIO Agent turns conversation into action. Simply tell ZARA what you need—such as applying for leave or submitting an application—and ZARA can handle the task directly through chat by working with your organization’s existing local systems. No forms to fill in. No need to switch between systems. Just ask ZARA and get it done.",
       benefit:
-        "Reduces contract risks and disputes. Ensures compliance with procurement rules. Achieves better value for money through informed negotiation. Improves transparency and audit readiness.",
+        "For employees, ZARA makes everyday tasks faster and easier, simply chat with ZARA to get things done without filling in forms or switching between systems. For management, ZARA helps reduce repetitive administrative work, improve productivity, and make better use of existing business systems.",
       roi: "8 months",
     },
     {
@@ -975,13 +1014,44 @@ const AIArsenalDashboard = () => {
             {/* Hero — the landing page's headline stack over the video card,
                 all inside one viewport-height budget. */}
             <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-12 sm:mb-16 landscape:min-h-[calc(100svh-5rem)]">
-              <h1 className="relative flex items-center justify-center gap-[0.3em] px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
+              <h1 className="relative flex items-center justify-center px-4 font-extrabold text-center text-[min(12.5vw,clamp(1.75rem,6.4svh_+_0.6vw,4rem))] leading-[1.0625] tracking-[-0.009em]">
                 {/* Brand mark — same lockup as the landing hero, sized in em
                     so it tracks the title's clamp at every width. */}
-                <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
-                <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                  {product.heroTitle || product.name}
-                </span>              </h1>
+                {product.heroTitleLines ? (
+                  <>
+                    {/* Below lg: one line per word, logo beside the first only. */}
+                    <div className="flex flex-col items-center justify-center lg:hidden">
+                      {product.heroTitleLines.map((line, i) => (
+                        <span
+                          key={line}
+                          className={`flex items-center justify-center gap-[0.3em] ${i === 1 ? "-mt-[0.1em]" : i > 1 ? "mt-[0.15em]" : ""}`}
+                        >
+                          {i === 0 && (
+                            <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                          )}
+                          <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                            {line}
+                          </span>
+                        </span>
+                      ))}
+                    </div>
+                    {/* lg and up: back to a single line, logo before the whole title. */}
+                    <span className="hidden items-center justify-center gap-[0.3em] lg:flex">
+                      <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                      <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                        {product.heroTitleLines.join(" ")}
+                      </span>
+                    </span>
+                  </>
+                ) : (
+                  <span className="flex items-center justify-center gap-[0.3em]">
+                    <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                    <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                      {product.heroTitle || product.name}
+                    </span>
+                  </span>
+                )}
+              </h1>
 
               <div className="max-w-4xl mx-auto text-center">
                 <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
@@ -1007,7 +1077,6 @@ const AIArsenalDashboard = () => {
                         "-poster.jpg"
                       )}`}
                       controls={false}
-                      disablePictureInPicture
                     />
                     {/* Same button as the landing page hero; opens `demoVideo`. */}
                     {product.demoVideo && (
@@ -1077,8 +1146,10 @@ const AIArsenalDashboard = () => {
             <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
               <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 {/* Named after the product, so the ZARA page reads "How ZARA
-                    Works" and an agent's own page reads its agent name. */}
-                How {product.heroTitle || product.name} Works
+                    Works" and an agent's own page reads its agent name. A
+                    product can override this with its own heading. */}
+                {product.howItWorksTitle ||
+                  `How ${product.heroTitle || product.name} Works`}
               </h2>
               <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
                 {product.aiRole}
@@ -1090,9 +1161,15 @@ const AIArsenalDashboard = () => {
               <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 Problem Solved
               </h2>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                {product.problemSolved}
-              </p>
+              <div className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                {Array.isArray(product.problemSolved) ? (
+                  product.problemSolved.map((paragraph, i) => (
+                    <p key={i}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>{product.problemSolved}</p>
+                )}
+              </div>
             </div>
 
             {/* Same treatment: no panel, landing page type. */}
