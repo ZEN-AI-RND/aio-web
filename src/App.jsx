@@ -947,6 +947,8 @@ const AIArsenalDashboard = () => {
           to miss important information.
         </>
       ),
+      // Overrides the "Problem Solved" heading.
+      problemSolvedTitle: "Benefit",
       problemSolved: (
         <>
           <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
@@ -991,15 +993,17 @@ const AIArsenalDashboard = () => {
           body: "Support a consistent verification process.",
         },
       ],
-      benefit: (
-        <>
-          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
-            Verify faster. Process with confidence.
-          </span>
-          Reduce manual checking, catch mismatches earlier, and keep
-          applications moving.
-        </>
-      ),
+      // Hidden for now: the Problem Solved copy runs under a "Benefit"
+      // heading instead (`problemSolvedTitle`). Uncomment to bring it back.
+      // benefit: (
+      //   <>
+      //     <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+      //       Verify faster. Process with confidence.
+      //     </span>
+      //     Reduce manual checking, catch mismatches earlier, and keep
+      //     applications moving.
+      //   </>
+      // ),
       useCases: {
         subtitle: "Built for faster, simpler verification.",
         items: [
@@ -1664,7 +1668,7 @@ const AIArsenalDashboard = () => {
             {product.problemSolved && (
               <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
                 <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                  Problem Solved
+                  {product.problemSolvedTitle || "Problem Solved"}
                 </h2>
                 <div className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
                   {Array.isArray(product.problemSolved) ? (
