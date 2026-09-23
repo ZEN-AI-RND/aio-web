@@ -832,8 +832,7 @@ const AIArsenalDashboard = () => {
       demoVideo: "aio-form-filler.mp4",
       // Overrides the closing "Ready to Deploy AIO Form?" line below.
       ctaTagline: "Classify. Extract. Fill.",
-      // Overrides the "How AIO Form Works" default heading below.
-      howItWorksTitle: "Process Applications Faster",
+      howItWorksTitle: "How It Works",
       // This page's own headline stack, in place of the shared
       // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
       hero: {
@@ -842,72 +841,94 @@ const AIArsenalDashboard = () => {
         tail: " with AI.",
         subtitle: "Classify. Extract. Fill.",
       },
-      // Shown as the paragraph under the hero video, same slot as a combo's
-      // intro (see `comboIntro` in DetailPage).
-      heroDescription:
-        "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
-      // Placeholder copy below — every section the ZARA page (id 4) has, so
-      // this page shows the full template. Replace with real copy per field.
-      aiRole:
-        "Turn application documents into a simpler, faster process. AIO Form recognizes the application category from the uploaded documents and directs you to the appropriate form. It then identifies the required information from your documents, images, and handwriting, and automatically fills in the relevant form fields.",
-      problemSolved:
-        "Application processing can be time-consuming when users need to identify the right form, read through documents, and manually enter information field by field. AIO Form simplifies the process by automatically recognizing the application type, selecting the appropriate form, and transferring the required information from submitted documents into the correct fields. This reduces manual work, saves time, and makes application processing easier and more efficient.",
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            From documents to ready.
+          </span>
+          AIO Form identifies the application type, extracts the required
+          information from submitted documents, and fills the relevant form
+          fields automatically.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Too much typing. Too much manual work.
+          </span>
+          Application processing often means finding the right form, reading
+          documents, and entering information field by field.
+        </>
+      ),
+      // Overrides the "Problem Solved" heading; as on the AIO Verify page,
+      // there's no separate Benefit section.
+      problemSolvedTitle: "Benefits",
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Less typing. Less hassle. Fewer mistakes with AI.
+          </span>
+          Reduce manual data entry, speed up applications, and make the
+          submission process simpler for everyone.
+        </>
+      ),
       targetUsers: [
         "Government Agencies",
         "Corporate Organizations",
-        "Customer Service Teams",
         "HR & Administration",
+        "Customer Service Teams",
         "Application Processing Centers",
         "Public Service Departments",
-        "Businesses Handling High-Volume Applications",
       ],
       features: [
         {
-          title: "Smart Application Recognition",
-          body: "Automatically identifies the type of application.",
+          title: "Application Recognition",
+          body: "Identify the right application.",
         },
         {
-          title: "Right Form, Every Time",
-          body: "Selects the appropriate form based on the application.",
+          title: "Information Extraction",
+          body: "Capture details from documents and images.",
         },
         {
-          title: "Instant Information Capture",
-          body: "Extracts information from documents and images.",
-        },
-        {
-          title: "Reads Handwriting",
-          body: "Recognizes handwritten information with AI.",
+          title: "Handwriting Recognition",
+          body: "Read handwritten information.",
         },
         {
           title: "Automatic Form Filling",
-          body: "Fills the required fields automatically.",
+          body: "Populate the required fields.",
         },
         {
           title: "Faster Processing",
-          body: "Speeds up the application process from start to finish.",
+          body: "Move applications forward faster.",
         },
         {
           title: "Less Manual Work",
-          body: "Reduces repetitive typing and data entry.",
-        },
-        {
-          title: "Fewer Errors",
-          body: "Helps improve accuracy and consistency.",
+          body: "Reduce repetitive data entry.",
         },
       ],
-      // The lead line is bold, so this one is JSX rather than a plain string;
-      // it renders through the same single-paragraph branch.
-      benefit: (
-        <>
-          <strong className="text-white">
-            Less typing. Less hassle. More done.
-          </strong>{" "}
-          AIO Form makes application processing faster and easier by
-          handling the repetitive work for you. It helps reduce manual data
-          entry, minimize mistakes, and get applications ready sooner—so staff
-          can spend more time on work that matters.
-        </>
-      ),
+      useCases: {
+        subtitle: "Make every application faster.",
+        items: [
+          {
+            title: "Government Applications",
+            body: "Identify the right form and capture applicant information automatically.",
+          },
+          {
+            title: "HR & Employee Forms",
+            body: "Extract employee details and reduce repetitive data entry.",
+          },
+          {
+            title: "Customer Applications",
+            body: "Process application information faster with automated form filling.",
+          },
+          {
+            title: "Service Counters",
+            body: "Turn documents and handwriting into ready-to-process forms.",
+          },
+        ],
+      },
     },
     {
       // Landing-page product, not one of the 12 AI Agents — its "Learn more"
