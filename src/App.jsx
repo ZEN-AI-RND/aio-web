@@ -918,61 +918,105 @@ const AIArsenalDashboard = () => {
       // product has media of its own.
       video: "aio-form-checker-loop.mp4",
       demoVideo: "aio-form-checker.mp4",
-      // Placeholder copy below — every section the AIO Form page (id 13) has,
-      // so this page shows the full template. Only the hero title (`name`) is
-      // real; replace the rest with copy per field.
       ctaTagline: "Match. Verified. Confirm.",
-      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      howItWorksTitle: "How It Works",
       hero: {
         lead: "Less",
         words: ["CHECKING", "HASSLE", "MISTAKES"],
         tail: " with AI.",
         subtitle: "Match. Verified. Confirm.",
       },
-      // Shown as the paragraph under the hero video; same copy as the
-      // landing card, the way the AIO Form page reads.
-      heroDescription:
-        "Intelligently cross-check submitted forms against supporting documents to verify accuracy and identify missing information. Generate a clear correction report highlighting what needs to be reviewed or corrected before submission.",
-      aiRole:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
-      problemSolved:
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Check every detail. Automatically.
+          </span>
+          AIO Verify compares application information with supporting
+          documents, identifies missing details and mismatches, and highlights
+          what needs attention.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Too much checking. Too many details.
+          </span>
+          Manually comparing forms and documents takes time and makes it easy
+          to miss important information.
+        </>
+      ),
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Faster checks. Fewer mistakes.
+          </span>
+          AIO Verify automatically compares application details with supporting
+          documents, highlighting missing information and mismatches—so your
+          team can review applications faster and with greater confidence.
+        </>
+      ),
       targetUsers: [
-        "Lorem ipsum dolor sit amet",
-        "Consectetur adipiscing elit",
-        "Sed do eiusmod tempor incididunt",
-        "Ut labore et dolore magna aliqua",
-        "Quis nostrud exercitation ullamco",
-        "Duis aute irure dolor in reprehenderit",
+        "Government Agencies",
+        "Corporate Organizations",
+        "HR & Administration",
+        "Customer Service Teams",
+        "Application Processing Centers",
+        "Public Service Departments",
       ],
       features: [
         {
-          title: "Lorem Ipsum Dolor",
-          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+          title: "Smart Matching",
+          body: "Compare application details with supporting documents.",
         },
         {
-          title: "Consectetur Adipiscing",
-          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+          title: "Mismatch Detection",
+          body: "Highlight information that does not match.",
         },
         {
-          title: "Sed Do Eiusmod",
-          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+          title: "Missing Information",
+          body: "Identify missing details and documents.",
         },
         {
-          title: "Tempor Incididunt",
-          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+          title: "Easy Review",
+          body: "Quickly see what needs attention.",
         },
         {
-          title: "Ut Labore Dolore",
-          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          title: "Faster Verification",
+          body: "Reduce repetitive manual checking.",
         },
         {
-          title: "Magna Aliqua Enim",
-          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+          title: "Consistent Checking",
+          body: "Support a consistent verification process.",
         },
       ],
-      benefit:
-        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+      benefit: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Verify faster. Process with confidence.
+          </span>
+          Reduce manual checking, catch mismatches earlier, and keep
+          applications moving.
+        </>
+      ),
+      useCases: {
+        subtitle: "Built for faster, simpler verification.",
+        items: [
+          {
+            title: "Government Applications",
+            body: "Match applications with supporting documents. Spot missing details instantly.",
+          },
+          {
+            title: "HR & Employee Records",
+            body: "Verify employee information. Keep records complete and accurate.",
+          },
+          {
+            title: "Customer Applications",
+            body: "Check applications at scale. Find mismatches before they become problems.",
+          },
+        ],
+      },
     },
     {
       // Landing-page product, not one of the 12 AI Agents — its "Learn more"
@@ -1603,6 +1647,19 @@ const AIArsenalDashboard = () => {
               </div>
             )}
 
+            {/* Same treatment: no panel, landing page type. Only products
+                that set `challenge` show it. */}
+            {product.challenge && (
+              <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
+                <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  The Challenge
+                </h2>
+                <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                  {product.challenge}
+                </p>
+              </div>
+            )}
+
             {/* Same treatment: no panel, landing page type. */}
             {product.problemSolved && (
               <div className="mb-20 sm:mb-28 lg:mb-36 text-center">
@@ -1700,6 +1757,36 @@ const AIArsenalDashboard = () => {
                     )}
                   </div>
                 ))}
+                </div>
+              </div>
+            )}
+
+            {/* Same list treatment as Key Features, with a subtitle under the
+                heading. Only products that set `useCases` show it. */}
+            {product.useCases?.items.length > 0 && (
+              <div className="mb-20 sm:mb-28 lg:mb-36">
+                <h2 className="font-bold mb-3 sm:mb-4 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Use Cases
+                </h2>
+                {product.useCases.subtitle && (
+                  <p className="mb-6 sm:mb-8 px-4 text-center text-xl sm:text-2xl lg:text-3xl font-bold">
+                    {product.useCases.subtitle}
+                  </p>
+                )}
+                <div className="space-y-3 sm:space-y-4 max-w-4xl mx-auto px-4">
+                  {product.useCases.items.map((useCase, idx) => (
+                    <div key={idx} className="flex items-start">
+                      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5 text-green-500 flex-shrink-0" />
+                      <span>
+                        <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold">
+                          {useCase.title}
+                        </span>
+                        <span className="block text-sm sm:text-base lg:text-lg text-gray-400">
+                          {useCase.body}
+                        </span>
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
