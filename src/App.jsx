@@ -470,64 +470,95 @@ const AIArsenalDashboard = () => {
       timeReduction: "50%",
       color: "from-green-500 to-green-600",
       deployment: "Standalone",
-      problemSolved:
-        "Organizations spend valuable time answering repetitive questions and helping users find information across different documents and systems. ZARA provides a 24/7 AI buddy that delivers quick, consistent answers using the organization’s own knowledge and information, reducing staff workload and improving the user experience while keeping data within the organization’s own environment.",
+      // The combo card's intro paragraph stays on the landing page only.
+      hideHeroIntro: true,
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings. `aiRole` renders under
+      // the "Your AI Assistant Buddy" heading.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Meet ZARA (ZEN Artificial Reasoning Assistant).
+          </span>
+          Chat naturally with ZARA to find information, get answers,
+          understand procedures, and access your organization’s knowledge.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Finding information shouldn’t be hard.
+          </span>
+          Employees often spend time searching through documents, systems, and
+          messages just to find a simple answer.
+        </>
+      ),
+      // Overrides the "Problem Solved" heading; as on the AIO Verify page,
+      // there's no separate Benefit section.
+      problemSolvedTitle: "Benefits",
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Ask less. Find faster.
+          </span>
+          Get quick, consistent answers while reducing repetitive questions and
+          helping employees get the information they need.
+        </>
+      ),
       targetUsers: [
-        "Government agencies and public sector organizations",
-        "Organizations that handle high volumes of enquiries",
-        "Corporate departments such as HR, IT, and Customer Service",
-        "Organizations with internal knowledge management needs",
-        "Customer service centers, helpdesks, and support teams",
-        "Organizations looking to adopt secure, private AI solutions",
+        "Employees",
+        "HR & Administration",
+        "Managers",
+        "Customer Service Teams",
+        "Organizations",
       ],
-      // Named features: each one is a short title with its own sentence under
-      // it, which the Key Features list renders as two lines. The other
-      // products still carry plain strings.
       features: [
         {
-          title: "On-Premise AI Buddy",
-          body: "Provides AI assistance within the organization’s own environment, giving greater control over information.",
+          title: "Natural Conversation",
+          body: "Ask questions in your own words.",
         },
         {
-          title: "Conversational AI Interface",
-          body: "Offers a simple chat experience and can be made available through Microsoft Teams.",
+          title: "Organizational Knowledge",
+          body: "Get answers from your organization’s information.",
         },
         {
-          title: "AI buddy bot",
-          body: "Answers common questions in Malay and English, anytime.",
+          title: "24/7 Availability",
+          body: "Get help whenever you need it.",
         },
         {
-          title: "Knowledge-Based Answers",
-          body: "Provides answers based on the organization’s own documents, guidelines, and information.",
+          title: "Malay & English",
+          body: "Communicate naturally in both languages.",
         },
         {
-          title: "Connects to Internal Information",
-          body: "Can access relevant information from the organization’s existing systems and databases.",
+          title: "Context-Aware",
+          body: "Understands the conversation.",
         },
         {
-          title: "Understands the Conversation",
-          body: "Maintains the context of the conversation to provide more relevant and helpful answers.",
-        },
-        {
-          title: "Improves Over Time",
-          body: "Uses feedback and past interactions to continuously improve the quality of its answers.",
-        },
-        {
-          title: "Secure & Private",
-          body: "Keeps organizational information within the organization’s controlled environment.",
+          title: "Secure On-Premise AI",
+          body: "Keep your information within your environment.",
         },
       ],
-      // Rendered under the "How ZARA Works" heading on the detail page.
-      aiRole:
-        "ZARA is your organization’s on-premise AI buddy, designed to provide fast and reliable answers using your own documents, knowledge, and internal information. It helps users find information, understand procedures, and get assistance through a simple conversational interface. By connecting to your organization’s knowledge base and internal systems, ZARA delivers relevant answers while keeping your data within your own environment.",
-      // A list rather than a paragraph; the Benefit section renders either.
-      benefit: [
-        "Reduce repetitive enquiries and workload.",
-        "Provide fast, consistent answers 24/7.",
-        "Help users find the right information faster.",
-        "Give staff more time to focus on important tasks.",
-        "Keep organizational information secure and under your control.",
-      ],
+      useCases: {
+        subtitle: "Built for smarter, simpler everyday work.",
+        items: [
+          {
+            title: "HR & Employee Services",
+            body: "“Check my leave balance.” Get answers and complete everyday HR enquiries through chat.",
+          },
+          {
+            title: "Company Knowledge",
+            body: "“Where can I find the latest HR policy?” Find the right information without searching through documents.",
+          },
+          {
+            title: "Staff Support",
+            body: "“How do I apply for medical leave?” Get clear, instant guidance whenever help is needed.",
+          },
+          {
+            title: "Management Support",
+            body: "“What’s our leave policy for this situation?” Get quick access to relevant company information.",
+          },
+        ],
+      },
       roi: "7 months",
     },
     {
