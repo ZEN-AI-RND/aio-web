@@ -10,11 +10,12 @@ import AiChipIcon from "./AiChipIcon";
    detail page, where those sections are not mounted, it returns home first and
    scrolls afterwards. */
 
-// Same destinations as the top menu (SiteHeader.jsx). The column they sit in
-// is headed "Why AIO".
+// Same destinations as the top menu (SiteHeader.jsx), except Solutions, which
+// lands on the "Meet AI Office Suite." intro. The column they sit in is headed
+// "Why AIO".
 const QUICK_LINKS = [
   { label: "Architecture", href: "#architecture" },
-  { label: "Solutions", href: "#zara" },
+  { label: "Solutions", href: "#meet" },
   { label: "Benefit", href: "#benefit" },
   { label: "About", href: "#" },
 ];

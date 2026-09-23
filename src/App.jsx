@@ -28,7 +28,6 @@ import {
   Zap,
   Lock,
   CheckCircle,
-  XCircle,
   Sparkles,
   Globe,
   Eye,
@@ -1450,7 +1449,11 @@ const AIArsenalDashboard = () => {
           anchor: "form-filler", // top menu link target
           name: "AIO Form",
           video: "aio-form-filler-loop.mp4",
-          description: "Intelligently identify the document submission category and scan photos, documents, and handwriting. Extract the required information and automatically populate the corresponding fields in your form.",
+          tagline: "Classify. Extract. Fill.",
+          description: [
+            "Simplify application submissions with AI that identifies the right form, extracts information from your documents, and fills it for you.",
+          ],
+          outro: "Less typing. Less hassle. Fewer mistakes with AI.",
           // "Learn more" opens this `products` entry's detail page.
           detailId: 13,
         },
@@ -1461,7 +1464,11 @@ const AIArsenalDashboard = () => {
           video: "aio-form-checker-loop.mp4",
           // "Learn more" opens this `products` entry's detail page.
           detailId: 14,
-          description: "Intelligently cross-check submitted forms against supporting documents to verify accuracy and identify missing information. Generate a clear correction report highlighting what needs to be reviewed or corrected before submission.",
+          tagline: "Verified. Match. Confirm.",
+          description: [
+            "Check application details against supporting documents and quickly identify missing or mismatched information.",
+          ],
+          outro: "Faster checks. Clearer results. Smoother processing.",
         },
       ],
     },
@@ -1477,7 +1484,11 @@ const AIArsenalDashboard = () => {
           detailId: 15,
           name: "AIO Insight",
           video: "aio-insight-loop.mp4",
-          description: "Upload a spreadsheet, get instant answers. Just ask questions in natural language and watch the right charts appear — accurate, easy to read, and ready to share.",
+          tagline: "Analyze. Visualize. Decide.",
+          description: [
+            "Turn your data into clear insights with AI that helps you understand trends, uncover patterns, and make informed decisions.",
+          ],
+          outro: "Gain clarity. Perspective. Knowledge with AI.",
         },
         {
           id: "product10",
@@ -1486,7 +1497,11 @@ const AIArsenalDashboard = () => {
           detailId: 16,
           name: "AIO Forecast",
           video: "aio-insight-loop.mp4",
-          description: "See what's coming next. Upload your data and get a smart, reliable forecast in minutes — no spreadsheets, no guesswork, no data science degree needed.",
+          tagline: "Predict. Plan. Prepare.",
+          description: [
+            "Look ahead with AI-powered forecasting that helps understand trends, anticipate what comes next, and plan with greater clarity.",
+          ],
+          outro: "Gain foresight. Direction. Perspective with AI.",
         },
       ],
     },
@@ -1538,14 +1553,22 @@ const AIArsenalDashboard = () => {
           detailId: 17,
           name: "AIO Lab",
           image: "gb10.webp",
-          description: "An on-premise AI workstation pre-installed with AI development software and tools. Designed for AI education, hands-on learning, and AI development.",
+          tagline: "Learn. Build. Innovate.",
+          description: [
+            "A hands-on AI environment for learning, experimentation, development, and turning ideas into working solutions.",
+          ],
+          outro: "Build skills. Explore ideas. Create with AI.",
         },
         {
           id: "product8",
           anchor: "code", // top menu link target
           name: "AIO Code",
           image: "aiocode.jpg",
-          description: "AI-powered coding and software development workspace for faster delivery. Manage the full SDLC, from coding and tickets to testing and progress tracking.",
+          tagline: "Code. Build. Ship.",
+          description: [
+            "AI-powered workspace to manage the full SDLC—from coding and tickets to testing and progress tracking—all in one place.",
+          ],
+          outro: "From code to delivery. One workspace.",
         },
       ],
     },
@@ -1561,12 +1584,14 @@ const AIArsenalDashboard = () => {
       name: "ZARA",
       systems: ["AI Policy Agent", "AI Legal Agent", "AI Document Agent"],
       cost: "RM900K",
-      // One sentence per line. The landing page runs them together and lets
-      // them wrap; the detail page gives each its own line.
+      // Landing card copy: a tagline under the name, the paragraph, then a
+      // closing line. (The detail page sets `hideHeroIntro`, so none of this
+      // shows there.)
+      tagline: "Chat. Know. Done.",
       effect: [
-        "Meet ZARA (ZEN Artificial Reasoning Assistant), your AI buddy for smarter work.",
-        "Get richer answers, natural conversations, and instant access to your local knowledge base.",
+        "Your everyday AI buddy for finding information, getting answers, and getting help — securely within your organization.",
       ],
+      outro: "Ask. Understand. Get things done.",
       // icon: FileText,
       // icon: Map,
       icon: Book,
@@ -1585,10 +1610,13 @@ const AIArsenalDashboard = () => {
         "AI Inspector Agent",
       ],
       cost: "RM900K",
+      // Same card layout as ZARA: tagline, paragraph, closing line. (The
+      // detail page sets `hideHeroIntro`, so none of this shows there.)
+      tagline: "Chat. Act. Done.",
       effect: [
-        "Extend ZARA with AIO Agent and connect with your organization’s local applications.",
-        "Go beyond conversations and let ZARA assist with tasks, access business systems.",
+        "Turn conversations into action. Tell ZARA what you need and let it help complete tasks directly through chat.",
       ],
+      outro: "No forms. No switching. Just ask.",
       icon: Shield,
       color: "from-red-500 to-orange-600",
     },
@@ -2058,7 +2086,7 @@ const AIArsenalDashboard = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => goHome()}
+                  onClick={() => goHome("#meet")}
                   className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
                 >
                   View All Systems
@@ -2179,18 +2207,25 @@ const AIArsenalDashboard = () => {
               </div>
             </div>
 
-            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-4xl mx-auto px-4">
-              AI Office Suite is your complete <span className="whitespace-nowrap">AI-Powered Workplace.</span>
-            </p>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
-              Transform documents, data, knowledge base, and business processes with a unified suite of Artificial Intelligence applications.
-            </p>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-6xl mx-auto px-4">
-              Built for organizations. Designed for productivity.{" "}
-              {/* On phones the last sentence gets its own line, unbroken. */}
-              <br className="sm:hidden" />
-              <span className="whitespace-nowrap">Ready for on-premises AI.</span>
-            </p>
+            {/* Intro under the hero video: heading, grey subheading, then
+                the copy. The closing call to action's "View All Systems"
+                button lands here. */}
+            <div id="meet" className="mt-2 px-4 scroll-mt-24 lg:scroll-mt-28">
+              <h2 className="font-bold mb-2 sm:mb-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Meet AI Office Suite.
+              </h2>
+              {/* Grey heading-size line, like "Fully secure, sovereign and
+                  maximum control." under the architecture heading. */}
+              <p className="font-bold text-gray-400 mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                Your work, with AI built in.
+              </p>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto">
+                Find. Create. Analyse. Automate.
+                <br />
+                Everything you need to get work done—smarter, faster, and
+                simpler.
+              </p>
+            </div>
 
             {/* <p className="text-sm sm:text-base lg:text-lg text-gray-400 mt-2 max-w-4xl mx-auto px-4">
               A modular AI operating system that powers plug-and-play AI agents to
@@ -2238,18 +2273,7 @@ const AIArsenalDashboard = () => {
           </div> */}
         </div>
 
-        <div id="architecture" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
-          <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-            {/* ⚙️ TECH ARCHITECTURE */}
-            Your AI. Your Data. Your Infra.
-          </h1>
-          <h1 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-            Fully secure, sovereign and maximum control.
-          </h1>
-          <AioPillars />
-        </div>
-
-        {/* Statement section */}
+        {/* Statement section — hidden for now; uncomment to bring it back.
         <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
@@ -2257,12 +2281,12 @@ const AIArsenalDashboard = () => {
             </h2>
             <h2 className="font-bold text-gray-400 mt-2 sm:mt-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
               Get more done.{" "}
-              {/* On phones the second sentence gets its own line, unbroken. */}
               <br className="sm:hidden" />
               <span className="whitespace-nowrap">Make better decisions.</span>
             </h2>
           </div>
         </div>
+        */}
 
         <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
           <h2 className="font-bold mb-3 sm:mb-4 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
@@ -2278,9 +2302,17 @@ const AIArsenalDashboard = () => {
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                   {combo.name}
                 </h3>
-                <p className="grow mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                  {combo.effect.join(" ")}
-                </p>
+                {combo.tagline && (
+                  <p className="mb-3 text-lg sm:text-xl lg:text-2xl font-bold text-gray-400 text-center">
+                    {combo.tagline}
+                  </p>
+                )}
+                <div className="grow mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                  <p>{combo.effect.join(" ")}</p>
+                  {combo.outro && (
+                    <p className="mt-3 font-semibold text-white">{combo.outro}</p>
+                  )}
+                </div>
 
                 {/* Green box wraps the video only — matches the hero video card */}
                 <div className="group w-full p-4 sm:p-5 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
@@ -2331,9 +2363,21 @@ const AIArsenalDashboard = () => {
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-center">
                     {product.name}
                   </h3>
-                  <p className="grow mb-8 sm:mb-10 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                    {product.description}
-                  </p>
+                  {/* Same card copy layout as the ZARA cards: tagline, one or
+                      more paragraphs, then a closing line. */}
+                  {product.tagline && (
+                    <p className="mb-3 text-lg sm:text-xl lg:text-2xl font-bold text-gray-400 text-center">
+                      {product.tagline}
+                    </p>
+                  )}
+                  <div className="grow mb-8 sm:mb-10 space-y-3 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
+                    {[].concat(product.description).map((paragraph, i) => (
+                      <p key={i}>{paragraph}</p>
+                    ))}
+                    {product.outro && (
+                      <p className="font-semibold text-white">{product.outro}</p>
+                    )}
+                  </div>
 
                   <div className="group w-full p-4 sm:p-5 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
                     {/* Items without a `video` or `image` fall back to the "coming soon" placeholder */}
@@ -2505,58 +2549,54 @@ const AIArsenalDashboard = () => {
 
 
         <div id="benefit" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 sm:gap-10 lg:gap-16">
-            <div className="px-2 sm:px-4">
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
-                <XCircle className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 shrink-0" />
-                Old Way
-              </h3>
-              <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                <li>• Expensive cloud subscriptions</li>
-                <li>• Officers buried in paperwork</li>
-                <li>• Policies lost in folders</li>
-                <li>• Data in foreign servers</li>
-                <li>• Clients waiting weeks</li>
-                <li>• Fraud slipping through</li>
-              </ul>
-            </div>
-            <div className="px-2 sm:px-4">
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
-                {/* Brand mark in place of the check icon, sized in em so it
-                    tracks the heading like the hero lockup does. */}
-                <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
-                <span className="relative inline-block font-extrabold tracking-[-0.009em]">
-                  {/* <span className="absolute -top-0.5 -right-[0.55em] text-[0.4em] leading-none text-yellow-400 animate-pulse">
-                    ✨
-                  </span> */}
-                  <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                    AI Office
-                  </span>
-                </span>
-              </h3>
-              <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                <li>• Clients served in minutes</li>
-                <li>• Fraud caught automatically</li>
-                <li>• One Intelligent Workspace</li>
-                <li>• AI handles routine work</li>
-                <li>• Data stays in Malaysia</li>
-                <li>• Instant policy recall</li>
-              </ul>
-            </div>
-            <div className="px-2 sm:px-4">
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 flex items-center justify-center gap-2">
-                <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 shrink-0" />
-                Benefit
-              </h3>
-              <ul className="space-y-2 text-sm sm:text-base lg:text-lg text-gray-400 text-center">
-                <li>• Each works 24/7/365 without fatigue</li>
-                <li>• Work Smarter and better decisions</li>
-                <li>• All sovereign. All secure. All yours.</li>
-                <li>• Automate repetitive work faster</li>
-                <li>• All speak Malay and English</li>
-                <li>• Each gets smarter with use</li>
-              </ul>
-            </div>
+          <div className="text-center px-4">
+            <h2 className="font-bold mb-2 sm:mb-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Benefits
+            </h2>
+            <p className="font-bold text-gray-400 mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Work smarter. Move faster.
+            </p>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto">
+              Reduce repetitive work, simplify everyday tasks, and help your
+              organization get more value from AI.
+            </p>
+          </div>
+        </div>
+
+        <div id="architecture" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
+          <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            {/* ⚙️ TECH ARCHITECTURE */}
+            Your AI. Your Data. Your Infra.
+          </h1>
+          <h1 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            Fully secure, sovereign and maximum control.
+          </h1>
+          <AioPillars />
+        </div>
+
+        {/* Closing call to action, same as the product pages'. */}
+        <div className="max-w-6xl mx-auto mb-16 sm:mb-20 text-center">
+          <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+            Ready to Deploy AI Office Suite?
+          </h2>
+          <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+            {getText("subtitle2")}
+          </p>
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+            >
+              Request a Demo
+              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection("#meet")}
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
+            >
+              View All Systems
+            </button>
           </div>
         </div>
 
