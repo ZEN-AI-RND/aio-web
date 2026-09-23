@@ -598,7 +598,6 @@ const AIArsenalDashboard = () => {
       icon: FileSignature,
       // Same treatment as id 4: the detail page is entered from the
       // "ZARA x AIO Agent" card, so it leads with that clip and headline.
-      // The body copy below is still the agent's own — to be updated.
       video: "zara-promo.mp4",
       // No dedicated demo clip for this page yet, so "Learn more" opens the
       // landing page's own full hero video (with sound) instead of the
@@ -610,8 +609,7 @@ const AIArsenalDashboard = () => {
       // letting the browser wrap "ZARA x AIO Agent" wherever it runs out of
       // room; the logo then sits beside "ZARA" only, not the whole title.
       heroTitleLines: ["ZARA", "x", "AIO Agent"],
-      // Overrides the "How ZARA x AIO Agent Works" default heading below.
-      howItWorksTitle: "Beyond Chat. Into Action",
+      howItWorksTitle: "How It Works",
       // This page's own headline stack, in place of the shared
       // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
       hero: {
@@ -626,46 +624,95 @@ const AIArsenalDashboard = () => {
       timeReduction: "80%",
       color: "from-violet-500 to-violet-600",
       deployment: "Stackable",
-      problemSolved: [
-        "Too many forms. Too many systems. Too many steps.",
-        "ZARA x AIO Agent simplifies everyday tasks by letting users complete them directly through chat, while working with the organization’s existing local systems.",
-      ],
+      // The combo card's intro paragraph stays on the landing page only.
+      hideHeroIntro: true,
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Tell ZARA what you need.
+          </span>
+          Extend ZARA with AIO Agent and turns your request into action by
+          helping complete tasks directly through chat and working with your
+          organization’s existing systems.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Too many forms. Too many systems.
+          </span>
+          Simple tasks can require multiple steps, forms, and systems. ZARA x
+          AIO Agent brings them together through conversation.
+        </>
+      ),
+      // Overrides the "Problem Solved" heading; as on the AIO Verify page,
+      // there's no separate Benefit section.
+      problemSolvedTitle: "Benefits",
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Skip the steps. Get it done.
+          </span>
+          Complete everyday tasks faster, reduce repetitive work, and make
+          existing systems easier to use.
+        </>
+      ),
       targetUsers: [
-        "Employees — Complete everyday tasks faster, simply by chatting with ZARA.",
-        "Managers — Reduce repetitive work and spend more time on important tasks.",
-        "HR & Admin Teams — Simplify routine processes without managing endless forms.",
-        "Organizations — Make existing systems easier to use with AI.",
+        "Employees",
+        "Managers",
+        "HR & Administration",
+        "Customer Service Teams",
+        "Organizations",
       ],
       features: [
         {
           title: "Chat to Get Things Done",
-          body: "Simply tell ZARA what you need and let it handle the task through conversation.",
+          body: "Tell ZARA what you need.",
+        },
+        {
+          title: "Task Completion",
+          body: "Complete supported tasks through chat.",
         },
         {
           title: "No More Forms",
-          body: "Complete everyday tasks without filling out lengthy forms.",
+          body: "Reduce manual form filling.",
         },
         {
-          title: "Works with Your Existing Systems",
-          body: "ZARA works with your organization’s existing local systems to get things done.",
+          title: "Works with Existing Systems",
+          body: "Connect with your organization’s systems.",
         },
         {
-          title: "Simple & Easy to Use",
-          body: "No technical knowledge needed. Just chat naturally with ZARA.",
-        },
-        {
-          title: "Secure On-Premise AI",
-          body: "Keep your organization’s information within your own environment.",
+          title: "Simple to Use",
+          body: "No technical knowledge required.",
         },
         {
           title: "Available 24/7",
-          body: "Get assistance and complete tasks anytime, wherever you are.",
+          body: "Get assistance anytime.",
         },
       ],
-      aiRole:
-        "ZARA x AIO Agent turns conversation into action. Simply tell ZARA what you need—such as applying for leave or submitting an application—and ZARA can handle the task directly through chat by working with your organization’s existing local systems. No forms to fill in. No need to switch between systems. Just ask ZARA and get it done.",
-      benefit:
-        "For employees, ZARA makes everyday tasks faster and easier, simply chat with ZARA to get things done without filling in forms or switching between systems. For management, ZARA helps reduce repetitive administrative work, improve productivity, and make better use of existing business systems.",
+      useCases: {
+        subtitle: "Built for simpler, faster everyday tasks.",
+        items: [
+          {
+            title: "Employee Services",
+            body: "Apply for leave, check balances, and complete HR tasks through chat.",
+          },
+          {
+            title: "Government Services",
+            body: "Submit applications and requests without switching between systems.",
+          },
+          {
+            title: "Customer Services",
+            body: "Handle requests and submissions directly through a simple conversation.",
+          },
+          {
+            title: "Business Operations",
+            body: "Turn routine requests into completed tasks with fewer steps.",
+          },
+        ],
+      },
       roi: "8 months",
     },
     {
@@ -1583,10 +1630,13 @@ const AIArsenalDashboard = () => {
   const DetailPage = ({ product }) => {
     // Suites on the landing page carry an intro paragraph; a standalone
     // product can set its own `heroDescription` instead; a product opened
-    // from the systems grid has neither, and the paragraph is left out.
-    const comboIntro =
-      combos.find((c) => c.detailId === product.id)?.effect ||
-      (product.heroDescription ? [product.heroDescription] : null);
+    // from the systems grid has neither, and the paragraph is left out. A
+    // product can also set `hideHeroIntro` to drop its suite's intro here
+    // while the landing card keeps it.
+    const comboIntro = product.hideHeroIntro
+      ? null
+      : combos.find((c) => c.detailId === product.id)?.effect ||
+        (product.heroDescription ? [product.heroDescription] : null);
 
     // The headline stack: the rotating green word with the words around it,
     // over a grey subtitle. A product can carry its own; the rest share the
