@@ -1031,61 +1031,97 @@ const AIArsenalDashboard = () => {
       // product has media of its own.
       video: "aio-insight-loop.mp4",
       demoVideo: "aio-insight.mp4",
-      // Placeholder copy below — every section the AIO Form page (id 13) has,
-      // so this page shows the full template. Only the hero title (`name`) is
-      // real; replace the rest with copy per field.
       ctaTagline: "Analyze. Visualize. Decide.",
-      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      howItWorksTitle: "How It Works",
       hero: {
         lead: "Gain",
         words: ["CLARITY", "PERSPECTIVE", "KNOWLEDGE"],
         tail: " with AI.",
         subtitle: "Analyze. Visualize. Decide.",
       },
-      // Shown as the paragraph under the hero video; same copy as the
-      // landing card, the way the AIO Form page reads.
-      heroDescription:
-        "Upload a spreadsheet, get instant answers. Just ask questions in natural language and watch the right charts appear — accurate, easy to read, and ready to share.",
-      aiRole:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
-      problemSolved:
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Turn data into understanding.
+          </span>
+          AIO Insight transforms your data into clear visuals and meaningful
+          insights, helping you discover trends, patterns, and opportunities.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Too much data. Not enough clarity.
+          </span>
+          Important information can be buried in spreadsheets, reports, and
+          datasets, making it difficult to see what really matters.
+        </>
+      ),
+      // Overrides the "Problem Solved" heading; as on the AIO Verify page,
+      // there's no separate Benefit section.
+      problemSolvedTitle: "Benefits",
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Gain clarity. Perspective. Knowledge with AI.
+          </span>
+          Understand your data faster, uncover meaningful patterns, and make
+          better-informed decisions.
+        </>
+      ),
       targetUsers: [
-        "Lorem ipsum dolor sit amet",
-        "Consectetur adipiscing elit",
-        "Sed do eiusmod tempor incididunt",
-        "Ut labore et dolore magna aliqua",
-        "Quis nostrud exercitation ullamco",
-        "Duis aute irure dolor in reprehenderit",
+        "Management Teams",
+        "Business Analysts",
+        "Government Agencies",
+        "Corporate Organizations",
+        "Finance & Operations Teams",
+        "Data Teams",
       ],
       features: [
         {
-          title: "Lorem Ipsum Dolor",
-          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+          title: "Data Analysis",
+          body: "Understand what your data is telling you.",
         },
         {
-          title: "Consectetur Adipiscing",
-          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+          title: "Visual Insights",
+          body: "Turn data into easy-to-understand visuals.",
         },
         {
-          title: "Sed Do Eiusmod",
-          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+          title: "Trend Detection",
+          body: "Identify important changes and patterns.",
         },
         {
-          title: "Tempor Incididunt",
-          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+          title: "Data Exploration",
+          body: "Ask questions and explore your data.",
         },
         {
-          title: "Ut Labore Dolore",
-          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          title: "Reports & Summaries",
+          body: "Turn complex data into clear information.",
         },
         {
-          title: "Magna Aliqua Enim",
-          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+          title: "Decision Support",
+          body: "Get insights that support better decisions.",
         },
       ],
-      benefit:
-        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+      useCases: {
+        subtitle: "Built for smarter decisions.",
+        items: [
+          {
+            title: "Business Performance",
+            body: "Analyze sales, revenue, and operational data to understand what is happening.",
+          },
+          {
+            title: "Government Analytics",
+            body: "Explore large datasets to identify trends, patterns, and areas that need attention.",
+          },
+          {
+            title: "Finance & Operations",
+            body: "Monitor performance, compare results, and uncover opportunities for improvement.",
+          },
+        ],
+      },
     },
     {
       // Landing-page product, not one of the 12 AI Agents — its "Learn more"
