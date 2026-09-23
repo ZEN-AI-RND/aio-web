@@ -1132,61 +1132,101 @@ const AIArsenalDashboard = () => {
       // product has media of its own.
       video: "aio-insight-loop.mp4",
       demoVideo: "aio-insight.mp4",
-      // Placeholder copy below — every section the AIO Form page (id 13) has,
-      // so this page shows the full template. Only the hero title (`name`) is
-      // real; replace the rest with copy per field.
       ctaTagline: "Predict. Plan. Prepare.",
-      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      howItWorksTitle: "How It Works",
       hero: {
         lead: "Gain",
         words: ["FORESIGHT", "CLARITY", "DIRECTION"],
         tail: " with AI.",
         subtitle: "Predict. Plan. Prepare.",
       },
-      // Shown as the paragraph under the hero video; same copy as the
-      // landing card, the way the AIO Form page reads.
-      heroDescription:
-        "See what's coming next. Upload your data and get a smart, reliable forecast in minutes — no spreadsheets, no guesswork, no data science degree needed.",
-      aiRole:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
-      problemSolved:
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Turn data into foresight.
+          </span>
+          AIO Forecast uses historical and current data to identify trends and
+          provide forward-looking forecasts that help you plan ahead.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            The future is uncertain. Data can help.
+          </span>
+          Planning without understanding future trends can make it harder to
+          prepare for changing demand, resources, and business conditions.
+        </>
+      ),
+      // Overrides the "Problem Solved" heading; as on the AIO Verify page,
+      // there's no separate Benefit section.
+      problemSolvedTitle: "Benefits",
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Gain foresight. Direction. Perspective with AI.
+          </span>
+          Anticipate trends, prepare for what may come, and make more informed
+          plans using your data.
+        </>
+      ),
       targetUsers: [
-        "Lorem ipsum dolor sit amet",
-        "Consectetur adipiscing elit",
-        "Sed do eiusmod tempor incididunt",
-        "Ut labore et dolore magna aliqua",
-        "Quis nostrud exercitation ullamco",
-        "Duis aute irure dolor in reprehenderit",
+        "Management Teams",
+        "Business Analysts",
+        "Government Agencies",
+        "Corporate Organizations",
+        "Finance & Operations Teams",
+        "Planning Teams",
       ],
       features: [
         {
-          title: "Lorem Ipsum Dolor",
-          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+          title: "Trend Forecasting",
+          body: "Identify potential future trends.",
         },
         {
-          title: "Consectetur Adipiscing",
-          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+          title: "Data-Based Predictions",
+          body: "Use historical data to support forecasts.",
         },
         {
-          title: "Sed Do Eiusmod",
-          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+          title: "Demand Planning",
+          body: "Better understand future needs.",
         },
         {
-          title: "Tempor Incididunt",
-          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+          title: "Scenario Exploration",
+          body: "Explore possible outcomes.",
         },
         {
-          title: "Ut Labore Dolore",
-          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          title: "Visual Forecasts",
+          body: "Make future trends easier to understand.",
         },
         {
-          title: "Magna Aliqua Enim",
-          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+          title: "Planning Support",
+          body: "Turn forecasts into better preparation.",
         },
       ],
-      benefit:
-        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+      useCases: {
+        subtitle: "Built for smarter planning ahead.",
+        items: [
+          {
+            title: "Sales & Demand",
+            body: "Forecast future demand from historical sales data. Plan inventory with greater confidence.",
+          },
+          {
+            title: "Finance & Budgeting",
+            body: "Project future revenue and expenses. Support more informed financial planning.",
+          },
+          {
+            title: "Operations & Capacity",
+            body: "Anticipate future workload and resource needs. Plan capacity before demand arrives.",
+          },
+          {
+            title: "Government Planning",
+            body: "Analyze historical trends to support future planning, budgeting, and resource allocation.",
+          },
+        ],
+      },
     },
     {
       // Landing-page product, not one of the 12 AI Agents — its "Learn more"
@@ -1195,61 +1235,106 @@ const AIArsenalDashboard = () => {
       name: "AIO Lab",
       // A still rather than a clip, same as the landing card.
       image: "gb10.webp",
-      // Placeholder copy below — every section the AIO Form page (id 13) has,
-      // so this page shows the full template. Only the hero title (`name`) is
-      // real; replace the rest with copy per field.
       ctaTagline: "Learn. Build. Innovate.",
-      howItWorksTitle: "Lorem Ipsum Dolor Sit",
+      howItWorksTitle: "How It Works",
       hero: {
         lead: "Build",
         words: ["SKILLS", "KNOWLEDGE", "SOLUTIONS"],
         tail: " with AI.",
         subtitle: "Learn. Build. Innovate.",
       },
-      // Shown as the paragraph under the hero video; same copy as the
-      // landing card, the way the AIO Form page reads.
-      heroDescription:
-        "An on-premise AI workstation pre-installed with AI development software and tools. Designed for AI education, hands-on learning, and AI development.",
-      aiRole:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo, nemo enim ipsam voluptatem quia voluptas sit.",
-      problemSolved:
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+      // Each subtitle sits on its own line at the Key Features title size, so
+      // these three are JSX rather than plain strings.
+      aiRole: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Learn by building.
+          </span>
+          AIO Lab provides a hands-on environment to explore AI, experiment
+          with ideas, develop solutions, and turn concepts into working
+          projects.
+        </>
+      ),
+      challenge: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Learning AI shouldn’t stop at theory.
+          </span>
+          Understanding AI requires practical experience. Teams need a safe
+          environment to experiment, build, test, and learn.
+        </>
+      ),
+      // Overrides the "Problem Solved" heading; as on the AIO Verify page,
+      // there's no separate Benefit section.
+      problemSolvedTitle: "Benefits",
+      problemSolved: (
+        <>
+          <span className="block mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            Build skills. Explore ideas. Create with AI.
+          </span>
+          Give teams a practical space to develop AI skills, experiment with
+          new ideas, and turn learning into real solutions.
+        </>
+      ),
       targetUsers: [
-        "Lorem ipsum dolor sit amet",
-        "Consectetur adipiscing elit",
-        "Sed do eiusmod tempor incididunt",
-        "Ut labore et dolore magna aliqua",
-        "Quis nostrud exercitation ullamco",
-        "Duis aute irure dolor in reprehenderit",
+        "Students",
+        "Educators",
+        "Developers",
+        "Innovation Teams",
+        "AI Teams",
+        "Organizations",
       ],
       features: [
         {
-          title: "Lorem Ipsum Dolor",
-          body: "Sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+          title: "Hands-On Learning",
+          body: "Learn AI through practical projects.",
         },
         {
-          title: "Consectetur Adipiscing",
-          body: "Ut labore et dolore magna aliqua ut enim ad minim veniam.",
+          title: "Experimentation",
+          body: "Explore ideas in a safe environment.",
         },
         {
-          title: "Sed Do Eiusmod",
-          body: "Quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+          title: "AI Development",
+          body: "Build and test AI solutions.",
         },
         {
-          title: "Tempor Incididunt",
-          body: "Commodo consequat duis aute irure dolor in reprehenderit.",
+          title: "Project-Based Learning",
+          body: "Turn concepts into working projects.",
         },
         {
-          title: "Ut Labore Dolore",
-          body: "In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          title: "Team Collaboration",
+          body: "Learn and build together.",
         },
         {
-          title: "Magna Aliqua Enim",
-          body: "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+          title: "Innovation Space",
+          body: "Experiment with what’s possible.",
         },
       ],
-      benefit:
-        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+      useCases: {
+        subtitle: "Built for hands-on AI learning and innovation.",
+        items: [
+          {
+            title: "AI Training",
+            body: "Learn AI through practical exercises and real-world projects.",
+          },
+          {
+            title: "AI Development",
+            body: "Build and test AI solutions in a hands-on environment.",
+          },
+          {
+            title: "AI Research",
+            body: "Experiment with models, tools, and new AI applications.",
+          },
+          {
+            title: "AI Infrastructure",
+            body: "Deploy and manage AI workloads on dedicated local hardware.",
+          },
+          {
+            title: "AI Lab Setup",
+            body: "Create a dedicated environment for training, development, testing, and experimentation.",
+          },
+        ],
+      },
     },
   ];
 
