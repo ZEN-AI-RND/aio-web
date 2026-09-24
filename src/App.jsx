@@ -45,6 +45,10 @@ import {
 const cardClass =
   "group p-5 rounded-2xl border border-green-500/40 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-green-500/80 hover:shadow-[0_12px_40px_rgba(80,192,64,0.15)]";
 
+// Every page's splash shows ZARA holding the AIO mark (the About hero art).
+// The logo-disc splash it replaced is kept in SplashScreen.backup.jsx.
+const SPLASH_ART = `${import.meta.env.BASE_URL}about-hero.webp`;
+
 // Vanity URL slugs for each detail page's `products` id, e.g. aioffice.com.my/zara.
 // 4 matches the "zara" top-menu anchor (see `combos` below); keep the two in
 // sync if it ever changes. 7 and 13 intentionally differ from their
@@ -2426,7 +2430,12 @@ const AIArsenalDashboard = () => {
   if (detailProduct) {
     return (
       <>
-        <SplashScreen key={splashRun} showMs={splashMs} onReveal={reveal} />
+        <SplashScreen
+          key={splashRun}
+          showMs={splashMs}
+          onReveal={reveal}
+          zaraArt={SPLASH_ART}
+        />
         {/* Mounted but hidden behind the splash, so the page is already laid
             out and its media already loading when the splash fades. */}
         <div className={revealed ? undefined : "invisible"}>
@@ -2449,7 +2458,12 @@ const AIArsenalDashboard = () => {
 
   return (
     <>
-      <SplashScreen key={splashRun} showMs={splashMs} onReveal={reveal} />
+      <SplashScreen
+        key={splashRun}
+        showMs={splashMs}
+        onReveal={reveal}
+        zaraArt={SPLASH_ART}
+      />
       <div className={`stars ${revealed ? "" : "invisible"}`}></div>
       <div className={`nebula ${revealed ? "" : "invisible"}`}></div>
       {revealed && <SparkleField />}

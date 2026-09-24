@@ -11,9 +11,17 @@ import AioLogo from "./AioLogo";
    tracks the mark. The image is cut flat at the waist, so its bottom edge
    fades out into the page instead. */
 
-export default function HeroArt({ src, alt }) {
+export default function HeroArt({
+  src,
+  alt,
+  // Width budget; the splash passes a smaller one than the page hero.
+  sizeClass = "w-[min(100%,calc((100svh-7rem)*0.681))]",
+  // "AIO" colour. Plain text-white turns dark in the light theme (index.css);
+  // the always-dark splash passes !text-white to keep it white.
+  textClass = "text-white",
+}) {
   return (
-    <div className="relative mx-auto [container-type:inline-size] aspect-[848/1245] w-[min(100%,calc((100svh-7rem)*0.681))]">
+    <div className={`relative mx-auto [container-type:inline-size] aspect-[848/1245] ${sizeClass}`}>
       <img
         src={src}
         alt={alt}
@@ -21,7 +29,7 @@ export default function HeroArt({ src, alt }) {
       />
       <span className="absolute left-[20.2%] top-[48.4%] flex w-[25%] -translate-x-1/2 -translate-y-1/2 items-center justify-center aspect-square">
         <AioLogo className="logo-glow absolute inset-0 h-full w-full" />
-        <span className="relative font-display font-extrabold text-[5.3cqw] leading-none tracking-[-0.01em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+        <span className={`relative font-display font-extrabold text-[5.3cqw] leading-none tracking-[-0.01em] ${textClass} drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]`}>
           AIO
         </span>
       </span>
