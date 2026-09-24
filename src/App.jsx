@@ -1804,10 +1804,10 @@ const AIArsenalDashboard = () => {
                   is the same either way. */}
               {(product.video || product.image) && (
                 <div className="w-full flex justify-center px-4">
-                  <div className="group relative w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                  <div className="group relative w-[min(100%,calc(50svh*16/9))] overflow-hidden rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
                     {product.video ? (
                       <AutoplayVideo
-                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        className="block w-full aspect-video object-cover bg-black"
                         src={`${import.meta.env.BASE_URL}${product.video}`}
                         poster={`${import.meta.env.BASE_URL}${product.video.replace(
                           /\.mp4$/,
@@ -1817,7 +1817,7 @@ const AIArsenalDashboard = () => {
                       />
                     ) : (
                       <img
-                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        className="block w-full aspect-video object-cover bg-black"
                         src={`${import.meta.env.BASE_URL}${product.image}`}
                         alt={`${product.heroTitle || product.name} preview`}
                       />
@@ -2188,9 +2188,9 @@ const AIArsenalDashboard = () => {
               {/* Hero video — width derived from a height budget, so it can
                   never grow taller than the space left in the viewport. */}
               <div className="w-full flex justify-center px-4">
-                <div className="group relative w-[min(100%,calc(50svh*16/9))] p-3 sm:p-4 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                <div className="group relative w-[min(100%,calc(50svh*16/9))] overflow-hidden rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
                   <AutoplayVideo
-                    className="w-full aspect-video rounded-xl object-cover bg-black"
+                    className="block w-full aspect-video object-cover bg-black"
                     src={`${import.meta.env.BASE_URL}hero-loop.mp4`}
                     poster={`${import.meta.env.BASE_URL}hero-poster.jpg`}
                     controls={false}
@@ -2315,9 +2315,9 @@ const AIArsenalDashboard = () => {
                 </div>
 
                 {/* Green box wraps the video only — matches the hero video card */}
-                <div className="group w-full p-4 sm:p-5 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                <div className="group w-full overflow-hidden rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
                   <AutoplayVideo
-                    className="w-full aspect-video rounded-xl object-cover bg-black"
+                    className="block w-full aspect-video object-cover bg-black"
                     src={`${import.meta.env.BASE_URL}${combo.video}`}
                     poster={`${import.meta.env.BASE_URL}${combo.video.replace(
                       /\.mp4$/,
@@ -2379,11 +2379,11 @@ const AIArsenalDashboard = () => {
                     )}
                   </div>
 
-                  <div className="group w-full p-4 sm:p-5 rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                  <div className="group w-full overflow-hidden rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
                     {/* Items without a `video` or `image` fall back to the "coming soon" placeholder */}
                     {product.video ? (
                       <AutoplayVideo
-                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        className="block w-full aspect-video object-cover bg-black"
                         src={`${import.meta.env.BASE_URL}${product.video}`}
                         // Posters sit beside each clip as <name>-poster.jpg, so
                         // they follow the `video` field instead of a second one.
@@ -2396,13 +2396,13 @@ const AIArsenalDashboard = () => {
                       />
                     ) : product.image ? (
                       <img
-                        className="w-full aspect-video rounded-xl object-cover bg-black"
+                        className="block w-full aspect-video object-cover bg-black"
                         src={`${import.meta.env.BASE_URL}${product.image}`}
                         alt={`${product.name} preview`}
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full aspect-video rounded-xl bg-black/60 border border-white/10 flex flex-col items-center justify-center gap-2 text-gray-500">
+                      <div className="w-full aspect-video bg-black/60 flex flex-col items-center justify-center gap-2 text-gray-500">
                         <Play className="w-10 h-10 sm:w-12 sm:h-12" />
                         <span className="text-xs sm:text-sm">Media coming soon</span>
                       </div>

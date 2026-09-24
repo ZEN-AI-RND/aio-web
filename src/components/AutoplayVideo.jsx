@@ -121,7 +121,7 @@ export default function AutoplayVideo({ className, src, ...props }) {
           type="button"
           onClick={playFromGesture}
           aria-label="Play video"
-          className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-xl bg-black/40 !text-white backdrop-blur-sm transition-colors hover:bg-black/50"
+          className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40 !text-white backdrop-blur-sm transition-colors hover:bg-black/50"
         >
           <span className="flex h-14 w-14 items-center justify-center rounded-full border border-green-500 bg-black/60">
             <Play className="ml-0.5 h-6 w-6" />
