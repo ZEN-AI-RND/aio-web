@@ -1544,7 +1544,7 @@ const AIArsenalDashboard = () => {
     {
       id: "development",
       title: "AI Local Development.",
-      subtitle: "Build and learn in house — for education and internal teams.",
+      subtitle: "Build and learn in house for education and internal teams.",
       items: [
         {
           id: "product7",
@@ -2288,6 +2288,21 @@ const AIArsenalDashboard = () => {
         </div>
         */}
 
+        <div id="benefit" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
+          <div className="text-center px-4">
+            <h2 className="font-bold mb-2 sm:mb-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Benefits
+            </h2>
+            <p className="font-bold text-gray-400 mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+              Work smarter. Move faster.
+            </p>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto">
+              Reduce repetitive work, simplify everyday tasks, and help your
+              organization get more value from AI.
+            </p>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
           <h2 className="font-bold mb-3 sm:mb-4 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
             Your AI Buddy.
@@ -2547,21 +2562,6 @@ const AIArsenalDashboard = () => {
         )}
 
 
-
-        <div id="benefit" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
-          <div className="text-center px-4">
-            <h2 className="font-bold mb-2 sm:mb-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-              Benefits
-            </h2>
-            <p className="font-bold text-gray-400 mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-              Work smarter. Move faster.
-            </p>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto">
-              Reduce repetitive work, simplify everyday tasks, and help your
-              organization get more value from AI.
-            </p>
-          </div>
-        </div>
 
         <div id="architecture" className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36 scroll-mt-24 lg:scroll-mt-28">
           <h1 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
