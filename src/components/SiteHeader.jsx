@@ -22,6 +22,11 @@ const SOLUTIONS = [
   { label: "AIO Code", href: "#code" },
 ];
 
+// About sits outside the Solutions dropdown but opens its own page the same way.
+const ABOUT = { label: "About", href: "#about", opensPage: true };
+// About2 hidden for now; its page is now the About page.
+// const ABOUT2 = { label: "About2", href: "#about2", opensPage: true };
+
 const DEMO_HREF = "#";
 
 const linkClass =
@@ -217,13 +222,24 @@ export default function SiteHeader({ onNavigate, onOpenPage, theme, onToggleThem
             </li>
             <li>
               <a
-                href="#"
-                onClick={(event) => handleNavigate(event, "#")}
+                href="#about"
+                onClick={(event) => handleSolutionClick(event, ABOUT)}
                 className={linkClass}
               >
                 About
               </a>
             </li>
+            {/* About2 hidden for now; its page is now the About page.
+            <li>
+              <a
+                href="#about2"
+                onClick={(event) => handleSolutionClick(event, ABOUT2)}
+                className={linkClass}
+              >
+                About2
+              </a>
+            </li>
+            */}
           </ul>
         </nav>
 
@@ -318,9 +334,9 @@ export default function SiteHeader({ onNavigate, onOpenPage, theme, onToggleThem
           </li>
           <li>
             <a
-              href="#"
+              href="#about"
               onClick={(event) => {
-                handleNavigate(event, "#");
+                handleSolutionClick(event, ABOUT);
                 closeMobile();
               }}
               className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5"
@@ -328,6 +344,20 @@ export default function SiteHeader({ onNavigate, onOpenPage, theme, onToggleThem
               About
             </a>
           </li>
+          {/* About2 hidden for now; its page is now the About page.
+          <li>
+            <a
+              href="#about2"
+              onClick={(event) => {
+                handleSolutionClick(event, ABOUT2);
+                closeMobile();
+              }}
+              className="block rounded-lg px-4 py-3 text-lg text-white hover:bg-white/5"
+            >
+              About2
+            </a>
+          </li>
+          */}
         </ul>
         <DemoButton className="mt-3 w-full" />
       </nav>

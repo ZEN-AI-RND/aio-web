@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import SparkleField from "./components/SparkleField";
 import AutoplayVideo from "./components/AutoplayVideo";
+import HeroArt from "./components/HeroArt";
 import VideoModal from "./components/VideoModal";
 import AioLogo from "./components/AioLogo";
 import SiteHeader from "./components/SiteHeader";
@@ -66,6 +67,8 @@ const PRODUCT_SLUGS = {
   15: "aio-insight",
   16: "aio-forecast",
   17: "aio-lab",
+  // 18 is the backup About page, hidden: no slug, so no URL reaches it.
+  19: "about",
 };
 const SLUG_TO_PRODUCT_ID = Object.fromEntries(
   Object.entries(PRODUCT_SLUGS).map(([id, slug]) => [slug, Number(id)])
@@ -456,7 +459,7 @@ const AIArsenalDashboard = () => {
         </>
       ),
       // This page's own headline stack, in place of the shared
-      // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
+      // "Work SMART with AI." / "Smart. Helpful. Yours." pair.
       hero: {
         lead: "More",
         words: ["PERSONAL", "TRUSTED", "RELEVANT"],
@@ -641,7 +644,7 @@ const AIArsenalDashboard = () => {
       heroTitleLines: ["ZARA", "x", "AIO Agent"],
       howItWorksTitle: "How It Works",
       // This page's own headline stack, in place of the shared
-      // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
+      // "Work SMART with AI." / "Smart. Helpful. Yours." pair.
       hero: {
         lead: "More",
         words: ["HELPFUL", "POWERFUL", "EASY"],
@@ -911,7 +914,7 @@ const AIArsenalDashboard = () => {
       ctaTagline: "Classify. Extract. Fill.",
       howItWorksTitle: "How It Works",
       // This page's own headline stack, in place of the shared
-      // "Work SMARTER with AI." / "Smart. Helpful. Yours." pair.
+      // "Work SMART with AI." / "Smart. Helpful. Yours." pair.
       hero: {
         lead: "Less",
         words: ["TYPING", "HASSLE", "MISTAKES"],
@@ -1434,6 +1437,203 @@ const AIArsenalDashboard = () => {
         ],
       },
     },
+    {
+      // Backup of the previous About page, hidden for now: nothing links to
+      // it and it has no URL slug. It borrows the AIO Form page's layout.
+      id: 18,
+      name: "About (backup)",
+      video: "hero-loop.mp4",
+      demoVideo: "hero-720.mp4",
+      hero: {
+        lead: "Lorem",
+        words: ["IPSUM", "DOLOR", "AMET"],
+        tail: " sit amet.",
+        subtitle: "Lorem. Ipsum. Dolor.",
+      },
+      // Everything below the hero video: this list replaces the product
+      // sections, the architecture block and the closing call to action.
+      // A `body` entry is a paragraph, or an array of lines kept one per line.
+      aboutSections: [
+        {
+          title: "AI Office",
+          subtitle: "Work Smart.",
+          body: [
+            "Work is changing.",
+            "AI Office brings intelligent tools into the way you already work—helping you find answers, complete tasks, work with documents, understand data, and build new solutions.",
+          ],
+          tagline: "Simple to use. Powerful to have.",
+        },
+        {
+          title: "AI That Gets Things Done",
+          subtitle: "Don't just ask. Get things done.",
+          body: [
+            "From a simple question to a completed task, AI Office turns everyday work into something simpler.",
+          ],
+          tagline: "Chat. Act. Analyze. Build.",
+        },
+        {
+          title: "Your AI. Your Data. Your Infra.",
+          subtitle: "Because your work belongs to you.",
+          body: [
+            "AI Office is designed for private, secure deployment within your own infrastructure.",
+            [
+              "Your data stays yours.",
+              "Your systems stay yours.",
+              "Your AI works where you need it.",
+            ],
+          ],
+        },
+        {
+          title: "Everything You Need. In One Place.",
+          subtitle: "One workplace. A smarter way to work.",
+          body: [
+            "AI Office brings together AI buddies, AI agents, document automation, data intelligence, forecasting, and software development—all designed to work together.",
+          ],
+        },
+        {
+          title: "Built for What Comes Next",
+          subtitle: "Work smart today. Build what's next.",
+          body: [
+            "AI Office gives organizations the tools to work smarter, move faster, and create new possibilities with AI.",
+          ],
+        },
+      ],
+      // Closing line, in the place of "Ready to Deploy …?".
+      aboutClosing: "AI Office. Work Smart.",
+    },
+    {
+      // The About page, reached from the About links in the top menu and the
+      // footer. An illustration takes the place of the hero headline and
+      // video; below it, the same layout as the backup About page above.
+      id: 19,
+      name: "About",
+      heroArt: "about-hero.webp",
+      aboutSections: [
+        {
+          title: "AI Office",
+          subtitle: "Work Smart.",
+          body: [
+            "Work should be smart.",
+            ["Less searching.", "Less switching.", "Less repeating."],
+            ["More doing.", "More creating.", "More time for what matters."],
+          ],
+          tagline: "That’s AI Office.",
+        },
+        {
+          title: "AI That Works With You",
+          subtitle: "Not just answers. Action.",
+          body: [
+            "AI Office brings AI into everyday work.",
+            [
+              "Find information.",
+              "Complete tasks.",
+              "Process documents.",
+              "Understand data.",
+              "Build software.",
+            ],
+          ],
+          tagline: "Everything you need to work smart.",
+        },
+        {
+          title: "Made for Your Workplace",
+          subtitle: "Your work. Your way.",
+          body: [
+            "AI Office is built for organizations that want AI closer to their people, their systems, and their data.",
+            "From government agencies to enterprise teams, AI Office fits into the way you already work.",
+          ],
+          tagline: ["No need to change everything.", "Just work better."],
+        },
+        {
+          title: "Your AI. Your Data. Your Infra.",
+          subtitle: "Because your work belongs to you.",
+          body: [
+            "Run AI on your own infrastructure.",
+            [
+              "Keep your data where you want it.",
+              "Keep your systems under your control.",
+              "Keep your AI working for you.",
+            ],
+          ],
+          tagline: "Private. Secure. Yours.",
+        },
+        {
+          title: "One Suite. Many Ways to Work.",
+          subtitle: "Everything works together.",
+          items: [
+            {
+              title: "ZARA AI Buddy",
+              tagline: "Chat. Know. Done.",
+              body: "Get answers and company knowledge through a simple conversation.",
+            },
+            {
+              title: "ZARA x AIO Agent",
+              tagline: "Chat. Act. Done.",
+              body: "Turn conversations into completed tasks.",
+            },
+            {
+              title: "AIO Form",
+              tagline: "Classify. Extract. Fill.",
+              body: "Turn applications and documents into ready-to-process information.",
+            },
+            {
+              title: "AIO Verify",
+              tagline: "Verified. Match. Confirm.",
+              body: "Check applications against supporting documents.",
+            },
+            {
+              title: "AIO Insight",
+              tagline: "Analyze. Visualize. Decide.",
+              body: "Turn data into clear insights.",
+            },
+            {
+              title: "AIO Forecast",
+              tagline: "Predict. Plan. Prepare.",
+              body: "See what may come next and plan ahead.",
+            },
+            {
+              title: "AIO Lab",
+              tagline: "Learn. Build. Innovate.",
+              body: "Learn AI by experimenting, building, and doing.",
+            },
+            {
+              title: "AIO Code",
+              tagline: "Code. Build. Ship.",
+              body: "Build software faster, from code to delivery.",
+            },
+          ],
+          tagline: ["One suite.", "One workplace.", "One smart way to work."],
+        },
+        {
+          title: "Built by Zen Computer Systems",
+          subtitle: "Technology that works where it matters.",
+          body: [
+            <>
+              AI Office is developed by{" "}
+              <strong className="font-bold text-white">
+                Zen Computer Systems Artifical Intelligent Office (AIO)
+                department
+              </strong>
+              , a Malaysian technology company building software, AI, and digital
+              solutions for government and enterprise organizations.
+            </>,
+            "We believe technology should be useful, practical, and built for the real world.",
+          ],
+          tagline: "That belief is built into AI Office.",
+        },
+        {
+          title: "Built for What’s Next",
+          subtitle: "Start with AI. Grow with it.",
+          body: [
+            "AI is changing how we work.",
+            "AI Office gives organizations a foundation to start today—and keep building tomorrow.",
+            ["New tools.", "New capabilities.", "New ways to work."],
+          ],
+          tagline: ["Work Smart.", "Today and tomorrow."],
+        },
+      ],
+      aboutClosing: "AI Office",
+      aboutClosingSubtitle: "Work Smart.",
+    },
   ];
 
   // Placeholder product sections — replace title/subtitle/name/description,
@@ -1677,6 +1877,12 @@ const AIArsenalDashboard = () => {
   // href is the section anchor, so whichever combo or product owns that
   // anchor is what says which page to open.
   const openSolutionPage = (href) => {
+    // The About pages have no landing section to own their hrefs.
+    const aboutPage = { "#about": 19 }[href];
+    if (aboutPage) {
+      navigate(aboutPage);
+      return;
+    }
     const anchored = [
       ...combos,
       ...productSections.flatMap((section) => section.items),
@@ -1685,6 +1891,17 @@ const AIArsenalDashboard = () => {
       ?.detailId;
     if (detailId) navigate(detailId);
   };
+
+  // An About page copy entry is a string (or JSX), or an array of lines kept
+  // one per line.
+  const aboutLines = (text) =>
+    Array.isArray(text)
+      ? text.map((line, idx) => (
+          <span key={idx} className="block">
+            {line}
+          </span>
+        ))
+      : text;
 
   const DetailPage = ({ product }) => {
     // Suites on the landing page carry an intro paragraph; a standalone
@@ -1702,7 +1919,7 @@ const AIArsenalDashboard = () => {
     // landing page's.
     const hero = product.hero || {
       lead: "Work",
-      words: ["SMARTER", "FASTER", "BETTER"],
+      words: ["SMART", "FAST", "BETTER"],
       tail: " with AI.",
       subtitle: getText("subtitle2"),
     };
@@ -1747,96 +1964,107 @@ const AIArsenalDashboard = () => {
           <div className="max-w-6xl mx-auto">
             {/* Hero — the landing page's headline stack over the video card,
                 all inside one viewport-height budget. */}
-            <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-12 sm:mb-16 landscape:min-h-[calc(100svh-5rem)]">
-              <h1 className={`relative flex items-center justify-center px-4 font-extrabold text-center leading-[1.0625] tracking-[-0.009em] ${heroTitleSizeClass}`}>
-                {/* Brand mark — same lockup as the landing hero, sized in em
-                    so it tracks the title's clamp at every width. */}
-                {product.heroTitleLines ? (
-                  <>
-                    {/* Below lg: one line per word, logo beside the first only. */}
-                    <div className="flex flex-col items-center justify-center lg:hidden">
-                      {product.heroTitleLines.map((line, i) => (
-                        <span
-                          key={line}
-                          className={`flex items-center justify-center gap-[0.3em] ${i === 1 ? "-mt-[0.1em]" : i > 1 ? "mt-[0.15em]" : ""}`}
-                        >
-                          {i === 0 && (
-                            <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
-                          )}
-                          <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                            {line}
+            {/* A page can set `heroArt` to show one illustration in place of
+                the headline stack and video. */}
+            {product.heroArt ? (
+              <div className="mb-12 sm:mb-16 flex items-center justify-center landscape:min-h-[calc(100svh-5rem)]">
+                <HeroArt
+                  src={`${import.meta.env.BASE_URL}${product.heroArt}`}
+                  alt="ZARA holding the rotating AIO logo above her open hand"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-[2.5svh] mb-12 sm:mb-16 landscape:min-h-[calc(100svh-5rem)]">
+                <h1 className={`relative flex items-center justify-center px-4 font-extrabold text-center leading-[1.0625] tracking-[-0.009em] ${heroTitleSizeClass}`}>
+                  {/* Brand mark — same lockup as the landing hero, sized in em
+                      so it tracks the title's clamp at every width. */}
+                  {product.heroTitleLines ? (
+                    <>
+                      {/* Below lg: one line per word, logo beside the first only. */}
+                      <div className="flex flex-col items-center justify-center lg:hidden">
+                        {product.heroTitleLines.map((line, i) => (
+                          <span
+                            key={line}
+                            className={`flex items-center justify-center gap-[0.3em] ${i === 1 ? "-mt-[0.1em]" : i > 1 ? "mt-[0.15em]" : ""}`}
+                          >
+                            {i === 0 && (
+                              <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                            )}
+                            <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                              {line}
+                            </span>
                           </span>
+                        ))}
+                      </div>
+                      {/* lg and up: back to a single line, logo before the whole title. */}
+                      <span className="hidden items-center justify-center gap-[0.3em] lg:flex">
+                        <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
+                        <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                          {product.heroTitleLines.join(" ")}
                         </span>
-                      ))}
-                    </div>
-                    {/* lg and up: back to a single line, logo before the whole title. */}
-                    <span className="hidden items-center justify-center gap-[0.3em] lg:flex">
+                      </span>
+                    </>
+                  ) : (
+                    <span className="flex items-center justify-center gap-[0.3em] whitespace-nowrap">
                       <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
                       <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                        {product.heroTitleLines.join(" ")}
+                        {heroTitleText}
                       </span>
                     </span>
-                  </>
-                ) : (
-                  <span className="flex items-center justify-center gap-[0.3em] whitespace-nowrap">
-                    <AioLogo className="logo-glow h-[1.25em] w-[1.25em] shrink-0" />
-                    <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                      {heroTitleText}
-                    </span>
-                  </span>
-                )}
-              </h1>
-
-              <div className="max-w-4xl mx-auto text-center">
-                <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                  {hero.lead}{" "}
-                  <RotatingWord words={hero.words} className="text-green-500" />
-                  {hero.tail}
+                  )}
                 </h1>
-                <h1 className="font-bold text-gray-400 mt-[1svh] text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                  {hero.subtitle}
-                </h1>
-              </div>
 
-              {/* Hero media — same card and height budget as the landing page
-                  hero, so it can never grow taller than the viewport allows.
-                  A product carries a clip or, like AIO Lab, a still; the card
-                  is the same either way. */}
-              {(product.video || product.image) && (
-                <div className="w-full flex justify-center px-4">
-                  <div className="group relative w-[min(100%,calc(50svh*16/9))] overflow-hidden rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
-                    {product.video ? (
-                      <AutoplayVideo
-                        className="block w-full aspect-video object-cover bg-black"
-                        src={`${import.meta.env.BASE_URL}${product.video}`}
-                        poster={`${import.meta.env.BASE_URL}${product.video.replace(
-                          /\.mp4$/,
-                          "-poster.jpg"
-                        )}`}
-                        controls={false}
-                      />
-                    ) : (
-                      <img
-                        className="block w-full aspect-video object-cover bg-black"
-                        src={`${import.meta.env.BASE_URL}${product.image}`}
-                        alt={`${product.heroTitle || product.name} preview`}
-                      />
-                    )}
-                    {/* Same button as the landing page hero; opens `demoVideo`. */}
-                    {product.demoVideo && (
-                      <button
-                        type="button"
-                        onClick={() => setDemoOpen(true)}
-                        className="absolute bottom-3 sm:bottom-10 left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
-                      >
-                        Learn more
-                        <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </button>
-                    )}
-                  </div>
+                <div className="max-w-4xl mx-auto text-center">
+                  <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                    {hero.lead}{" "}
+                    <RotatingWord words={hero.words} className="text-green-500" />
+                    {hero.tail}
+                  </h1>
+                  <h1 className="font-bold text-gray-400 mt-[1svh] text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                    {hero.subtitle}
+                  </h1>
                 </div>
-              )}
-            </div>
+
+                {/* Hero media — same card and height budget as the landing page
+                    hero, so it can never grow taller than the viewport allows.
+                    A product carries a clip or, like AIO Lab, a still; the card
+                    is the same either way. */}
+                {(product.video || product.image) && (
+                  <div className="w-full flex justify-center px-4">
+                    <div className="group relative w-[min(100%,calc(50svh*16/9))] overflow-hidden rounded-2xl border border-green-500 bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(80,192,64,0.35)]">
+                      {product.video ? (
+                        <AutoplayVideo
+                          className="block w-full aspect-video object-cover bg-black"
+                          src={`${import.meta.env.BASE_URL}${product.video}`}
+                          poster={`${import.meta.env.BASE_URL}${product.video.replace(
+                            /\.mp4$/,
+                            "-poster.jpg"
+                          )}`}
+                          controls={false}
+                        />
+                      ) : (
+                        <img
+                          className="block w-full aspect-video object-cover bg-black"
+                          src={`${import.meta.env.BASE_URL}${product.image}`}
+                          alt={`${product.heroTitle || product.name} preview`}
+                        />
+                      )}
+                      {/* Same button as the landing page hero; opens `demoVideo`. */}
+                      {product.demoVideo && (
+                        <button
+                          type="button"
+                          onClick={() => setDemoOpen(true)}
+                          className="absolute bottom-3 sm:bottom-10 left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                        >
+                          Learn more
+                          <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* The landing page's blurb for this product, when it is one of the
                 suites shown there. Read from `combos` rather than copied, so the
@@ -1859,6 +2087,86 @@ const AIArsenalDashboard = () => {
               </p>
             )}
           </div>
+
+          {/* The About pages' own copy, in the landing page's section type:
+              white heading over a grey one, then the body and an optional
+              bold closing line. */}
+          {product.aboutSections && (
+            <div className="max-w-6xl mx-auto">
+              {product.aboutSections.map((section) => (
+                <div key={section.title} className="mb-20 sm:mb-28 lg:mb-36 text-center">
+                  <h2 className="font-bold mb-2 sm:mb-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                    {section.title}
+                  </h2>
+                  <p className="font-bold text-gray-400 mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                    {section.subtitle}
+                  </p>
+                  {section.body?.length > 0 && (
+                    <div className="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                      {section.body.map((paragraph, idx) => (
+                        <p key={idx}>{aboutLines(paragraph)}</p>
+                      ))}
+                    </div>
+                  )}
+                  {/* Named entries under the copy, e.g. the suite's products:
+                      a Key Features-size name, a bold grey line, then copy. */}
+                  {section.items?.length > 0 && (
+                    <div className="mt-10 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 sm:gap-y-12 max-w-5xl mx-auto px-4">
+                      {section.items.map((item) => (
+                        <div key={item.title}>
+                          <h3 className="mb-1 sm:mb-2 text-xl sm:text-2xl lg:text-3xl font-bold">
+                            {item.title}
+                          </h3>
+                          <p className="mb-2 text-base sm:text-lg lg:text-xl font-bold text-gray-400">
+                            {item.tagline}
+                          </p>
+                          <p className="text-sm sm:text-base lg:text-lg text-gray-400">
+                            {item.body}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {section.tagline && (
+                    <p
+                      className={`${
+                        section.items ? "mt-10 sm:mt-12" : "mt-6 sm:mt-8"
+                      } px-4 text-xl sm:text-2xl lg:text-3xl font-bold text-white`}
+                    >
+                      {aboutLines(section.tagline)}
+                    </p>
+                  )}
+                </div>
+              ))}
+
+              <div className="text-center">
+                <h2 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  {product.aboutClosing}
+                </h2>
+                {product.aboutClosingSubtitle && (
+                  <p className="mt-2 sm:mt-3 font-bold text-gray-400 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                    {product.aboutClosingSubtitle}
+                  </p>
+                )}
+                <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                  >
+                    Request a Demo
+                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => goHome()}
+                    className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
+                  >
+                    View All Systems
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="max-w-6xl mx-auto">
 
@@ -2047,53 +2355,58 @@ const AIArsenalDashboard = () => {
             )}
           </div>
 
-          {/* The landing page's architecture section, headings and all, so a
-              reader who lands straight on a product still gets the sovereignty
-              claim. Mirrors #architecture in the landing tree below, down to its
-              max-w-7xl: at the section column's narrower width the pillar
-              headings wrap. A negative margin would widen it in place but
-              overflows the page padding between lg and 1216px, so the column
-              is closed and reopened around it instead. The headings are h2
-              here because the hero owns the h1. */}
-          <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
-            <h2 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-              Your AI. Your Data. Your Infra.
-            </h2>
-            <h2 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-              Fully secure, sovereign and maximum control.
-            </h2>
-            <AioPillars />
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            {/* Closing call to action, with the site's green button pair. */}
-            <div className="text-center">
-              <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-                Ready to Deploy {product.heroTitle || product.name}?
-              </h2>
-              {/* A product can carry its own closing line; the rest share
-                  the agent pitch. */}
-              <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
-                {product.ctaTagline || "Chat. Act. Done."}
-              </p>
-              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
-                >
-                  Request a Demo
-                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => goHome()}
-                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
-                >
-                  View All Systems
-                </button>
+          {/* The About page closes with its own sections above. */}
+          {!product.aboutSections && (
+            <>
+              {/* The landing page's architecture section, headings and all, so a
+                  reader who lands straight on a product still gets the sovereignty
+                  claim. Mirrors #architecture in the landing tree below, down to its
+                  max-w-7xl: at the section column's narrower width the pillar
+                  headings wrap. A negative margin would widen it in place but
+                  overflows the page padding between lg and 1216px, so the column
+                  is closed and reopened around it instead. The headings are h2
+                  here because the hero owns the h1. */}
+              <div className="max-w-7xl mx-auto mb-20 sm:mb-28 lg:mb-36">
+                <h2 className="font-bold mb-2 sm:mb-3 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Your AI. Your Data. Your Infra.
+                </h2>
+                <h2 className="font-bold text-gray-400 mb-8 sm:mb-10 text-center text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                  Fully secure, sovereign and maximum control.
+                </h2>
+                <AioPillars />
               </div>
-            </div>
-          </div>
+
+              <div className="max-w-6xl mx-auto">
+                {/* Closing call to action, with the site's green button pair. */}
+                <div className="text-center">
+                  <h2 className="font-bold mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
+                    Ready to Deploy {product.heroTitle || product.name}?
+                  </h2>
+                  {/* A product can carry its own closing line; the rest share
+                      the agent pitch. */}
+                  <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto px-4">
+                    {product.ctaTagline || "Chat. Act. Done."}
+                  </p>
+                  <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-black transition-colors duration-300 hover:bg-green-400"
+                    >
+                      Request a Demo
+                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => goHome()}
+                      className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
+                    >
+                      View All Systems
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           <ScrollToTopButton />
 
@@ -2175,7 +2488,7 @@ const AIArsenalDashboard = () => {
                 <h1 className="font-bold text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                   Work{" "}
                   <RotatingWord
-                    words={["SMARTER", "FASTER", "BETTER"]}
+                    words={["SMART", "FAST", "BETTER"]}
                     className="text-green-500"
                   />{" "}
                   with AI.
@@ -2221,7 +2534,7 @@ const AIArsenalDashboard = () => {
               <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto">
                 Find. Create. Analyse. Automate.
                 <br />
-                Everything you need to get work done—smarter, faster, and
+                Everything you need to get work done—smart, fast, and
                 simpler.
               </p>
             </div>
@@ -2293,7 +2606,7 @@ const AIArsenalDashboard = () => {
               Benefits
             </h2>
             <p className="font-bold text-gray-400 mb-3 sm:mb-4 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
-              Work smarter. Move faster.
+              Work smart. Move fast.
             </p>
             <p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-4xl mx-auto">
               Reduce repetitive work, simplify everyday tasks, and help your

@@ -17,7 +17,9 @@ const QUICK_LINKS = [
   { label: "Architecture", href: "#architecture" },
   { label: "Solutions", href: "#meet" },
   { label: "Benefit", href: "#benefit" },
-  { label: "About", href: "#" },
+  { label: "About", href: "#about", opensPage: true },
+  // About2 hidden for now; its page is now the About page.
+  // { label: "About2", href: "#about2", opensPage: true },
 ];
 
 // Same list as the top menu's Solutions dropdown. A plain string has no detail
@@ -101,7 +103,7 @@ export default function SiteFooter({ onNavigate, onOpenPage }) {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    onClick={(event) => handleClick(event, link.href)}
+                    onClick={(event) => handleSolutionClick(event, link)}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     {link.label}
