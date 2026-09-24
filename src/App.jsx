@@ -2086,7 +2086,7 @@ const AIArsenalDashboard = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => goHome("#meet")}
+                  onClick={() => goHome()}
                   className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
                 >
                   View All Systems
@@ -2208,8 +2208,7 @@ const AIArsenalDashboard = () => {
             </div>
 
             {/* Intro under the hero video: heading, grey subheading, then
-                the copy. The closing call to action's "View All Systems"
-                button lands here. */}
+                the copy. */}
             <div id="meet" className="mt-2 px-4 scroll-mt-24 lg:scroll-mt-28">
               <h2 className="font-bold mb-2 sm:mb-3 text-[min(5.4vw,clamp(1.125rem,4svh_+_0.4vw,3rem))] leading-[1.08349] tracking-[-0.003em]">
                 Meet AI Office Suite.
@@ -2592,7 +2591,7 @@ const AIArsenalDashboard = () => {
             </button>
             <button
               type="button"
-              onClick={() => scrollToSection("#meet")}
+              onClick={() => goHome()}
               className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-green-500 px-5 py-2.5 text-sm sm:text-base font-medium text-white transition-colors duration-300 hover:bg-green-500/10"
             >
               View All Systems
