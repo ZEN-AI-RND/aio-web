@@ -1545,7 +1545,7 @@ const AIArsenalDashboard = () => {
             "AI Office is built for organizations that want AI closer to their people, their systems, and their data.",
             "From government agencies to enterprise teams, AI Office fits into the way you already work.",
           ],
-          tagline: ["No need to change everything.", "Just work better."],
+          tagline: ["No need to change everything.", "Just work smart."],
         },
         {
           title: "Your AI. Your Data. Your Infra.",
