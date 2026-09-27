@@ -1019,10 +1019,8 @@ const AIArsenalDashboard = () => {
       // button (see `productSections` below) opens this page.
       id: 14,
       name: "AIO Verify",
-      // Temporary: an animated still of ZARA with the AIO mark stands in for
-      // the video and demo until new footage is ready. With no `demoVideo`,
-      // the hero has no "Learn more" button.
-      image: "aio-verify-zara.webp",
+      video: "aio-verify-loop.mp4",
+      demoVideo: "aio-verify.mp4",
       ctaTagline: "Match. Verified. Confirm.",
       howItWorksTitle: "How It Works",
       hero: {
@@ -1665,8 +1663,7 @@ const AIArsenalDashboard = () => {
           id: "product2",
           anchor: "form-checker", // top menu link target
           name: "AIO Verify",
-          // Temporary still, same as its detail page's hero.
-          image: "aio-verify-zara.webp",
+          video: "aio-verify-loop.mp4",
           // "Learn more" opens this `products` entry's detail page.
           detailId: 14,
           tagline: "Verified. Match. Confirm.",
