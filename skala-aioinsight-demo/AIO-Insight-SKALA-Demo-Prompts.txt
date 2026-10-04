@@ -1,0 +1,123 @@
+*AIO Insight x SKALA 2.0 — Demo Prompts*
+🔗 https://skala-aioinsight.aioffice.com.my
+
+*Cara guna / How to use*
+1. Buka pautan di atas (Chrome, Edge atau Safari).
+2. Tekan butang *Zara* (kanan bawah) untuk buka Tanya ZARA.
+3. Salin & tampal prompt, ATAU tekan 🎤 dan sebut prompt itu.
+4. Akhiri dengan *Hantar* / *Send* — soalan dihantar automatik.
+5. Sebut *"Kosongkan filter"* sebelum soalan baharu untuk lihat semua data.
+
+━━━━━━━━━━━━━━━━━━
+*BAHAGIAN 1 — ASAS*
+_Papan pemuka: Keseluruhan_
+━━━━━━━━━━━━━━━━━━
+
+*1.1* [BM]
+```Berapa jumlah projek dan kosnya? Hantar.```
+✅ 2,249 projek · RM 124.85 bil
+
+*1.2* [BM]
+```Tunjukkan projek di Kedah sahaja. Hantar.```
+✅ Halaman ditapis ke Kedah (186 projek)
+
+*1.3* [BM]
+```Kementerian manakah yang mempunyai projek terbanyak? Hantar.```
+✅ KPM · 906 projek · kad Kementerian dizum
+
+*1.4* [EN]
+```How many projects are in Perlis? Send.```
+✅ 41 projects · page filtered to Perlis
+
+*1.5* [EN]
+```How many projects are in Selangor? Send.```
+✅ 224 projects · page filtered to Selangor
+
+━━━━━━━━━━━━━━━━━━
+*BAHAGIAN 2 — STATUS KESELURUHAN*
+_Papan pemuka: Keseluruhan_
+━━━━━━━━━━━━━━━━━━
+
+*2.1* [BM]
+```Fasa mana ada paling banyak projek? Hantar.```
+✅ Fasa Pembinaan · 826 projek
+
+*2.2* [BM]
+```Berapa jumlah projek di Johor? Hantar.```
+✅ 229 projek · halaman ditapis ke Johor
+
+*2.3* [BM]
+```Tukar carta kaedah pelaksanaan kepada carta bar. Hantar.```
+✅ Carta Kaedah Pelaksanaan bertukar ke carta bar & dizum
+
+*2.4* [EN]
+```Which ministry has the highest project cost? Send.```
+✅ KPM · RM 32.27 bil
+
+*2.5* [EN]
+```What is the total cost of projects in Sabah? Send.```
+✅ RM 9.36 bil · page filtered to Sabah
+
+━━━━━━━━━━━━━━━━━━
+*BAHAGIAN 3 — PROJEK DALAM PEMBINAAN*
+_Menu kiri: Pembinaan → Projek Dalam Pembinaan_
+━━━━━━━━━━━━━━━━━━
+
+*3.1* [BM]
+```Berapa projek yang lewat lebih 20%? Hantar.```
+✅ 20 projek (Lewat >20% / TTBS)
+
+*3.2* [BM]
+```Kementerian mana ada paling banyak projek pembinaan? Hantar.```
+✅ KPM · 276 projek
+
+*3.3* [BM]
+```Tunjukkan projek yang lewat sahaja. Hantar.```
+✅ Halaman ditapis: Lewat Jadual <20% & Lewat >20% / TTBS
+
+*3.4* [EN]
+```How many construction projects are in Sabah? Send.```
+✅ 62 projects · page filtered to Sabah
+
+*3.5* [EN]
+```What is the average physical progress of the projects? Send.```
+✅ 46.08%
+
+━━━━━━━━━━━━━━━━━━
+*BAHAGIAN 4 — ZARA LUKIS CARTA*
+_Carta baharu muncul di bawah "Daripada Tanya ZARA"_
+━━━━━━━━━━━━━━━━━━
+
+*4.1* [BM] _Keseluruhan_
+```Lukis kos projek mengikut kaedah pelaksanaan. Hantar.```
+✅ Carta baharu: kos mengikut kaedah (KD, RB, KP, Tidak Ditetapkan)
+
+*4.2* [BM] _Keseluruhan_ — 2 langkah
+```Tunjukkan projek di Johor sahaja. Hantar.```
+```Lukis kos projek mengikut kaedah pelaksanaan. Hantar.```
+✅ Carta baharu untuk Johor sahaja
+
+*4.3* [BM] _Pembinaan_
+```Lukis kos projek mengikut jenis aset. Hantar.```
+✅ Carta baharu: kos mengikut jenis aset (tertinggi CJ)
+
+*4.4* [EN] _Pembinaan_
+```Draw the project cost by state. Send.```
+✅ New chart: construction cost by state
+
+*4.5* [EN] _Keseluruhan_
+```Draw the number of projects by asset type. Send.```
+✅ New chart: number of projects by asset type
+
+━━━━━━━━━━━━━━━━━━
+*ARAHAN SUARA / VOICE COMMANDS*
+_(sebut sahaja, tanpa "hantar")_
+━━━━━━━━━━━━━━━━━━
+🎤 *Padam* — kosongkan kotak soalan
+🎤 *Padam semua* — mula perbualan baharu
+🎤 *Kosongkan filter* — buang semua penapis
+
+*Nota*
+• Angka sama setiap kali; ayat jawapan mungkin berbeza sedikit.
+• Pembinaan tiada data kaedah pelaksanaan / fasa / RMK — guna Keseluruhan.
+• Telefon: tekan *"Lihat di papan pemuka →"* di bawah jawapan untuk lihat carta.
