@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#050810" />
+<title>AIO Insight × SKALA 2.0 — Demo Report</title>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #050810; --panel: #0d1424; --line: #1e2a44; --ink: #e8eefc; --quiet: #93a3c4;
+    --accent: #5b8cff; --good: #34d399; --warn: #fbbf24;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 Inter, system-ui, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  header img { width: 48px; height: 48px; }
+  .brand { font-family: Orbitron, Inter, sans-serif; font-size: 13px; letter-spacing: .12em; color: var(--quiet); }
+  h1 { font-size: clamp(26px, 4.5vw, 40px); line-height: 1.15; margin: 6px 0 10px; }
+  h2 { font-size: 22px; margin: 44px 0 12px; }
+  .lead { color: var(--quiet); font-size: 17px; max-width: 760px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+  .chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; }
+  .chip b { color: var(--good); }
+  .cta { display: inline-flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .btn { display: inline-block; padding: 11px 18px; border-radius: 10px; font-weight: 600; text-decoration: none; }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.ghost { border: 1px solid var(--line); color: var(--ink); background: var(--panel); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  video { width: 100%; border-radius: 12px; border: 1px solid var(--line); background: #000; display: block; }
+  .note { color: var(--quiet); font-size: 14px; margin-top: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--quiet); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+  td.ok { color: var(--good); font-weight: 600; white-space: nowrap; }
+  .scroll { overflow-x: auto; }
+  .diagram { background: #fff; border-radius: 14px; padding: 12px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  ol.flow { padding-left: 20px; }
+  ol.flow li { margin: 4px 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .grid .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .grid .card p { margin: 0; color: var(--quiet); font-size: 14.5px; }
+  footer { margin-top: 56px; color: var(--quiet); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+  @media (max-width: 600px) { th, td { padding: 8px; font-size: 14px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/aio-logo.png" alt="AIO" />
+    <div><div class="brand">AI OFFICE · AIO INSIGHT</div></div>
+  </header>
+
+  <h1>AIO Insight × SKALA 2.0<br />Demo Delivery Report</h1>
+  <p class="lead">Ask the SKALA project dashboards a question by typing or speaking, in Bahasa Malaysia or English, and Tanya ZARA answers from the live data, filters the page, zooms to the right chart, or draws a new one. Delivered and tested on 4 October 2026.</p>
+  <div class="chips">
+    <span class="chip"><b>✓</b> Live on Azure</span>
+    <span class="chip"><b>✓</b> Voice BM + EN</span>
+    <span class="chip"><b>✓</b> Desktop + phone</span>
+    <span class="chip"><b>✓</b> Charts on request</span>
+    <span class="chip"><b>✓</b> 20 demo prompts verified</span>
+  </div>
+  <div class="cta">
+    <a class="btn primary" href="https://skala-aioinsight.aioffice.com.my" target="_blank" rel="noopener">Open the live demo →</a>
+    <a class="btn ghost" href="AIO-Insight-SKALA-Demo-Prompts.txt" download>Download demo prompts (.txt)</a>
+    <a class="btn ghost" href="https://claude.ai/code/artifact/ebec1a40-1169-484b-9847-b6c6ba5d3fdb" target="_blank" rel="noopener">Full test script</a>
+  </div>
+
+  <h2>Demo video</h2>
+  <video controls preload="metadata" playsinline poster="https://skala-aioinsight.aioffice.com.my/media/aio-insight-skala-demo.jpg">
+    <source src="https://skala-aioinsight.aioffice.com.my/media/aio-insight-skala-demo.mp4" type="video/mp4" />
+  </video>
+  <p class="note">The full test run: basic features, voice in BM and English, Status Keseluruhan, Projek Dalam Pembinaan, chart drawing and the phone layout. Each step is captioned with its prompt and the expected result.</p>
+
+  <h2>What was delivered</h2>
+  <div class="card scroll">
+    <table>
+      <tr><th>Item</th><th>Status</th><th>Detail</th></tr>
+      <tr><td>Production deployment</td><td class="ok">✓ Live</td><td>Running on Microsoft Azure (Malaysia West), restarts automatically</td></tr>
+      <tr><td>Web address + HTTPS</td><td class="ok">✓ Live</td><td>skala-aioinsight.aioffice.com.my with an automatic SSL certificate; aioffice.com.my unchanged</td></tr>
+      <tr><td>SKALA PostgreSQL data</td><td class="ok">✓ Connected</td><td>Read-only login; 2,249 projects (Keseluruhan), 826 under construction (Pembinaan)</td></tr>
+      <tr><td>Voice to text</td><td class="ok">✓ Working</td><td>Tap the mic, speak, recording stops by itself; Azure OpenAI speech model, works on every browser incl. iPhone Chrome</td></tr>
+      <tr><td>Bahasa Malaysia + English</td><td class="ok">✓ Working</td><td>Detected automatically, mixed BM/EN supported; trained on SKALA states, ministries and terms</td></tr>
+      <tr><td>Voice commands</td><td class="ok">✓ Working</td><td>“hantar / send” sends · “padam” clears the box · “padam semua” new chat · “kosongkan filter” removes filters</td></tr>
+      <tr><td>Cards, tables, charts</td><td class="ok">✓ Working</td><td>Answers filter the whole page; the relevant chart scrolls into view and zooms</td></tr>
+      <tr><td>Charts on request</td><td class="ok">✓ Working</td><td>“Lukis …” / “Draw …” adds a new chart, following the page's filters</td></tr>
+      <tr><td>Responsive / mobile</td><td class="ok">✓ Working</td><td>One URL for desktop, tablet and phone; no sideways scrolling; touch-sized buttons</td></tr>
+      <tr><td>AI model</td><td class="ok">✓ Working</td><td>Cloud language model with an automatic Azure OpenAI backup if it is slow or unavailable</td></tr>
+    </table>
+  </div>
+
+  <h2>Screen guide</h2>
+  <p class="lead" style="font-size:15.5px">The dashboard sits on the left, Tanya ZARA on the right (on a phone the chat covers the screen). The written answer is always in the chat; the dashboard changes in the highlighted places.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 760 492" role="img" aria-label="A ZARA answer shows up in three places on the dashboard" font-family="Inter, system-ui, sans-serif" font-size="13">
+      <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#94a3b8"/></marker></defs>
+      <text x="24" y="30" font-size="15" font-weight="600" fill="#0f172a">A ZARA answer shows up in three places on the dashboard</text>
+      <rect x="24" y="48" width="304" height="420" rx="10" fill="none" stroke="#94a3b8" stroke-width="1.25"/>
+      <text x="40" y="68" font-size="11.5" font-weight="600" fill="#64748b">DASHBOARD (left menu not shown)</text>
+      <rect x="40" y="78" width="272" height="32" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="52" y="98" fill="#0f172a">1  Title · Refresh · Export · Print</text>
+      <rect x="40" y="118" width="272" height="32" rx="8" fill="#2563eb" fill-opacity="0.12" stroke="#2563eb" stroke-width="2"/><text x="52" y="138" font-weight="600" fill="#0f172a">2  Filters and filter chips</text>
+      <rect x="40" y="158" width="272" height="32" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="52" y="178" fill="#0f172a">3  KPI cards (totals)</text>
+      <rect x="40" y="198" width="272" height="32" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="52" y="218" fill="#0f172a">4  Five phase cards</text>
+      <rect x="40" y="238" width="272" height="76" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="52" y="260" fill="#0f172a">5  Fixed charts</text>
+      <text x="68" y="280" font-size="11.5" fill="#64748b">Kementerian · RMK · state map</text><text x="68" y="298" font-size="11.5" fill="#64748b">Kaedah · Piawai/Baru · BIM</text>
+      <rect x="224" y="247" width="80" height="20" rx="10" fill="none" stroke="#2563eb" stroke-width="1.25"/><text x="264" y="261" text-anchor="middle" font-size="11.5" fill="#0f172a">Tanya ZARA</text>
+      <rect x="40" y="322" width="272" height="32" rx="8" fill="#2563eb" fill-opacity="0.12" stroke="#2563eb" stroke-width="2"/><text x="52" y="342" font-weight="600" fill="#0f172a">6  New charts drawn by ZARA</text>
+      <rect x="40" y="362" width="272" height="32" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="52" y="382" fill="#0f172a">7  Project table</text>
+      <circle cx="296" cy="432" r="16" fill="#2563eb" fill-opacity="0.12" stroke="#2563eb" stroke-width="2"/><text x="272" y="436" text-anchor="end" font-size="11.5" fill="#0f172a">Zara button: opens the chat</text>
+      <g fill="none" stroke="#94a3b8" stroke-width="1.25"><path d="M346 134H314" marker-end="url(#a)"/><path d="M346 174H314" marker-end="url(#a)"/><path d="M346 258H314" marker-end="url(#a)"/><path d="M346 298H314" marker-end="url(#a)"/><path d="M346 338H314" marker-end="url(#a)"/><path d="M346 378H314" marker-end="url(#a)"/></g>
+      <g font-size="11.5" fill="#0f172a">
+        <text x="352" y="124">Names a state, ministry</text><text x="352" y="138">or phase: the whole page</text><text x="352" y="152">filters to it</text>
+        <text x="352" y="178">Totals: these light up</text>
+        <text x="352" y="254">Cited card (¹ ²) scrolls</text><text x="352" y="268">into view and zooms</text>
+        <text x="352" y="294">Card pill: asks about</text><text x="352" y="308">that one card</text>
+        <text x="352" y="334">‘Lukis …’ adds a new</text><text x="352" y="348">chart here and scrolls to it</text>
+        <text x="352" y="382">Follows every filter</text>
+      </g>
+      <rect x="536" y="48" width="200" height="420" rx="10" fill="none" stroke="#94a3b8" stroke-width="1.25"/>
+      <text x="552" y="74" font-weight="600" fill="#0f172a">Tanya ZARA</text><text x="552" y="92" font-size="11.5" fill="#64748b">new chat · close</text>
+      <line x1="536" x2="736" y1="104" y2="104" stroke="#e2e8f0"/>
+      <rect x="600" y="120" width="124" height="28" rx="14" fill="#2563eb" fill-opacity="0.12" stroke="#2563eb" stroke-width="1.25"/><text x="662" y="138" text-anchor="middle" font-size="11.5" fill="#0f172a">Your question</text>
+      <text x="552" y="174" font-size="11.5" fill="#0f172a">Answer, with ¹ ² marks</text><text x="552" y="190" font-size="11.5" fill="#64748b">linking to the cards</text>
+      <rect x="552" y="202" width="168" height="26" rx="13" fill="none" stroke="#2563eb" stroke-width="1.25"/><text x="636" y="219" text-anchor="middle" font-size="11.5" fill="#0f172a">Lihat di papan pemuka →</text>
+      <text x="552" y="246" font-size="11.5" fill="#64748b">Phone only: closes the chat</text><text x="552" y="262" font-size="11.5" fill="#64748b">and goes to the card</text>
+      <text x="552" y="362" font-size="11.5" fill="#64748b">End with: hantar / send</text><text x="552" y="378" font-size="11.5" fill="#64748b">On its own: padam,</text><text x="552" y="394" font-size="11.5" fill="#64748b">padam semua, kosongkan filter</text>
+      <rect x="552" y="410" width="112" height="36" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="562" y="432" font-size="11.5" fill="#64748b">Type or speak</text>
+      <rect x="670" y="410" width="28" height="36" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.25"/><text x="684" y="431" text-anchor="middle" font-size="10.5" fill="#0f172a">mic</text>
+      <rect x="704" y="410" width="28" height="36" rx="8" fill="#2563eb" fill-opacity="0.12" stroke="#2563eb" stroke-width="1.25"/><text x="718" y="431" text-anchor="middle" font-size="10.5" fill="#0f172a">send</text>
+    </svg>
+  </div>
+
+  <h2>How to try it (3 steps)</h2>
+  <ol class="flow">
+    <li>Open <a href="https://skala-aioinsight.aioffice.com.my" target="_blank" rel="noopener">skala-aioinsight.aioffice.com.my</a> in Chrome, Edge or Safari, and tap the <b>Zara</b> button (bottom right).</li>
+    <li>Paste a prompt from the <a href="AIO-Insight-SKALA-Demo-Prompts.txt" download>prompt list</a>, or tap 🎤 and say it. End with <b>“hantar”</b> or <b>“send”</b>.</li>
+    <li>Watch the page: filters apply, the right chart zooms, or a new chart appears under <i>Daripada Tanya ZARA</i>.</li>
+  </ol>
+
+  <h2>Test results</h2>
+  <div class="grid">
+    <div class="card"><h3>Basic features</h3><p>Page load, manual filters, typed and spoken questions, voice commands, auto-zoom, card shortcut, Bluetooth earbuds. <b style="color:var(--good)">Pass</b></p></div>
+    <div class="card"><h3>Status Keseluruhan</h3><p>Totals, phases, Johor filter, chart restyle, highest-cost ministry, Sabah cost. <b style="color:var(--good)">Pass</b></p></div>
+    <div class="card"><h3>Projek Dalam Pembinaan</h3><p>Late &gt;20%, top ministry, late-only filter, Sabah, average progress. <b style="color:var(--good)">Pass</b></p></div>
+    <div class="card"><h3>Charts on request</h3><p>New charts on both dashboards, including filtered (Johor, KKR + Johor). <b style="color:var(--good)">Pass</b></p></div>
+    <div class="card"><h3>Devices</h3><p>Laptop (Chrome/Edge), iPhone (Safari/Chrome), Android (Chrome), laptop + Bluetooth earbuds. <b style="color:var(--good)">Pass</b></p></div>
+  </div>
+
+  <h2>Good to know</h2>
+  <div class="card scroll">
+    <table>
+      <tr><th>Topic</th><th>Detail</th></tr>
+      <tr><td>Shared session</td><td>The demo has no login: everyone sees the same conversation and drawn charts. Test one person at a time, or ask the administrator to reset the demo.</td></tr>
+      <tr><td>Each dashboard charts its own data</td><td>Kaedah pelaksanaan, fasa and RMK exist only on Status Keseluruhan; jenis aset, status and kemajuan fizikal on Pembinaan.</td></tr>
+      <tr><td>Drawn charts</td><td>A chart ZARA draws keeps the filter it was drawn with; ask again on a filtered page for a filtered chart.</td></tr>
+      <tr><td>Answers</td><td>Numbers stay the same every time; the wording may differ slightly.</td></tr>
+    </table>
+  </div>
+
+  <footer>AI Office · AIO Insight × SKALA 2.0 demo · 4 October 2026 · This page is unlisted.</footer>
+</div>
+</body>
+</html>
