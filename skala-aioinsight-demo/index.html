@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&family=Poppins:wght@800&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #050810; --panel: #0d1424; --line: #1e2a44; --ink: #e8eefc; --quiet: #93a3c4;
@@ -20,7 +20,10 @@
   a { color: var(--accent); }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
   header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-  header img { width: 48px; height: 48px; }
+  .logo { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; text-decoration: none; }
+  .logo svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .logo span { position: relative; font: 800 16.6px/1 Poppins, Inter, sans-serif; letter-spacing: -0.01em; color: #fff; filter: drop-shadow(0 0 10px rgba(255,255,255,.5)); }
+  .logo sup { position: absolute; right: -4px; top: 2px; font: 600 9px/1 Inter, sans-serif; color: #9ca3af; }
   .brand { font-family: Orbitron, Inter, sans-serif; font-size: 13px; letter-spacing: .12em; color: var(--quiet); }
   h1 { font-size: clamp(26px, 4.5vw, 40px); line-height: 1.15; margin: 6px 0 10px; }
   h2 { font-size: 22px; margin: 44px 0 12px; }
@@ -54,7 +57,13 @@
 <body>
 <div class="wrap">
   <header>
-    <img src="/aio-logo.png" alt="AIO" />
+    <a class="logo" href="/" aria-label="AI Office">
+      <svg id="aio-mark" viewBox="0 0 512 512" aria-hidden="true">
+        <path fill="none" stroke="#4a94f8" stroke-width="13" stroke-linejoin="round"/>
+        <path fill="none" stroke="#50c040" stroke-width="13" stroke-linejoin="round"/>
+      </svg>
+      <span>AIO</span><sup aria-hidden="true">™</sup>
+    </a>
     <div><div class="brand">AI OFFICE · AIO INSIGHT</div></div>
   </header>
 
@@ -164,5 +173,32 @@
 
   <footer>AI Office · AIO Insight × SKALA 2.0 demo · 4 October 2026 · This page is unlisted.</footer>
 </div>
+<script>
+  // The aioffice.com.my brand mark (src/components/AioLogo.jsx): two interlaced
+  // four-lobed rings that spin, sway against each other and breathe.
+  (() => {
+    const C = 256, R = 193, A = 20, LOBES = 4, STEPS = 120;
+    const SPIN = 24, SWAY = 9, BREATHE = 6, PERIOD = 2.8;
+    const rings = [{ phase: 264, sway: -1, breathe: Math.PI }, { phase: 90, sway: 1, breathe: 0 }];
+    const paths = document.querySelectorAll("#aio-mark path");
+    const ring = (amp, phaseDeg) => {
+      const ph = phaseDeg * Math.PI / 180; let d = "";
+      for (let i = 0; i < STEPS; i++) {
+        const t = i / STEPS * Math.PI * 2, r = R + amp * Math.cos(LOBES * t - ph);
+        d += (i ? "L" : "M") + (C + r * Math.cos(t)).toFixed(1) + " " + (C - r * Math.sin(t)).toFixed(1);
+      }
+      return d + "Z";
+    };
+    const draw = (sec) => rings.forEach((g, i) => {
+      const cyc = sec * 2 * Math.PI / PERIOD, rot = SPIN * sec + g.sway * SWAY * Math.sin(cyc);
+      paths[i].setAttribute("d", ring(A + BREATHE * Math.sin(cyc + g.breathe), g.phase + LOBES * rot));
+    });
+    draw(0);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t0 = performance.now();
+    const tick = (now) => { draw((now - t0) / 1000); requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  })();
+</script>
 </body>
 </html>
