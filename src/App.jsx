@@ -110,14 +110,13 @@ const AIArsenalDashboard = () => {
   const [revealed, setRevealed] = useState(false);
   const reveal = useCallback(() => setRevealed(true), []);
 
-  // The chat widget (public/chat-widget.js) is home-page only: it is shown
-  // while <html data-page="home"> is set, i.e. on the home page once the
-  // splash has cleared, and hidden on every other page.
+  // The chat widget (components/ChatWidget.jsx, mounted in main.jsx) shows
+  // on every page, but only while <html data-chat="on"> is set, so it is
+  // hidden while the splash plays and comes back once the page is revealed.
   useEffect(() => {
-    const home = currentPage === "home" && revealed;
-    if (home) document.documentElement.setAttribute("data-page", "home");
-    else document.documentElement.removeAttribute("data-page");
-  }, [currentPage, revealed]);
+    if (revealed) document.documentElement.setAttribute("data-chat", "on");
+    else document.documentElement.removeAttribute("data-chat");
+  }, [revealed]);
 
   // One splash run per page. Bumping the key remounts SplashScreen, which is
   // what replays it; run 0 is the first load and gets the long version.
@@ -2419,7 +2418,8 @@ const AIArsenalDashboard = () => {
             </>
           )}
 
-          <ScrollToTopButton />
+          {/* Scroll-to-top hidden for now; the chat launcher owns bottom-right. */}
+          {/* <ScrollToTopButton /> */}
 
           <div className="mt-16 sm:mt-20">
             <SiteFooter onNavigate={goHome} onOpenPage={openSolutionPage} />
@@ -2934,7 +2934,8 @@ const AIArsenalDashboard = () => {
         </div>
 
         {/* Floating Scroll to Top Button */}
-        <ScrollToTopButton />
+        {/* Scroll-to-top hidden for now; the chat launcher owns bottom-right. */}
+        {/* <ScrollToTopButton /> */}
 
         {/* Footer Section */}
         <SiteFooter onNavigate={scrollToSection} onOpenPage={openSolutionPage} />
