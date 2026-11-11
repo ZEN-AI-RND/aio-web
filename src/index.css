@@ -401,8 +401,13 @@
    Mobile Optimizations
 --------------------------------*/
 @media (max-width: 640px) {
-  /* Reduce animation complexity on mobile for better performance */
-  * {
+  /* Reduce animation complexity on mobile for better performance.
+     The chat widget (ChatWidget.css) is left out: squeezing its 6-30s
+     avatar loops into 0.5s made ZARA twitch and wink nonstop on any window
+     640px or narrower, including laptops with 125-150% display scaling. :where() keeps the
+     selector at zero specificity, as plain `*` was, so per-element
+     overrides like .logo-glow still win. */
+  :where(*:not(.zc-root, .zc-root *)) {
     animation-duration: 0.5s !important;
   }
 

@@ -1,65 +1,50 @@
-import React, { useId } from "react";
+import React from "react";
+import idleClip from "../assets/zara/zara-idle.webp";
+import talkingClip from "../assets/zara/zara-talking.webp";
+import happyClip from "../assets/zara/zara-happy.webp";
+import thinkingClip from "../assets/zara/zara-thinking.webp";
+import stillFrame from "../assets/zara/zara-still.webp";
 
-/* ZARA's mascot: a small round robot with a dark visor and big glowing eyes,
-   drawn in the brand greens. Inline SVG, no images.
+/* ZARA's avatar, from the ZARA promo video (ZaraPromo.mp4): her head keyed
+   off the studio background, steadied, and saved as animated WebP clips
+   (15 fps, 200px, transparent). Frames were edited where the footage lacked
+   the expression (rebuild: tools/zara-avatar/):
 
-   `mood` picks the expression (animated in ChatWidget.css):
-     idle      blinks and floats
-     thinking  eyes look around, a shimmer sweeps the visor
-     happy     eyes turn to smiling arcs, big smile
-     talking   mouth moves */
-export default function ChatMascot({ mood = "idle", className = "" }) {
-  const id = useId().replace(/:/g, "");
+     idle      front -> her right -> front -> her left, 10s each, a blink on
+               every return to front; first turn 5s after load (41s loop).
+               Blinks every 3s the whole time.
+     thinking  eyes and mouth closed (outro 312.0s), slow nod     (2.4s loop)
+     talking   talking, from the promo's opening line            (3.1s loop)
+     happy     smile and a wink, plays once, sparkles on top     (1.5s)
+
+   `still` (old message avatars, reduced motion) shows a single frame.
+   Round with a soft backdrop in the launcher; a plain cut-out inside the
+   chat window (ChatWidget.css). */
+const CLIPS = { idle: idleClip, talking: talkingClip, happy: happyClip, thinking: thinkingClip };
+
+const reducedMotion =
+  typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+export default function ChatMascot({ mood = "idle", still = false, className = "" }) {
+  const src = still || reducedMotion ? stillFrame : CLIPS[mood] || idleClip;
   return (
-    <svg
-      viewBox="0 0 64 64"
-      aria-hidden="true"
-      className={`zc-mascot ${className}`}
+    <span
+      className={`zc-mascot zc-z ${className}`}
       data-mood={mood}
+      data-still={still || undefined}
+      aria-hidden="true"
+      // her silhouette, so the thinking shimmer only lights her, not the box
+      style={{ "--zc-face": `url("${stillFrame}")` }}
     >
-      <defs>
-        <linearGradient id={`${id}-body`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#6FD45E" />
-          <stop offset="1" stopColor="#3FA332" />
-        </linearGradient>
-        <clipPath id={`${id}-visor`}>
-          <rect x="13" y="23" width="38" height="23" rx="11.5" />
-        </clipPath>
-      </defs>
-
-      <g className="zc-m-bob">
-        {/* antenna */}
-        <line x1="32" y1="13" x2="32" y2="6" stroke="#3FA332" strokeWidth="2.5" strokeLinecap="round" />
-        <circle className="zc-m-tip" cx="32" cy="5" r="3" fill="#A0E48F" />
-        {/* waving hand */}
-        <g className="zc-m-hand">
-          <circle cx="57" cy="42" r="4" fill={`url(#${id}-body)`} />
-        </g>
-        {/* head */}
-        <circle cx="32" cy="35" r="22" fill={`url(#${id}-body)`} />
-        <ellipse cx="24" cy="20" rx="7" ry="3.5" fill="#fff" opacity=".25" />
-        {/* visor */}
-        <rect x="13" y="23" width="38" height="23" rx="11.5" fill="#0a0f1a" />
-        <g clipPath={`url(#${id}-visor)`}>
-          <rect className="zc-m-shimmer" x="-20" y="20" width="10" height="30" fill="#A0E48F" opacity=".25" transform="skewX(-20)" />
-        </g>
-        {/* eyes: open */}
-        <g className="zc-m-eyes">
-          <ellipse cx="25" cy="33" rx="3.4" ry="4.2" fill="#A0E48F" />
-          <ellipse cx="39" cy="33" rx="3.4" ry="4.2" fill="#A0E48F" />
-          <circle cx="26.2" cy="31.4" r="1.1" fill="#fff" />
-          <circle cx="40.2" cy="31.4" r="1.1" fill="#fff" />
-        </g>
-        {/* eyes: happy arcs */}
-        <g className="zc-m-happy-eyes" fill="none" stroke="#A0E48F" strokeWidth="2.4" strokeLinecap="round">
-          <path d="M21.5 34 q3.5 -4.5 7 0" />
-          <path d="M35.5 34 q3.5 -4.5 7 0" />
-        </g>
-        {/* mouths */}
-        <path className="zc-m-smile" d="M28.5 40 q3.5 2.6 7 0" fill="none" stroke="#A0E48F" strokeWidth="2" strokeLinecap="round" />
-        <path className="zc-m-grin" d="M27 39 q5 5 10 0 z" fill="#A0E48F" />
-        <ellipse className="zc-m-talk" cx="32" cy="41" rx="3" ry="2" fill="#A0E48F" />
-      </g>
-    </svg>
+      {/* key: a mood change restarts the clip from its first frame */}
+      <img key={src} src={src} alt="" draggable="false" decoding="async" />
+      <span className="zc-z-think">
+        <i />
+        <i />
+        <i />
+      </span>
+      <span className="zc-z-spark zc-z-spark-1" />
+      <span className="zc-z-spark zc-z-spark-2" />
+    </span>
   );
 }

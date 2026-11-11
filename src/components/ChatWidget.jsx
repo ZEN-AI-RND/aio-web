@@ -166,6 +166,7 @@ export default function ChatWidget() {
   const [atBottom, setAtBottom] = useState(true);
   const [notice, setNotice] = useState("");
   const [listening, setListening] = useState(false);
+  const [hoverLauncher, setHoverLauncher] = useState(false); // ZARA smiles and winks
   const [copied, copy] = useCopy();
 
   const panelRef = useRef(null);
@@ -400,13 +401,15 @@ export default function ChatWidget() {
         ref={launcherRef}
         type="button"
         className="zc-launcher"
+        onMouseEnter={() => setHoverLauncher(true)}
+        onMouseLeave={() => setHoverLauncher(false)}
         aria-label={open ? `Close ${ASSISTANT_NAME} chat` : `Chat with ${ASSISTANT_NAME}`}
         aria-expanded={open}
         aria-controls="zc-panel"
         onClick={() => (open ? hide() : show(true))}
       >
         {!open && <span className="zc-ring" aria-hidden="true" />}
-        {open ? <X className="zc-launcher-x" aria-hidden="true" /> : <ChatMascot />}
+        {open ? <X className="zc-launcher-x" aria-hidden="true" /> : <ChatMascot mood={hoverLauncher ? "happy" : "idle"} />}
         {unread && !open && <span className="zc-unread" aria-hidden="true" />}
       </button>
 
@@ -457,7 +460,7 @@ export default function ChatWidget() {
               return (
                 <React.Fragment key={m.id}>
                 <div className="zc-row">
-                  <ChatMascot mood={streaming ? "talking" : "idle"} className={streaming ? "" : "zc-still"} />
+                  <ChatMascot mood={streaming ? "talking" : "idle"} still={!streaming} />
                   <div className="zc-col">
                     <div className="zc-bubble zc-bubble-bot">
                       <Blocks
