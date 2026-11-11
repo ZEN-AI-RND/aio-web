@@ -110,6 +110,15 @@ const AIArsenalDashboard = () => {
   const [revealed, setRevealed] = useState(false);
   const reveal = useCallback(() => setRevealed(true), []);
 
+  // The chat widget (public/chat-widget.js) is home-page only: it is shown
+  // while <html data-page="home"> is set, i.e. on the home page once the
+  // splash has cleared, and hidden on every other page.
+  useEffect(() => {
+    const home = currentPage === "home" && revealed;
+    if (home) document.documentElement.setAttribute("data-page", "home");
+    else document.documentElement.removeAttribute("data-page");
+  }, [currentPage, revealed]);
+
   // One splash run per page. Bumping the key remounts SplashScreen, which is
   // what replays it; run 0 is the first load and gets the long version.
   const [splashRun, setSplashRun] = useState(0);
