@@ -261,7 +261,7 @@ export default function ChatWidget() {
   const hide = () => {
     stopMic();
     show(false);
-    launcherRef.current?.focus();
+    requestAnimationFrame(() => launcherRef.current?.focus());
   };
 
   // Closed panel is inert (no focus, no screen reader); open focuses the input.
@@ -283,7 +283,7 @@ export default function ChatWidget() {
       if (e.key === "Escape") {
         stopMic();
         show(false);
-        launcherRef.current?.focus();
+        requestAnimationFrame(() => launcherRef.current?.focus());
       }
     };
     document.addEventListener("keydown", onKey);

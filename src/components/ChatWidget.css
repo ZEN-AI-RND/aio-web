@@ -97,6 +97,11 @@ html:not([data-chat="on"]) .zc-root {
 .zc-launcher[aria-expanded="true"] .zc-ring {
   display: none;
 }
+/* while the chat is open the launcher steps aside: the panel takes its
+   corner, and the header's close button (or Esc) closes it */
+.zc-launcher[aria-expanded="true"] {
+  display: none;
+}
 .zc-unread {
   position: absolute;
   top: 2px;
@@ -130,11 +135,11 @@ html:not([data-chat="on"]) .zc-root {
 .zc-panel {
   position: fixed;
   right: 24px;
-  bottom: 96px;
+  bottom: 24px; /* down to where the launcher's bottom edge is */
   z-index: 90;
   width: 380px;
-  height: 640px;
-  max-height: calc(100dvh - 112px);
+  height: 712px;
+  max-height: calc(100dvh - 48px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -169,10 +174,6 @@ html:not([data-chat="on"]) .zc-root {
     max-height: none;
     border-radius: 0;
     border: 0;
-  }
-  /* the panel covers the screen; its header close button takes over */
-  .zc-launcher[aria-expanded="true"] {
-    display: none;
   }
 }
 
