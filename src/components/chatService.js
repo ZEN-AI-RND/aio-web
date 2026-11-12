@@ -89,10 +89,46 @@ const FALLBACK = () => ({
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/* Which language a question is in: "ms" (Bahasa Melayu), "en" (English) or
+   "manglish" (the Malaysian mix). Word lists, not a model: good enough to
+   pick the thinking text and to ask the API for a Manglish reply (the API
+   already answers English and Malay in kind, but answers Manglish in plain
+   English unless told). */
+const MS_WORDS = new Set(("saya aku awak anda kamu dia kami kita mereka apa apakah berapa bagaimana macam " +
+  "mana bila bilakah siapa kenapa mengapa boleh tak tidak bukan ada nak hendak mahu mau untuk dengan " +
+  "yang ini itu tu ni dan atau dalam pada dari daripada ke kat di sudah dah belum lagi je jer sahaja " +
+  "saja pun juga sila tolong terima kasih adakah perlu kena cuti hari gaji kerja pekerja syarikat " +
+  "tuntutan borang mohon permohonan cara buat tahunan sakit bulan tahun jam masa berapa banyak " +
+  "kalau jika kerana sebab baru lama nanti sekarang semua setiap orang tempat").split(" "));
+const EN_WORDS = new Set(("i me my mine you your we our they them he she it is are was were am be been " +
+  "do does did what how when where which who why can could should would will the a an of to for in on " +
+  "at with and or not no yes got get have has had many much this that there here please leave " +
+  "work day days annual sick salary company staff need want about any").split(" "));
+// "claim", "form", "apply", "OT" are left out of EN_WORDS: Malay sentences use them too.
+// particles that only Manglish uses; "lah"/"kan" alone also turn up in plain Malay
+const MANGLISH_PARTICLES = /\b(lah|la|leh|lor|meh|mah|wor|liao|ah|ar|hor|bro|sis|dei|alamak|aiyo+|wei)\b/i;
+
+export function detectLang(text) {
+  const words = text.toLowerCase().match(/[a-z']+/g) || [];
+  let ms = 0, en = 0;
+  for (const w of words) {
+    if (MS_WORDS.has(w)) ms++;
+    else if (EN_WORDS.has(w)) en++;
+  }
+  if (MANGLISH_PARTICLES.test(text) && en > 0) return "manglish";
+  if (ms > 0 && en > 0 && Math.min(ms, en) / (ms + en) >= 0.25) return "manglish";
+  return ms > en ? "ms" : "en";
+}
+
+// Sent with a Manglish question only; the chat shows and remembers the
+// question as typed.
+const MANGLISH_HINT = "\n\n(Reply in Manglish: casual Malaysian mix of English and Malay, the way the user wrote.)";
+
 /* Sends one user message. `history` is the API's own shape:
-   [{ role: "user" | "assistant", content }]. Resolves to { blocks, sources };
+   [{ role: "user" | "assistant", content }]. `lang` is from detectLang().
+   Resolves to { blocks, sources };
    rejects when the service can't be reached. */
-export async function sendMessage(text, history) {
+export async function sendMessage(text, history, lang = detectLang(text)) {
   const intent = INTENTS.find((i) => i.match.test(text));
   if (intent || USE_MOCK_ONLY) {
     await wait(400);
@@ -102,7 +138,7 @@ export async function sendMessage(text, history) {
   const r = await fetch(CHAT_API, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: text, history }),
+    body: JSON.stringify({ message: lang === "manglish" ? text + MANGLISH_HINT : text, history }),
   });
   const j = await r.json();
   if (!r.ok) return { blocks: [{ type: "text", text: j.detail || "Maaf, ralat berlaku." }] };

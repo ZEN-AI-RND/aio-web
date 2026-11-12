@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import ChatMascot from "./ChatMascot";
-import { ERROR_TEXT, QUICK_REPLIES, sendMessage } from "./chatService";
+import { ERROR_TEXT, QUICK_REPLIES, detectLang, sendMessage } from "./chatService";
 import "./ChatWidget.css";
 
 /* Floating AI chat, bottom-right, on every page (mounted once in main.jsx).
@@ -39,25 +39,26 @@ let seq = 0;
 const newId = () => `${Date.now().toString(36)}-${(seq++).toString(36)}`;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// Shown beside the dots while ZARA waits on an answer; steps through once
-// and stays on the last line however long the reply takes.
-const THINKING_LINES = [
-  "Please wait, I'm thinking...",
-  "Gathering information...",
-  "Checking our documents...",
-  "Almost there...",
-];
+// Shown beside the dots while ZARA waits on an answer, in the language of
+// the question (detectLang); steps through once and stays on the last line
+// however long the reply takes.
+const THINKING_LINES = {
+  ms: ["Sila tunggu, saya sedang berfikir...", "Sedang mengumpul maklumat...", "Menyemak dokumen kami...", "Hampir siap..."],
+  en: ["Please wait, I'm thinking...", "Gathering information...", "Checking our documents...", "Almost there..."],
+  manglish: ["Jap ah, let me think...", "Tengah cari info for you...", "Checking the documents kejap...", "Almost siap already..."],
+};
 const THINKING_STEP_MS = 2200;
 
-function ThinkingText() {
+function ThinkingText({ lang }) {
+  const lines = THINKING_LINES[lang] || THINKING_LINES.en;
   const [i, setI] = useState(0);
   useEffect(() => {
-    if (i >= THINKING_LINES.length - 1) return;
+    if (i >= lines.length - 1) return;
     const t = setTimeout(() => setI(i + 1), THINKING_STEP_MS);
     return () => clearTimeout(t);
-  }, [i]);
+  }, [i, lines.length]);
   // key: each new line fades in
-  return <span key={i} className="zc-typing-text">{THINKING_LINES[i]}</span>;
+  return <span key={i} className="zc-typing-text">{lines[i]}</span>;
 }
 
 function loadMessages() {
@@ -181,6 +182,7 @@ export default function ChatWidget() {
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [typing, setTyping] = useState(null); // null | "dots" | "thinking"
+  const [askLang, setAskLang] = useState("en"); // language of the question being answered
   const [stream, setStream] = useState(null); // { id, tokens, n }
   const [happy, setHappy] = useState(false);
   const [tooltip, setTooltip] = useState(false);
@@ -360,12 +362,14 @@ export default function ChatWidget() {
     const history = toHistory(messages);
     setMessages((ms) => [...ms, { id: newId(), role: "user", text, ts: Date.now() }]);
     setBusy(true);
+    const lang = detectLang(text);
+    setAskLang(lang);
     setTyping("thinking");
     const mine = genRef.current;
     const started = Date.now();
     let reply;
     try {
-      reply = await sendMessage(text, history);
+      reply = await sendMessage(text, history, lang);
     } catch {
       reply = { blocks: [{ type: "text", text: ERROR_TEXT }] };
     }
@@ -566,7 +570,7 @@ export default function ChatWidget() {
                   aria-label={`${ASSISTANT_NAME} is ${typing === "thinking" ? "thinking" : "typing"}`}
                 >
                   <i /><i /><i />
-                  {typing === "thinking" && <ThinkingText />}
+                  {typing === "thinking" && <ThinkingText lang={askLang} />}
                 </div>
               </div>
             )}
