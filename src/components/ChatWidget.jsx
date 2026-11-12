@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import ChatMascot from "./ChatMascot";
-import { ERROR_TEXT, QUICK_REPLIES, detectLang, sendMessage } from "./chatService";
+import { QUICK_REPLIES, chipLang, detectLang, errorText, sendMessage } from "./chatService";
 import "./ChatWidget.css";
 
 /* Floating AI chat, bottom-right, on every page (mounted once in main.jsx).
@@ -353,17 +353,17 @@ export default function ChatWidget() {
     }
   };
 
-  const submit = async (raw) => {
+  const submit = async (raw, chipLanguage) => {
     const text = raw.trim();
     if (!text || busy) return;
     setStream(null); // finish any reply still streaming
     setDraft("");
     setAtBottom(true);
     const history = toHistory(messages);
-    setMessages((ms) => [...ms, { id: newId(), role: "user", text, ts: Date.now() }]);
-    setBusy(true);
-    const lang = detectLang(text);
+    const lang = chipLanguage || detectLang(text);
     setAskLang(lang);
+    setMessages((ms) => [...ms, { id: newId(), role: "user", text, lang, ts: Date.now() }]);
+    setBusy(true);
     setTyping("thinking");
     const mine = genRef.current;
     const started = Date.now();
@@ -371,7 +371,7 @@ export default function ChatWidget() {
     try {
       reply = await sendMessage(text, history, lang);
     } catch {
-      reply = { blocks: [{ type: "text", text: ERROR_TEXT }] };
+      reply = { blocks: [{ type: "text", text: errorText(lang) }] };
     }
     await wait(Math.max(0, THINK_MIN_MS - (Date.now() - started)));
     if (mine !== genRef.current) return;
@@ -435,6 +435,7 @@ export default function ChatWidget() {
   const mood = happy ? "happy" : typing === "thinking" ? "thinking" : stream ? "talking" : "idle";
   const time = (ts) => new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   const ready = draft.trim().length > 0 && !busy;
+  const chips = chipLang(messages); // chips follow the language of the latest question
 
   return (
     <div className="zc-root">
@@ -544,14 +545,14 @@ export default function ChatWidget() {
                 {/* Quick replies live under the greeting and scroll with the chat. */}
                 {m.id === "greet" && !streaming && (
                   <div className="zc-chips" role="group" aria-label="Suggested questions">
-                    {QUICK_REPLIES.map((q, i) => (
+                    {QUICK_REPLIES[chips].map((q, i) => (
                       <button
                         key={q.label}
                         type="button"
                         className="zc-chip"
                         style={{ animationDelay: `${i * 60}ms` }}
                         disabled={busy}
-                        onClick={() => submit(q.label)}
+                        onClick={() => submit(q.label, q.lang || chips)}
                       >
                         <span aria-hidden="true">{q.icon}</span> {q.label}
                       </button>
