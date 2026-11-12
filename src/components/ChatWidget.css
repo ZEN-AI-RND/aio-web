@@ -535,6 +535,13 @@ html:not([data-chat="on"]) .zc-root {
 .zc-typing i:nth-child(3) {
   animation-delay: 0.3s;
 }
+.zc-typing-text {
+  margin-left: 6px;
+  font-size: 13px;
+  color: var(--zc-muted);
+  white-space: nowrap;
+  animation: zc-fade-in 0.4s ease-out;
+}
 .zc-typing.zc-thinking::after {
   content: "";
   position: absolute;

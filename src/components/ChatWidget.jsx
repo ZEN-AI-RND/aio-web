@@ -39,6 +39,27 @@ let seq = 0;
 const newId = () => `${Date.now().toString(36)}-${(seq++).toString(36)}`;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Shown beside the dots while ZARA waits on an answer; steps through once
+// and stays on the last line however long the reply takes.
+const THINKING_LINES = [
+  "Please wait, I'm thinking...",
+  "Gathering information...",
+  "Checking our documents...",
+  "Almost there...",
+];
+const THINKING_STEP_MS = 2200;
+
+function ThinkingText() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (i >= THINKING_LINES.length - 1) return;
+    const t = setTimeout(() => setI(i + 1), THINKING_STEP_MS);
+    return () => clearTimeout(t);
+  }, [i]);
+  // key: each new line fades in
+  return <span key={i} className="zc-typing-text">{THINKING_LINES[i]}</span>;
+}
+
 function loadMessages() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || "[]");
@@ -542,9 +563,10 @@ export default function ChatWidget() {
                 <ChatMascot mood={typing === "thinking" ? "thinking" : "idle"} />
                 <div
                   className={`zc-bubble zc-bubble-bot zc-typing ${typing === "thinking" ? "zc-thinking" : ""}`}
-                  aria-label={`${ASSISTANT_NAME} is typing`}
+                  aria-label={`${ASSISTANT_NAME} is ${typing === "thinking" ? "thinking" : "typing"}`}
                 >
                   <i /><i /><i />
+                  {typing === "thinking" && <ThinkingText />}
                 </div>
               </div>
             )}
