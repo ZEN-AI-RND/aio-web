@@ -423,8 +423,9 @@ export default function ChatWidget() {
         ref={launcherRef}
         type="button"
         className="zc-launcher"
-        onMouseEnter={() => setHoverLauncher(true)}
-        onMouseLeave={() => setHoverLauncher(false)}
+        // mouse only: a tap fires enter but never leave, so the wink would stick
+        onPointerEnter={(e) => e.pointerType === "mouse" && setHoverLauncher(true)}
+        onPointerLeave={() => setHoverLauncher(false)}
         aria-label={open ? `Close ${ASSISTANT_NAME} chat` : `Chat with ${ASSISTANT_NAME}`}
         aria-expanded={open}
         aria-controls="zc-panel"

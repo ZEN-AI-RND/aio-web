@@ -73,9 +73,11 @@ html:not([data-chat="on"]) .zc-root {
   color: var(--zc-text);
   transition: transform 0.3s, box-shadow 0.3s;
 }
-.zc-launcher:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 28px rgba(80, 192, 64, 0.55);
+@media (hover: hover) {
+  .zc-launcher:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 28px rgba(80, 192, 64, 0.55);
+  }
 }
 .zc-launcher .zc-mascot {
   width: 100%;
@@ -166,7 +168,8 @@ html:not([data-chat="on"]) .zc-root {
     opacity 0.2s ease-in,
     visibility 0s linear 0.25s;
 }
-@media (max-width: 479px) {
+/* phones: full screen, portrait or landscape */
+@media (max-width: 479px), (max-height: 500px) and (pointer: coarse) {
   .zc-panel {
     inset: 0;
     width: 100%;
@@ -235,17 +238,21 @@ html:not([data-chat="on"]) .zc-root {
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
-.zc-icon-btn:hover {
-  background: var(--zc-hover);
-  color: var(--zc-text);
+@media (hover: hover) {
+  .zc-icon-btn:hover {
+    background: var(--zc-hover);
+    color: var(--zc-text);
+  }
 }
 .zc-icon-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.zc-icon-btn:disabled:hover {
-  background: none;
-  color: var(--zc-muted);
+@media (hover: hover) {
+  .zc-icon-btn:disabled:hover {
+    background: none;
+    color: var(--zc-muted);
+  }
 }
 .zc-icon-btn[aria-pressed="true"] {
   color: var(--zc-primary);
@@ -264,6 +271,8 @@ html:not([data-chat="on"]) .zc-root {
 .zc-list {
   height: 100%;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 16px 14px 8px;
   scrollbar-width: thin;
   scrollbar-color: var(--zc-primary) transparent;
@@ -343,6 +352,11 @@ html:not([data-chat="on"]) .zc-root {
 .zc-row:focus-within .zc-time {
   opacity: 1;
 }
+@media (hover: none) {
+  .zc-time {
+    opacity: 1;
+  }
+}
 
 /* rich blocks */
 .zc-card {
@@ -373,8 +387,10 @@ html:not([data-chat="on"]) .zc-root {
   text-decoration: none;
   transition: background-color 0.3s;
 }
-.zc-btn:hover {
-  background: var(--zc-primary-hi);
+@media (hover: hover) {
+  .zc-btn:hover {
+    background: var(--zc-primary-hi);
+  }
 }
 .zc-steps {
   list-style: none;
@@ -478,19 +494,23 @@ html:not([data-chat="on"]) .zc-root {
   /* backwards, not both: a held end frame would block the hover scale */
   animation: zc-rise 0.3s ease-out backwards;
 }
-.zc-chip:hover {
-  background: rgba(80, 192, 64, 0.1);
-  transform: scale(1.08);
-  box-shadow: var(--zc-glow);
+@media (hover: hover) {
+  .zc-chip:hover {
+    background: rgba(80, 192, 64, 0.1);
+    transform: scale(1.08);
+    box-shadow: var(--zc-glow);
+  }
 }
 .zc-chip:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.zc-chip:disabled:hover {
-  background: transparent;
-  transform: none;
-  box-shadow: none;
+@media (hover: hover) {
+  .zc-chip:disabled:hover {
+    background: transparent;
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 /* typing dots + thinking shimmer */
@@ -605,6 +625,11 @@ html:not([data-chat="on"]) .zc-root {
   outline: none;
   box-shadow: none;
 }
+@media (pointer: coarse) {
+  .zc-input textarea {
+    font-size: 16px;
+  }
+}
 .zc-input textarea::placeholder {
   color: var(--zc-muted);
 }
@@ -641,8 +666,10 @@ html:not([data-chat="on"]) .zc-root {
 .zc-send[data-ready="true"] svg {
   animation: zc-nudge 0.4s ease-out;
 }
-.zc-send[data-ready="true"]:hover {
-  background: var(--zc-primary-hi);
+@media (hover: hover) {
+  .zc-send[data-ready="true"]:hover {
+    background: var(--zc-primary-hi);
+  }
 }
 .zc-mic-on {
   color: var(--zc-primary) !important;
