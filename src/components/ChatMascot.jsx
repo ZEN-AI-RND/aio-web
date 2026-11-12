@@ -3,6 +3,7 @@ import idleClip from "../assets/zara/zara-idle.webp";
 import talkingClip from "../assets/zara/zara-talking.webp";
 import happyClip from "../assets/zara/zara-happy.webp";
 import thinkingClip from "../assets/zara/zara-thinking.webp";
+import waveClip from "../assets/zara/zara-wave.webp";
 import stillFrame from "../assets/zara/zara-still.webp";
 
 /* ZARA's avatar, from the ZARA promo video (ZaraPromo.mp4): her head keyed
@@ -16,11 +17,13 @@ import stillFrame from "../assets/zara/zara-still.webp";
      thinking  eyes and mouth closed (outro 312.0s), slow nod     (2.4s loop)
      talking   talking, from the promo's opening line            (3.1s loop)
      happy     smile and a wink, plays once, sparkles on top     (1.5s)
+     wave      launcher only: waves hello (intro 0.1-1.6s, mouth closed),
+               zooms in and blends into idle's front pose; plays once (1.9s)
 
    `still` (old message avatars, reduced motion) shows a single frame.
    Round with a soft backdrop in the launcher; a plain cut-out inside the
    chat window (ChatWidget.css). */
-const CLIPS = { idle: idleClip, talking: talkingClip, happy: happyClip, thinking: thinkingClip };
+const CLIPS = { idle: idleClip, talking: talkingClip, happy: happyClip, thinking: thinkingClip, wave: waveClip };
 
 const reducedMotion =
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;

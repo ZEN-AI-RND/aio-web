@@ -26,6 +26,7 @@ export const GREETING = "Welcome to AIO! 👋 Hi! I'm ZARA, your AI buddy. Ask m
 const STORE = "aio-chat";
 const TOOLTIP_MS = 2000;
 const UNREAD_MS = 5000;
+const WAVE_MS = 1950; // length of the zara-wave clip (plays once)
 const THINK_MIN_MS = 1000; // the thinking shimmer shows at least this long
 const GREET_MS = 900;
 const WORD_MS = 35; // streaming speed, per word
@@ -167,6 +168,7 @@ export default function ChatWidget() {
   const [notice, setNotice] = useState("");
   const [listening, setListening] = useState(false);
   const [hoverLauncher, setHoverLauncher] = useState(false); // ZARA smiles and winks
+  const [waving, setWaving] = useState(false); // hello wave, once, when the widget first shows
   const [copied, copy] = useCopy();
 
   const panelRef = useRef(null);
@@ -189,13 +191,34 @@ export default function ChatWidget() {
     }
   }, [messages]);
 
-  // Tooltip after 2s, unread dot after 5s, until the first open.
+  // Once the widget first shows (App sets <html data-chat="on"> after the
+  // splash): ZARA waves hello once; the "Ask ZARA" tooltip fades in after 2s
+  // and then stays up whenever the chat is closed; the unread dot comes
+  // after 5s, until the first open.
   useEffect(() => {
-    const t1 = setTimeout(() => !everOpened.current && setTooltip(true), TOOLTIP_MS);
-    const t2 = setTimeout(() => !everOpened.current && setUnread(true), UNREAD_MS);
+    const timers = [];
+    const start = () => {
+      setWaving(true);
+      timers.push(
+        setTimeout(() => setWaving(false), WAVE_MS),
+        setTimeout(() => setTooltip(true), TOOLTIP_MS),
+        setTimeout(() => !everOpened.current && setUnread(true), UNREAD_MS)
+      );
+    };
+    const html = document.documentElement;
+    let observer;
+    if (html.dataset.chat === "on") start();
+    else {
+      observer = new MutationObserver(() => {
+        if (html.dataset.chat !== "on") return;
+        observer.disconnect();
+        start();
+      });
+      observer.observe(html, { attributes: true, attributeFilter: ["data-chat"] });
+    }
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
+      observer?.disconnect();
+      timers.forEach(clearTimeout);
     };
   }, []);
 
@@ -254,7 +277,6 @@ export default function ChatWidget() {
     setOpen(next);
     if (next) {
       everOpened.current = true;
-      setTooltip(false);
       setUnread(false);
     }
   }, []);
@@ -393,7 +415,7 @@ export default function ChatWidget() {
     <div className="zc-root">
       {tooltip && !open && (
         <div className="zc-tooltip" onClick={() => show(true)} aria-hidden="true">
-          Ask AI ✨
+          Ask ZARA ✨
         </div>
       )}
 
@@ -409,7 +431,7 @@ export default function ChatWidget() {
         onClick={() => (open ? hide() : show(true))}
       >
         {!open && <span className="zc-ring" aria-hidden="true" />}
-        {open ? <X className="zc-launcher-x" aria-hidden="true" /> : <ChatMascot mood={hoverLauncher ? "happy" : "idle"} />}
+        {open ? <X className="zc-launcher-x" aria-hidden="true" /> : <ChatMascot mood={hoverLauncher ? "happy" : waving ? "wave" : "idle"} />}
         {unread && !open && <span className="zc-unread" aria-hidden="true" />}
       </button>
 
