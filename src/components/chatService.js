@@ -16,6 +16,16 @@
 export const CHAT_API = "https://edgexpert-b526.tailbb0629.ts.net/chat";
 export const USE_MOCK_ONLY = false;
 
+// While the public knowledge base is being prepared: no question reaches the
+// API (nor the canned replies); every message gets MAINTENANCE_TEXT in the
+// question's language. Set to false to bring ZARA back.
+export const MAINTENANCE = true;
+const MAINTENANCE_TEXT = {
+  en: "Sorry, we're currently updating our data. Please come back again later! 🙏",
+  ms: "Maaf, kami sedang mengemas kini data kami. Sila datang semula nanti! 🙏",
+  manglish: "Sorry ah, we're updating our data now. Come back again later ya! 🙏",
+};
+
 // Where "Book a demo" / "Talk to a human" buttons go. The site's own
 // Request a Demo links are still "#" (see SiteHeader.jsx), so this is too
 // until there is a real contact page or address.
@@ -208,6 +218,10 @@ const MANGLISH_HINT = "\n\n(Reply in Manglish: casual Malaysian mix of English a
    Resolves to { blocks, sources };
    rejects when the service can't be reached. */
 export async function sendMessage(text, history, lang = detectLang(text)) {
+  if (MAINTENANCE) {
+    await wait(600);
+    return { blocks: [{ type: "text", text: MAINTENANCE_TEXT[lang] || MAINTENANCE_TEXT.en }] };
+  }
   const intent = INTENTS.find((i) => i.match.test(text));
   if (intent || USE_MOCK_ONLY) {
     await wait(400);
