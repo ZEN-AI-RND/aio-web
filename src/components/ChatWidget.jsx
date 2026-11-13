@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import ChatMascot from "./ChatMascot";
-import { QUICK_REPLIES, chipLang, detectLang, errorText, sendMessage } from "./chatService";
+import { MAINTENANCE, QUICK_REPLIES, chipLang, detectLang, errorText, sendMessage } from "./chatService";
 import "./ChatWidget.css";
 
 /* Floating AI chat, bottom-right, on every page (mounted once in main.jsx).
@@ -542,8 +542,9 @@ export default function ChatWidget() {
                     )}
                   </div>
                 </div>
-                {/* Quick replies live under the greeting and scroll with the chat. */}
-                {m.id === "greet" && !streaming && (
+                {/* Quick replies live under the greeting and scroll with the chat;
+                    none while ZARA is in maintenance mode. */}
+                {m.id === "greet" && !streaming && !MAINTENANCE && (
                   <div className="zc-chips" role="group" aria-label="Suggested questions">
                     {QUICK_REPLIES[chips].map((q, i) => (
                       <button
