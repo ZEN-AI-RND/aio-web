@@ -203,6 +203,22 @@ export function detectLang(text) {
 // question as typed.
 const MANGLISH_HINT = "\n\n(Reply in Manglish: casual Malaysian mix of English and Malay, the way the user wrote.)";
 
+/* "Just the answer": drop the sentences the model tacks on that point
+   elsewhere (for more information, learn more, visit our website, links,
+   let me know if...), and turn any remaining markdown link into its text. */
+const POINTER = /(for (more|further) (details|info|information)|more information|learn more|find out more|read more|visit (our|the)|on our website|our website|(explore|check out|browse) .*(website|site|page)|let me know if|feel free to|don't hesitate|https?:\/\/|www\.|\]\(|maklumat lanjut|layari|sila lawati|laman web)/i;
+export function cleanAnswer(text) {
+  const lines = String(text || "").split("\n").map((line) => {
+    const kept = line.split(/(?<=[.!?])\s+/).filter((sentence) => !POINTER.test(sentence));
+    return kept.join(" ").trimEnd();
+  });
+  const out = lines.join("\n")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  return out || String(text || "").trim();
+}
+
 /* Sends one user message. `history` is the API's own shape:
    [{ role: "user" | "assistant", content }]. `lang` is from detectLang().
    Resolves to { blocks, sources };
@@ -228,5 +244,5 @@ export async function sendMessage(text, history, lang = detectLang(text)) {
   if (!r.ok) return { blocks: [{ type: "text", text: j.detail || "Maaf, ralat berlaku." }] };
   // the API sends sources as file names or as { title, url }; the widget shows names
   const sources = [...new Set((j.sources || []).map((s) => (typeof s === "string" ? s : s?.title)).filter(Boolean))];
-  return { blocks: [{ type: "text", text: j.answer }], sources };
+  return { blocks: [{ type: "text", text: cleanAnswer(j.answer) }], sources };
 }
