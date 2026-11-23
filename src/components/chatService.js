@@ -199,14 +199,16 @@ export function detectLang(text) {
   return ms > en ? "ms" : "en";
 }
 
-// Sent with a Manglish question only; the chat shows and remembers the
-// question as typed.
+// Reply-language hints, sent with Malay and Manglish questions only (the model
+// otherwise drifts to English on short or casual Malay); the chat shows and
+// remembers the question as typed.
+const MS_HINT = "\n\n(Jawab dalam Bahasa Melayu.)";
 const MANGLISH_HINT = "\n\n(Reply in Manglish: casual Malaysian mix of English and Malay, the way the user wrote.)";
 
 /* "Just the answer": drop the sentences the model tacks on that point
    elsewhere (for more information, learn more, visit our website, links,
    let me know if...), and turn any remaining markdown link into its text. */
-const POINTER = /(for (more|further) (details|info|information)|more information|learn more|find out more|read more|visit (our|the)|on our website|our website|(explore|check out|browse) .*(website|site|page)|let me know if|feel free to|don't hesitate|https?:\/\/|www\.|\]\(|maklumat lanjut|layari|sila lawati|laman web)/i;
+const POINTER = /(for (more|further) (details|info|information)|more information|learn more|find out more|read more|visit (our|the)|on our website|our website|(explore|check out|browse) .*(website|site|page)|let me know if|feel free to|don't hesitate|https?:\/\/|www\.|\]\(|maklumat lanjut|bantuan lanjut|layari|sila lawati|laman web|sila hubungi|hubungi (pasukan|kami)|halaman hubungi|contact (us|our|the)|contact page|\b[a-z0-9-]+\.com(\.my)?\b)/i;
 export function cleanAnswer(text) {
   const lines = String(text || "").split("\n").map((line) => {
     const kept = line.split(/(?<=[.!?])\s+/).filter((sentence) => !POINTER.test(sentence));
@@ -238,7 +240,7 @@ export async function sendMessage(text, history, lang = detectLang(text)) {
   const r = await fetch(CHAT_API, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: lang === "manglish" ? text + MANGLISH_HINT : text, history }),
+    body: JSON.stringify({ message: text + (lang === "manglish" ? MANGLISH_HINT : lang === "ms" ? MS_HINT : ""), history }),
   });
   const j = await r.json();
   if (!r.ok) return { blocks: [{ type: "text", text: j.detail || "Maaf, ralat berlaku." }] };
