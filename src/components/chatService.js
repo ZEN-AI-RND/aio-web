@@ -13,13 +13,13 @@
    else goes to the live RAG API. Set USE_MOCK_ONLY to true to run fully
    offline on canned replies. */
 
-export const CHAT_API = "https://edgexpert-b526.tailbb0629.ts.net/chat";
+export const CHAT_API = "https://edgexpert-b526.tailbb0629.ts.net/public/chat";
 export const USE_MOCK_ONLY = false;
 
 // While the public knowledge base is being prepared: no question reaches the
 // API (nor the canned replies); every message gets MAINTENANCE_TEXT in the
 // question's language. Set to false to bring ZARA back.
-export const MAINTENANCE = true;
+export const MAINTENANCE = false;
 const MAINTENANCE_TEXT = {
   en: "Sorry, we're currently updating our data. Please come back again later! 🙏",
   ms: "Maaf, kami sedang mengemas kini data kami. Sila datang semula nanti! 🙏",
@@ -30,6 +30,10 @@ const MAINTENANCE_TEXT = {
 // Request a Demo links are still "#" (see SiteHeader.jsx), so this is too
 // until there is a real contact page or address.
 export const CONTACT_URL = "#";
+
+// Quick reply chips under the greeting. Hidden for now; set to true to show
+// them again (they also stay hidden while MAINTENANCE is on).
+export const SHOW_QUICK_REPLIES = false;
 
 // Chips under the greeting, in the chat's language (chipLang): `icon` is
 // display only; `label` is what gets sent; `lang` (start set only) is the
@@ -236,5 +240,7 @@ export async function sendMessage(text, history, lang = detectLang(text)) {
   });
   const j = await r.json();
   if (!r.ok) return { blocks: [{ type: "text", text: j.detail || "Maaf, ralat berlaku." }] };
-  return { blocks: [{ type: "text", text: j.answer }], sources: j.sources || [] };
+  // the API sends sources as file names or as { title, url }; the widget shows names
+  const sources = [...new Set((j.sources || []).map((s) => (typeof s === "string" ? s : s?.title)).filter(Boolean))];
+  return { blocks: [{ type: "text", text: j.answer }], sources };
 }
