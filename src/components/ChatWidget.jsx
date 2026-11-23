@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import ChatMascot from "./ChatMascot";
-import { MAINTENANCE, QUICK_REPLIES, SHOW_QUICK_REPLIES, chipLang, detectLang, errorText, sendMessage } from "./chatService";
+import { MAINTENANCE, QUICK_REPLIES, SHOW_QUICK_REPLIES, SHOW_SOURCES, chipLang, detectLang, errorText, sendMessage } from "./chatService";
 import "./ChatWidget.css";
 
 /* Floating AI chat, bottom-right, on every page (mounted once in main.jsx).
@@ -518,7 +518,7 @@ export default function ChatWidget() {
                         copied={copied}
                         copy={copy}
                       />
-                      {!streaming && m.sources?.length > 0 && (
+                      {!streaming && SHOW_SOURCES && m.sources?.length > 0 && (
                         <div className="zc-sources" aria-label="Sources">
                           {m.sources.map((s) => (
                             <span key={s} className="zc-pill">{String(s).replace(/\.txt$/i, "")}</span>
@@ -543,7 +543,7 @@ export default function ChatWidget() {
                   </div>
                 </div>
                 {/* Quick replies live under the greeting and scroll with the chat;
-                    hidden unless SHOW_QUICK_REPLIES, and none while ZARA is in
+                    only when SHOW_QUICK_REPLIES, and none while ZARA is in
                     maintenance mode. */}
                 {m.id === "greet" && !streaming && SHOW_QUICK_REPLIES && !MAINTENANCE && (
                   <div className="zc-chips" role="group" aria-label="Suggested questions">

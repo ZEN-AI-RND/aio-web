@@ -31,36 +31,22 @@ const MAINTENANCE_TEXT = {
 // until there is a real contact page or address.
 export const CONTACT_URL = "#";
 
-// Quick reply chips under the greeting. Hidden for now; set to true to show
-// them again (they also stay hidden while MAINTENANCE is on).
-export const SHOW_QUICK_REPLIES = false;
+// Quick reply chips under the greeting (they stay hidden while MAINTENANCE is on).
+export const SHOW_QUICK_REPLIES = true;
 
-// Chips under the greeting, in the chat's language (chipLang): `icon` is
-// display only; `label` is what gets sent; `lang` (start set only) is the
-// language the chip is answered in.
-export const QUICK_REPLIES = {
-  // before the visitor asks anything: the original mix, the leave question in BM
-  start: [
-    { icon: "🏢", label: "About ZEN", lang: "en" },
-    { icon: "📅", label: "Book a demo", lang: "en" },
-    { icon: "🌴", label: "Berapa hari cuti tahunan?", lang: "ms" },
-  ],
-  en: [
-    { icon: "🏢", label: "About ZEN" },
-    { icon: "📅", label: "Book a demo" },
-    { icon: "🌴", label: "How many days of annual leave?" },
-  ],
-  ms: [
-    { icon: "🏢", label: "Tentang ZEN" },
-    { icon: "📅", label: "Tempah demo" },
-    { icon: "🌴", label: "Berapa hari cuti tahunan?" },
-  ],
-  manglish: [
-    { icon: "🏢", label: "Tell me about ZEN lah" },
-    { icon: "📅", label: "Wanna see demo ah" },
-    { icon: "🌴", label: "Annual leave got how many days ah?" },
-  ],
-};
+// Source pills (the documents an answer came from) under each reply.
+export const SHOW_SOURCES = false;
+
+// Chips under the greeting, keyed by the chat's language (chipLang): `icon` is
+// display only; `label` is what gets sent; `lang` is the language the chip is
+// answered in. For now every language gets the same four English chips.
+const EN_CHIPS = [
+  { icon: "🏢", label: "About ZEN Computer System", lang: "en" },
+  { icon: "🛠️", label: "Zen Computer System Service", lang: "en" },
+  { icon: "🤖", label: "About AIO", lang: "en" },
+  { icon: "📦", label: "AIO product", lang: "en" },
+];
+export const QUICK_REPLIES = { start: EN_CHIPS, en: EN_CHIPS, ms: EN_CHIPS, manglish: EN_CHIPS };
 
 /* Which chips to show: the language of the visitor's latest question, or
    "start" (the mixed set) before they ask anything. */
