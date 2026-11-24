@@ -211,10 +211,30 @@ const MANGLISH_HINT = "\n\n(Reply in Manglish: casual Malaysian mix of English a
    elsewhere (for more information, learn more, visit our website, links,
    let me know if...), and turn any remaining markdown link into its text. */
 const POINTER = /(for (more|further) (details|info|information)|more information|learn more|find out more|read more|visit (our|the)|on our website|our website|(explore|check out|browse) .*(website|site|page)|let me know if|feel free to|don't hesitate|https?:\/\/|www\.|\]\(|maklumat lanjut|bantuan lanjut|layari|sila lawati|laman web|sila hubungi|hubungi (pasukan|kami)|halaman hubungi|contact (us|our|the)|contact page|\b[a-z0-9-]+\.com(\.my)?\b)/i;
+// "- ", "* ", "• " or "1. " / "1) " at the start of a line.
+const LIST_ITEM = /^(\s*(?:[-*•]|\d+[.)])\s+)(.*)$/;
+// Links inside a list item: [text](url) keeps the text; "(https://...)" and bare
+// URLs go. The closing ")" is optional so a half-streamed link doesn't flash up.
+function stripLinks(text) {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]*\)?/g, "$1")
+    .replace(/\(\s*(?:https?:\/\/|www\.)[^)]*\)?/gi, "")
+    .replace(/(?:https?:\/\/|www\.)\S*/gi, "")
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
 export function cleanAnswer(text) {
-  const lines = String(text || "").split("\n").map((line) => {
+  const lines = String(text || "").split("\n").flatMap((line) => {
+    // List items are never dropped for being a pointer; only their links go.
+    // An item left with nothing but punctuation is dropped, so no empty "1." or "-".
+    const item = line.match(LIST_ITEM);
+    if (item) {
+      const body = stripLinks(item[2]);
+      return /[\p{L}\p{N}]/u.test(body) ? [item[1] + body] : [];
+    }
     const kept = line.split(/(?<=[.!?])\s+/).filter((sentence) => !POINTER.test(sentence));
-    return kept.join(" ").trimEnd();
+    return [kept.join(" ").trimEnd()];
   });
   const out = lines.join("\n")
     .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
