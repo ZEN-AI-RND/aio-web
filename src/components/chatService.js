@@ -13,6 +13,8 @@
    else goes to the live RAG API. Set USE_MOCK_ONLY to true to run fully
    offline on canned replies. */
 
+import { askZaraStream } from "./zaraStream";
+
 export const CHAT_API = "https://edgexpert-b526.tailbb0629.ts.net/public/chat";
 export const USE_MOCK_ONLY = false;
 
@@ -223,9 +225,11 @@ export function cleanAnswer(text) {
 
 /* Sends one user message. `history` is the API's own shape:
    [{ role: "user" | "assistant", content }]. `lang` is from detectLang().
+   `onText(textSoFar)`, if given, is called as the live answer streams in
+   (canned and maintenance replies don't stream).
    Resolves to { blocks, sources };
    rejects when the service can't be reached. */
-export async function sendMessage(text, history, lang = detectLang(text)) {
+export async function sendMessage(text, history, lang = detectLang(text), onText) {
   if (MAINTENANCE) {
     await wait(600);
     return { blocks: [{ type: "text", text: MAINTENANCE_TEXT[lang] || MAINTENANCE_TEXT.en }] };
@@ -237,13 +241,10 @@ export async function sendMessage(text, history, lang = detectLang(text)) {
     return { blocks: (replies[lang] || replies.en)() };
   }
 
-  const r = await fetch(CHAT_API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: text + (lang === "manglish" ? MANGLISH_HINT : lang === "ms" ? MS_HINT : ""), history }),
-  });
-  const j = await r.json();
-  if (!r.ok) return { blocks: [{ type: "text", text: j.detail || "Maaf, ralat berlaku." }] };
+  const message = text + (lang === "manglish" ? MANGLISH_HINT : lang === "ms" ? MS_HINT : "");
+  // Streams from /public/chat/stream, falls back to /public/chat on its own.
+  // Partial text is cleaned too, so a pointer sentence never flashes up and vanishes.
+  const j = await askZaraStream(message, history, (soFar) => onText?.(cleanAnswer(soFar)));
   // the API sends sources as file names or as { title, url }; the widget shows names
   const sources = [...new Set((j.sources || []).map((s) => (typeof s === "string" ? s : s?.title)).filter(Boolean))];
   return { blocks: [{ type: "text", text: cleanAnswer(j.answer) }], sources };

@@ -183,7 +183,7 @@ export default function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const [typing, setTyping] = useState(null); // null | "dots" | "thinking"
   const [askLang, setAskLang] = useState("en"); // language of the question being answered
-  const [stream, setStream] = useState(null); // { id, tokens, n }
+  const [stream, setStream] = useState(null); // { id, tokens, n } replayed, or { id, live: true, text } from the API
   const [happy, setHappy] = useState(false);
   const [tooltip, setTooltip] = useState(false);
   const [unread, setUnread] = useState(false);
@@ -268,7 +268,7 @@ export default function ChatWidget() {
 
   // Word-by-word streaming.
   useEffect(() => {
-    if (!stream) return;
+    if (!stream || stream.live) return; // live text is pushed by submit()
     if (stream.n >= stream.tokens.length) {
       setStream(null);
       return;
@@ -367,11 +367,32 @@ export default function ChatWidget() {
     setTyping("thinking");
     const mine = genRef.current;
     const started = Date.now();
+    // Live answer: the first words replace the thinking shimmer with a bot
+    // message, and each later chunk updates it in place.
+    let liveId = null;
+    const onText = (soFar) => {
+      if (mine !== genRef.current || !soFar) return;
+      if (!liveId) {
+        liveId = newId();
+        setTyping(null);
+        setMessages((ms) => [...ms, { id: liveId, role: "bot", blocks: [{ type: "text", text: soFar }], sources: [], ts: Date.now() }]);
+      }
+      setStream({ id: liveId, live: true, text: soFar });
+    };
     let reply;
     try {
-      reply = await sendMessage(text, history, lang);
+      reply = await sendMessage(text, history, lang, onText);
     } catch {
       reply = { blocks: [{ type: "text", text: errorText(lang) }] };
+    }
+    if (mine !== genRef.current) return;
+    if (liveId) {
+      // Swap in the final cleaned answer and its sources; no replay.
+      setMessages((ms) => ms.map((m) => (m.id === liveId ? { ...m, blocks: reply.blocks, sources: reply.sources || [] } : m)));
+      setStream(null);
+      setBusy(false);
+      if (!openRef.current) setUnread(true);
+      return;
     }
     await wait(Math.max(0, THINK_MIN_MS - (Date.now() - started)));
     if (mine !== genRef.current) return;
@@ -514,7 +535,7 @@ export default function ChatWidget() {
                     <div className="zc-bubble zc-bubble-bot">
                       <Blocks
                         msg={m}
-                        streamText={streaming ? stream.tokens.slice(0, stream.n).join("") : undefined}
+                        streamText={!streaming ? undefined : stream.live ? stream.text : stream.tokens.slice(0, stream.n).join("")}
                         copied={copied}
                         copy={copy}
                       />
