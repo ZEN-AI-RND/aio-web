@@ -24,7 +24,10 @@ const CASES = [
   ["What services do you offer?", "zara"],
   ["Office you all buka pukul berapa?", "zara"],
   ["Do you have a rapid deployment option?", "zara"], // "api" inside "rapid"
-  ["Tell me about your costumes", "pricing"], // known: cost\w* also catches "costume"
+  ["how much does it cost", "pricing"],
+  ["request a quotation", "pricing"],
+  ["costume party ideas", "zara"],
+  ["what is my quota", "zara"],
 ];
 
 let bad = 0;

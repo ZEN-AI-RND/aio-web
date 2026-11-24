@@ -68,7 +68,7 @@ export const errorText = (lang) => ERRORS[lang] || ERRORS.en;
 const INTENTS = [
   {
     name: "pricing",
-    match: /\b(pric\w*|harga|cost\w*|kos|quot\w*|sebut ?harga)\b/i,
+    match: /\b(pric(e|es|ing)|harga|cost(s|ing)?|kos|quot(e|es|ation|ations)|sebut ?harga)\b/i,
     reply: {
       en: () => [
         { type: "text", text: "Pricing depends on how AIOffice is deployed and how many people will use it:\n- **On-premise** on your own NVIDIA DGX Spark, with your data staying in-house\n- **Number of users** and which AIO modules you need (ZARA, AIO Form, AIO Verify, AIO Insight...)\n\nOur team prepares a quote for your organisation." },
