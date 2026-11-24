@@ -13,7 +13,7 @@
    else goes to the live RAG API. Set USE_MOCK_ONLY to true to run fully
    offline on canned replies. */
 
-import { askZaraStream } from "./zaraStream";
+import { askZaraStream } from "./zaraStream.js";
 
 export const CHAT_API = "https://edgexpert-b526.tailbb0629.ts.net/public/chat";
 export const USE_MOCK_ONLY = false;
@@ -67,7 +67,8 @@ export const errorText = (lang) => ERRORS[lang] || ERRORS.en;
 /* Canned replies, one per language. `match` covers all three. */
 const INTENTS = [
   {
-    match: /pric|harga|cost|kos|quote|sebut ?harga|berapa (harga|kos)/i,
+    name: "pricing",
+    match: /\b(pric\w*|harga|cost\w*|kos|quot\w*|sebut ?harga)\b/i,
     reply: {
       en: () => [
         { type: "text", text: "Pricing depends on how AIOffice is deployed and how many people will use it:\n- **On-premise** on your own NVIDIA DGX Spark, with your data staying in-house\n- **Number of users** and which AIO modules you need (ZARA, AIO Form, AIO Verify, AIO Insight...)\n\nOur team prepares a quote for your organisation." },
@@ -84,7 +85,8 @@ const INTENTS = [
     },
   },
   {
-    match: /demo/i,
+    name: "demo",
+    match: /\bdemo\b/i,
     reply: {
       en: () => [
         { type: "text", text: "Happy to show you! A live demo takes about **30 minutes** and covers ZARA plus the AIO modules that fit your work." },
@@ -101,7 +103,8 @@ const INTENTS = [
     },
   },
   {
-    match: /human|person|orang|staff|agent|manusia|talk to (someone|sales)|hubungi/i,
+    name: "human",
+    match: /\b(talk|speak|chat) (to|with) (a |an )?(human|person|someone|sales|agent|staff)\b|\b(nak|mahu|boleh) (cakap|bercakap|berbual) dengan (orang|manusia|staff|wakil)\b|\bhuman agent\b/i,
     reply: {
       en: () => [
         { type: "text", text: "Of course. Our team at Zen Computer Systems can take it from here." },
@@ -118,7 +121,8 @@ const INTENTS = [
     },
   },
   {
-    match: /how (does|do) (it|this|you) work|macam ?mana|bagaimana/i,
+    name: "how-zara-works",
+    match: /\bhow (does|do) (zara|this chat(bot)?|you) work\b|\b(macam mana|bagaimana) zara (berfungsi|bekerja|jawab)\b/i,
     reply: {
       en: () => [
         { type: "text", text: "Here's how ZARA answers your questions:" },
@@ -150,7 +154,8 @@ const INTENTS = [
     },
   },
   {
-    match: /embed|integrat|api|script|install|pasang/i,
+    name: "embed",
+    match: /\b(embed|integrat\w*|api|script|widget|install\w*)\b/i,
     reply: (() => {
       const code = { type: "code", lang: "js", code: `const res = await fetch("${CHAT_API}", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({ message: "Berapa hari cuti tahunan?", history: [] }),\n});\nconst { answer, sources } = await res.json();` };
       return {
@@ -243,6 +248,10 @@ export function cleanAnswer(text) {
   return out || String(text || "").trim();
 }
 
+/* The canned reply a question gets instead of going to ZARA, or undefined.
+   Checked by tools/intent-check.mjs. */
+export const matchIntent = (text) => INTENTS.find((i) => i.match.test(text));
+
 /* Sends one user message. `history` is the API's own shape:
    [{ role: "user" | "assistant", content }]. `lang` is from detectLang().
    `onText(textSoFar)`, if given, is called as the live answer streams in
@@ -254,7 +263,7 @@ export async function sendMessage(text, history, lang = detectLang(text), onText
     await wait(600);
     return { blocks: [{ type: "text", text: MAINTENANCE_TEXT[lang] || MAINTENANCE_TEXT.en }] };
   }
-  const intent = INTENTS.find((i) => i.match.test(text));
+  const intent = matchIntent(text);
   if (intent || USE_MOCK_ONLY) {
     await wait(400);
     const replies = intent ? intent.reply : FALLBACK;
